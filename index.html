@@ -1,0 +1,32 @@
+---
+layout: none
+---
+
+<head>
+  <style>
+    body { margin: 0; padding: 5px; font-size: 24px }
+    ul { margin: 0; padding: 0; list-style: none }
+  </style>
+</head>
+
+<body>
+  <div style="max-width: 960px; display: block; margin: 0 auto;">
+    <span>Dmitry Mazin (<a href="">dm@archvile.net</a>)</span>
+    <span style="display: block; font-size: 16px">I live in Los Angeles. I'm available for python and React Native software contracts.</span>
+    <figure style="display: inline-block; margin: 0; padding: 0;">
+      <img src='triva.jpg' style="max-height: 80vh;max-width: 100%;">
+      <figcaption style="text-align: right; font-size: 16px">
+        Illustration by <a href="">Triva Linda</a>
+      </figcaption>
+    </figure>
+    <div style="margin-top: 5px">
+      <ul>
+      {% for post in site.posts %}
+        <li>
+          ({{ post.date | date: "%b '%y"  }}) <a href="{{ post.url }}">{{ post.title }}</a>
+        </li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+</body>
