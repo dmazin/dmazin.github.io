@@ -305,6 +305,8 @@ pre {
  * Posts
  */
 .post-header {
+  font-family: sans-serif;
+
   margin-bottom: 30px; }
 
 .post-title {
