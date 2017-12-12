@@ -44,7 +44,7 @@ These existential concerns extend to Smart Reply’s email recipients, as well. 
 
 We are increasingly able to bless AI with more and more agency (or more precisely, what we believe _passes_ for agency). In many cases, this brings us great benefits. In employing AI, we might achieve previously unthinkable goals. We could end alienating, dangerous labor, or we could significantly improve medicine. But we must be extremely careful.
 
-Like all intellectual endeavors, AI research is driven by curiosity rather than necessity. More than ever, we must approach AI breakthroughs with skepticism. Not only does technology wield great power over us, it advances at an inhuman pace. Unless we anticipate its coming challenges, we will realize them only in hindsight.
+Like all intellectual endeavors, AI research is driven by curiosity rather than necessity. We must approach AI breakthroughs with skepticism. Not only does technology wield great power over us, it advances at an inhuman pace. Unless we anticipate its coming challenges, we will realize them only in hindsight.
 
 Thanks to <a href='http://www.czworld.net/'>Chris Zaldua</a> for editing, and <a href='http://alex.nisnevich.com/'>Alex Nisnevich</a>, <a href='https://charlesfrye.github.io/'>Charles Frye</a>, Gil Lawson, and <a href='https://github.com/neunenak'>Greg Shuflin</a> for their input.
 
