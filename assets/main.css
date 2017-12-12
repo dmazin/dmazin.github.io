@@ -7,6 +7,11 @@ dl, dd, ol, ul, figure {
   margin: 0;
   padding: 0; }
 
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 /**
  * Basic styling
  */
@@ -49,9 +54,25 @@ img {
   }
 }
 
+@media screen and (min-width: 800px) {
+img.spot-right {
+float: right;
+margin-right: -200px;
+max-width: 345px;
+}
+
 img.spot-left {
 float: left;
 margin-left: -200px;
+max-width: 345px;
+}
+}
+
+@media screen and (max-width: 800px) {
+img.spot-right, img.spot-left {
+margin-bottom: 10px;
+/* match paragraphs */
+}
 }
 
 /**
