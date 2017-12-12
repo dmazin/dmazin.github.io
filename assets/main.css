@@ -41,6 +41,18 @@ ul, ol, dl, figure,
 img {
   max-width: 100%;
   vertical-align: middle; }
+@media screen and (max-width: 800px) {
+  img.header {
+    max-width: 150%;
+    position: relative;
+    margin-left: -40px;
+  }
+}
+
+img.spot-left {
+float: left;
+margin-left: -200px;
+}
 
 /**
  * Figures
