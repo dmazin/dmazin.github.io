@@ -2,7 +2,7 @@
 layout: post
 title: "Pink Lexical Slime: The Dark Side of Autocorrect"
 byline: By <a href="http://archvile.net/">Dmitry Mazin</a>. Illustrations by <a href="https://www.instagram.com/sean_muscles/">Sean McOmber</a>.
-date: 2017-12-11
+date: 2017-12-12
 ---
 We've awaited the age of artificial intelligence for decades. In our fantasies, AI is usually humanoid, straight out of the Jetsons. But while we anticipate the great arrival of the robotic butlers, AI has, in fact, already quietly permeated the fabric of our daily lives — from shopping, to driving, to communication.
 
