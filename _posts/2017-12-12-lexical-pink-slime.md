@@ -46,7 +46,7 @@ We are increasingly able to bless AI with more and more agency (or more precisel
 
 Like all intellectual endeavors, AI research is driven by curiosity rather than necessity. More than ever, we must approach AI breakthroughs with skepticism. Not only does technology wield great power over us, it advances at an inhuman pace. Unless we anticipate its coming challenges, we will realize them only in hindsight.
 
-Thanks to <a href='http://www.czworld.net/'>Chris Zaldua</a> for editing, and <a href='http://alex.nisnevich.com/'>Alex Nisnevich</a>, <a href='https://charlesfrye.github.io/'>Charles Frye</a>, <a href='#'>Gil Lawson</a>, and <a href='https://github.com/neunenak'>Greg Shuflin</a> for their input.
+Thanks to <a href='http://www.czworld.net/'>Chris Zaldua</a> for editing, and <a href='http://alex.nisnevich.com/'>Alex Nisnevich</a>, <a href='https://charlesfrye.github.io/'>Charles Frye</a>, Gil Lawson, and <a href='https://github.com/neunenak'>Greg Shuflin</a> for their input.
 
 # Notes and References
 <a name="1"></a>1. According to Apple’s patent 8,232,973 [“Method, device, and graphical user interface providing word recommendations for text input”](http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&s1=8232973.PN.&OS=PN/8232973&RS=PN/8232973) <a href="#1-return">(back)</a>
