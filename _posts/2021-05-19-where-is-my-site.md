@@ -82,7 +82,7 @@ And so… there it is! (The `-s` suppresses curl’s progress bar.)
 Now, where do I manage the DNS settings for archvile.net? I actually remember that I used Google Domains.  To confirm:
 
 ```
-~ whois archvile.net | gre "Registrar URL"
+~ whois archvile.net | grep "Registrar URL"
    Registrar URL: http://domains.google.com
 ```
 
