@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A crash course in black box monitoring"
+title: "A crash course in black-box monitoring"
 byline: By <a href="http://archvile.net/">Dmitry Mazin</a>.
 date: 2022-02-04
 ---
@@ -8,14 +8,14 @@ date: 2022-02-04
 This is an alpha-release article: a good strategy for anything you make is to release it so early that it embarrasses you, and then iterate. I'm applying the same idea to what I write. If nothing else, currently this article is too long.
 
 ### Congratulations
-Congratulations! You are the proud owner of a service. Has someone already used the “operational excellence” words at you? Sure, that sounds good, you said. But what does it mean? It means that our service is generally alive, and it works well (which mostly means fast, but also, like, we aren’t losing people’s data). When the service is down or not performing well, it’s your problem. Here’s another problem, though: /how/ do you know it’s down or not performing well?
+Congratulations! You are the proud owner of a service. Has someone already used the “operational excellence” words at you? Sure, that sounds good, you said. But what does it mean? It means that our service is generally alive, and it works well (which mostly means fast, but also, like, we aren’t losing people’s data). When the service is down or not performing well, it’s your problem. Here’s another problem, though: *how* do you know it’s down or not performing well?
 
-### Black box vs white box monitoring
-There are broadly two ways to monitor a service: measure the clients’ experiences, from the outside (“black box”) and measure stuff going on inside (“white box”). I don’t actually hear these terms used all that often. I think it’s more useful to think of it as “client [experience] monitoring” and “internals monitoring”. I’ll use these terms.
+### Black-box vs white-box monitoring
+There are broadly two ways to monitor a service: measure the clients’ experiences, from the outside (“black-box”) and measure stuff going on inside (“white-box”). I don’t actually hear these terms used all that often. I think it’s more useful to think of it as “client [experience] monitoring” and “internals monitoring”. I’ll use these terms.
 
-What /is/ client monitoring? It means directly measuring the “operational excellence” of your service. Since that is our ultimate goal, I think it’s worth thoroughly discussing it. I’m going to focus on it in this post. But, let me discuss the difference between client and internals monitoring.
+What *is* client monitoring? It means directly measuring the “operational excellence” of your service. Since that is our ultimate goal, I think it’s worth thoroughly discussing it. I’m going to focus on it in this post. But, let me discuss the difference between client and internals monitoring.
 
-Your measurements of the client’s experience are the ultimate source of truth of your quality of service. Even if your internal monitoring says that nothing is wrong, yet the client’s experience is degraded, then something /is/ wrong.
+Your measurements of the client’s experience are the ultimate source of truth of your quality of service. Even if your internal monitoring says that nothing is wrong, yet the client’s experience is degraded, then something *is* wrong.
 
 If client monitoring is the source of truth, why do we monitor the internals? Because if we only measure the current client experience, we will only catch issues as they happen. We prefer to catch them before, preventing any client degradation. But, for the sake of scope, I will focus on client side monitoring here.
 
@@ -41,9 +41,9 @@ Here’s what matters about almost every computer-related service: “is it ther
 We outlined what an individual client cares about, but we are the operators of Ping, so we want to monitor the aggregate experience of all clients at once.
 
 ### The first metric: load
-First, I want to introduce one more thing to monitor that only becomes relevant when talking about multiple clients: load. /How many/ clients are using Ping? For an HTTP service like Ping, this almost always means requests per second averaged over some time period. 
+First, I want to introduce one more thing to monitor that only becomes relevant when talking about multiple clients: load. *How many* clients are using Ping? For an HTTP service like Ping, this almost always means requests per second averaged over some time period. 
 
-I mentioned earlier that you won’t alert on /everything/. Load is such a thing. Instead, it’s one of the things you will check on when investigating an issue. In fact, it is almost always the very first thing you check. “There’s an issue!” -> “Is the service under abnormally high load?” Here’s an example of how you might discuss/think about load: usually, you’ll be investigating some time period, and you may say, “the average load over the past 5 min is so and so, which is above the historical average,”, Or you may say, “the load is actually really low”.
+I mentioned earlier that you won’t alert on *everything*. Load is such a thing. Instead, it’s one of the things you will check on when investigating an issue. In fact, it is almost always the very first thing you check. “There’s an issue!” -> “Is the service under abnormally high load?” Here’s an example of how you might discuss/think about load: usually, you’ll be investigating some time period, and you may say, “the average load over the past 5 min is so and so, which is above the historical average,”, Or you may say, “the load is actually really low”.
 
 ### The second metric: availability
 When discussing the experience of an individual client, we asked: did Ping respond to your request? This is availability. For most intents and purposes, you can think of availability as “what % of time was the service reachable?” In practice, you would measure this by periodically sending requests to your service. Note that we are talking about client monitoring, so the requests should originate outside your system.
@@ -53,12 +53,12 @@ While load is a metric that helps with investigations, availability is one of th
 ### The third metric: errors
 We agreed earlier that one of the non-controversial qualities of a tool is, “does it work?”. Did your hair dryer turn on when you wanted it to? I think this is a fairly straightforward metric: we want to know when our service is broken.
 
-In terms of Ping, we’d track our HTTP responses. Specifically, we’d measure 5XX. /Not/ 4XX, though – those are client errors. 
+In terms of Ping, we’d track our HTTP responses. Specifically, we’d measure 5XX. *Not* 4XX, though – those are client errors. 
 
-This /is/ something you should alert on. How you alert on it depends on the service. For some services, issuing any errors is a problem, so you may alert on the absolute number of errors (“more than 5 errors in the past minute”). More likely, you will alert on the error rate: (“more than 1% of requests errored out in the past minute”).
+This *is* something you should alert on. How you alert on it depends on the service. For some services, issuing any errors is a problem, so you may alert on the absolute number of errors (“more than 5 errors in the past minute”). More likely, you will alert on the error rate: (“more than 1% of requests errored out in the past minute”).
 
 ### Aside: where are we measuring this stuff?
-I want to pause to address a subtlety that I did not address yet. Where are we actually measuring this? Since this is client monitoring, you may think we measure this from the client. This /is/ a thing, and we /should/ measure client experience directly on the client (and there are many other things we should measure and care about, like “time to first byte”). We do not measure from the client.
+I want to pause to address a subtlety that I did not address yet. Where are we actually measuring this? Since this is client monitoring, you may think we measure this from the client. This *is* a thing, and we *should* measure client experience directly on the client (and there are many other things we should measure and care about, like “time to first byte”). We do not measure from the client.
 
 In terms of availability, we measure from something pretending to be a client, but in terms of the other metrics, we’re measuring with something that sits inside of our own system. We could measure using something external to our service (a proxy that tracks every request in and out of our service) or internal (for example, if we use a tracing library). I won’t go into implementation details here; what’s important is to disambiguate that while we are measuring client experience, we are actually doing it from our side.
 
@@ -68,14 +68,14 @@ We agreed that speed is important. In fact, request duration is just as importan
 When something is wrong with your service, in many cases it manifests not as errors or downtime, but slowness. This is because our computing systems are full of queues. This could end up being a major tangent, but…
 
 ### Aside: Utilization and saturation
-Let’s say we operate an elevator. Briefly, utilisation is how /busy/ the elevator is. If it’s in motion, it’s busy. Then, for some time period, its utilisation is what % of time it was in motion.
+Let’s say we operate an elevator. Briefly, utilisation is how *busy* the elevator is. If it’s in motion, it’s busy. Then, for some time period, its utilisation is what % of time it was in motion.
 
-What do we do when a person arrives at the lobby, but the elevator is in motion? Do we turn them away? No – we let them queue. The same is true for CPUs, disks, buses (I mean literal road buses). Mostly, what it’s /not/ true for is boats. “That ship has sailed.”
+What do we do when a person arrives at the lobby, but the elevator is in motion? Do we turn them away? No – we let them queue. The same is true for CPUs, disks, buses (I mean literal road buses). Mostly, what it’s *not* true for is boats. “That ship has sailed.”
 
-The length of the queue measures the /saturation/ of the elevator. How backed-up is the service? Another way is latency. Latency just means “how long did I spend standing in line?” Latency and queue length are equivalent: the longer the queue, the longer we spend in the queue.
+The length of the queue measures the *saturation* of the elevator. How backed-up is the service? Another way is latency. Latency just means “how long did I spend standing in line?” Latency and queue length are equivalent: the longer the queue, the longer we spend in the queue.
 
 ### Aside-aside: query duration is not query latency
-These terms are almost always conflated. They don’t mean the same thing. Query duration is how long the query takes, end-to-end. It’s one of the big 4 metrics we discuss in this article. There is also query latency, which measures /how long the request waits before we begin to process it/.
+These terms are almost always conflated. They don’t mean the same thing. Query duration is how long the query takes, end-to-end. It’s one of the big 4 metrics we discuss in this article. There is also query latency, which measures *how long the request waits before we begin to process it*.
 
 For the elevator example, latency is how long we stand in line, while duration is how long we stand in line plus how long we spend inside the elevator.
 
@@ -105,7 +105,7 @@ I know what you’re thinking: let’s take the average of query durations acros
 
 Your request durations are going to be all over the place. Some of them will be very fast, some will be slow. And some will be super duper fast or super duper slow. Those are outliers. You know what outliers do to averages? It’s very nasty. Just imagine that you get a bunch of requests at 10 ms, and everything is great. Then you get 1 request that takes a minute – a complete fluke – and suddenly all your alarms are going off. That’s not good.
 
-Alright, so what should you measure instead? Preferably, you should look at a number of /percentiles/: p50, p75, p90, p99, p99.5. You’ve probably heard of medians. A median says “50% of values are smaller than this.” A percentile says (let’s take p99 as an example): “99% of values are smaller than this.”
+Alright, so what should you measure instead? Preferably, you should look at a number of *percentiles*: p50, p75, p90, p99, p99.5. You’ve probably heard of medians. A median says “50% of values are smaller than this.” A percentile says (let’s take p99 as an example): “99% of values are smaller than this.”
 
 In practical terms, it’s rare to be able to think about a bunch of percentiles at once. If you have to pick one, I think you should focus on p90, p99, or even p99.5 based on your business needs. I argue for looking at p95+ because the reality of the world is that your most valuable customers tend to have tons of records in the system and their requests tend to take longer. If you ignore the very tip of the tail of your requests, you may actually be ignoring the experience of your most valuable customers.
 
