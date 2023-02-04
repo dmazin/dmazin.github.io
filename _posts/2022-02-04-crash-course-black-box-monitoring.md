@@ -4,6 +4,9 @@ title: "A crash course in black box monitoring"
 byline: By <a href="http://archvile.net/">Dmitry Mazin</a>.
 date: 2022-02-04
 ---
+### Note
+This is an alpha-release article: a good strategy for anything you make is to release it so early that it embarrasses you, and then iterate. I'm applying the same idea to what I write. If nothing else, currently this article is too long.
+
 ### Congratulations
 Congratulations! You are the proud owner of a service. Has someone already used the “operational excellence” words at you? Sure, that sounds good, you said. But what does it mean? It means that our service is generally alive, and it works well (which mostly means fast, but also, like, we aren’t losing people’s data). When the service is down or not performing well, it’s your problem. Here’s another problem, though: /how/ do you know it’s down or not performing well?
 
