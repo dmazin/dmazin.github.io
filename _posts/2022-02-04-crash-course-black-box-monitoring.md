@@ -19,6 +19,9 @@ Your measurements of the client’s experience are the ultimate source of truth 
 
 If black-box monitoring is the source of truth, why do we monitor the internals? Because if we only measure the current client experience, we will only catch issues as they happen. We prefer to catch them before, preventing any client degradation. But, for the sake of scope, I will focus on black-box monitoring here.
 
+### We're not talking about client-side/frontend monitoring
+Just to be clear, this article is about monitoring the requests clients make to your service. There is another concept, client/frontend monitoring, which tracks the lifetime of the user action: it measures things like time to first byte, page draw time, etc. This is important stuff, but it's not what this article is about.
+
 ### Making things concrete
 I understand things a lot better when I have concrete examples to look at. Maybe you do too. So, in our case, let’s say that we are running a service called Ping. It’s very simple. Clients talk to it using HTTP. They can `GET /api/v1/ping` and it returns `HTTP 200 pong`.
 
