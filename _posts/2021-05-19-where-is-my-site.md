@@ -7,7 +7,9 @@ date: 2021-05-19
 Remember [this Bash quote](http://www.bash.org/?5273)?
 
 ```
-<erno> hm. I’ve lost a machine.. literally _lost_. it responds to ping, it works completely, I just can’t figure out where in my apartment it is.
+<erno> hm. I’ve lost a machine.. literally _lost_.
+it responds to ping, it works completely,
+I just can’t figure out where in my apartment it is.
 ```
 
 Well, I’ve lost my website (the one you're reading right now). It loads, it works completely, I just can’t figure out where I’m hosting it, what the source repo is, or how I built it in the first place.
