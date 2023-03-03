@@ -10,7 +10,7 @@ Quickly, though, I found myself unable to make myself waste my soul on LeetCode.
 
 The period between jobs is an opportunity to “capstone” what you learned in your previous job. For example, I started my Rollbar job with little theoretical education about reliability engineering. Therefore, everything I know in that domain is experiential. This meant that I came across tons of concepts that I knew how to deal with, but did not actually know much about them.
 
-Let me give you an example. We ran some a bunch of VMs, for example to host MySQL, and we configured the MySQL process using SystemD. I knew how to work with SystemD, but I knew absolutely nothing about what an init process it, where it stands the overall picture of an operating system, the history and criticism of SystemD, nor did I know anything about Linux features it uses like cgroups.
+Let me give you an example. We ran a bunch of VMs, for example to host MySQL, and we configured the MySQL process using SystemD. I knew how to work with SystemD, but I knew absolutely nothing about what an init process it, where it stands the overall picture of an operating system, the history and criticism of SystemD, nor did I know anything about Linux features it uses like cgroups.
 
 At a job, we come across many concepts, even work with them, without having much theoretical understanding of what they are. Personally, these little mysteries nag me, and I like to demystify them. At a fast-paced job, there may not be much time to actually demystify concepts, and so, after that job, when you come up for air is a great time to demystify.
 
