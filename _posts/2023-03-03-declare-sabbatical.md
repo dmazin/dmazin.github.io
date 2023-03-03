@@ -20,7 +20,7 @@ Now I comfortably understand SystemD, init, etc. I understand now why it has fel
 
 This is only an example; I repeated this for a ton of concepts. I solidified – capstoned – my 3-year experiential education at Rollbar. I now feel like I actually deserve my staff title.
 
-Anyway, all of this was in the context of preparing for job interviews. At least for SREs, a lot of your interviews are signal-gathering missions. You get asked lots of questions like “tell me what you think of SystemD” or “when would you use PubSub and when would you use AMPQ?” (I know, given that I have administered many such interviews). The fact that I have worked with a bunch of these things is one thing, but being able to talk intelligently is another.
+Anyway, all of this was in the context of preparing for job interviews. At least for SREs, a lot of your interviews are signal-gathering missions. You get asked lots of questions like “tell me what you think of SystemD” or “when would you use PubSub and when would you use AMPQ?” (I know, given that I have administered such interviews). The fact that I have worked with a bunch of these things is one thing, but being able to talk intelligently is another.
 
 The thing is, though, the job market right now is not great. There are lots of jobs, mind you, but the jobs are not terribly attractive. A lot of them involve contracting with legacy businesses to help them make the extremely misguided decision to move everything to AWS Lambda or whatever.
 
