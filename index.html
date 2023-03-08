@@ -3,54 +3,57 @@ layout: none
 ---
 
 <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-111078066-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=UA-111078066-1"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
 
-  gtag('config', 'UA-111078066-1');
-</script>
+    gtag("config", "UA-111078066-1");
+  </script>
 
-  <meta name='viewport' content='width=device-width'>
-  <meta name='poo' content='dumb'>
-  <link rel='stylesheet' href='/assets/index.css'>
+  <meta name="viewport" content="width=device-width" />
+  <meta name="poo" content="dumb" />
+  <link rel="stylesheet" href="/assets/index.css" />
 </head>
 
 <body>
   <div style="max-width: 960px; display: inline-block; text-align: left">
     <span>Dmitry Mazin (<a href="">dm@archvile.net</a>)</span>
     <span style="display: block; font-size: 16px">
-<p>
-Hello. Thanks for visiting my page. Here's a little about me.
-</p>
+      <p>Hello. Thanks for visiting my page. Here's a little about me.</p>
 
-<p>
-I live in London, UK with my wife and kid. I was born in St. Petersburg, Russia. I moved to the US in 2000. I have lived in Los Angeles, Flagstaff, Berkeley, San Francisco, and New Jersey (near Lambertville). If you lived anywhere near those places, reach out!
-</p>
+      <p>
+        I live in London, UK with my wife and kid. I was born in St. Petersburg,
+        Russia. I moved to the US in 2000. I have lived in Los Angeles,
+        Flagstaff, Berkeley, San Francisco, and New Jersey (near Lambertville).
+        If you lived anywhere near those places, reach out!
+      </p>
 
-<p>
-I am interested in the history of computing and the internet, internet communities, and, especially, text entry systems.
-</p>
+      <p>
+        I am interested in the history of computing and the internet, internet
+        communities, and, especially, text entry systems.
+      </p>
 
-<p>
-Professionally, I babysit infra.
-</p>
+      <p>Professionally, I babysit infra.</p>
 
-<p>
-Feel free to reach out. I love meeting people.
-</p>
+      <p>Feel free to reach out. I love meeting people.</p>
     </span>
     <div style="margin-top: 5px">
       <ul>
-      {% for post in site.posts %}
+        {% for post in site.posts %}
         <li>
-          ({{ post.date | date: "%b '%y"  }}) <a href="{{ post.url }}">{{ post.title }}</a>
+          ({{ post.date | date: "%b '%y" }})
+          <a href="{{ post.url }}">{{ post.title }}</a>
         </li>
-      {% endfor %}
+        {% endfor %}
       </ul>
     </div>
   </div>
-
 </body>
