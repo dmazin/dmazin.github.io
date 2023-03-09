@@ -128,9 +128,11 @@ You release your service, and everything is going great. You aren’t really thi
 
 If you don’t plan ahead, eventually, you start running into problems: people are complaining that sometimes, it takes a really long time for an article to get summarized. A really huge customer, who uses you under-the-hood for their own service, leaves you because your service isn’t what it used to be. Oh, no!
 
-What are you supposed to do? At the end of the day, technology is all about communication. Let’s say you charge your customers some flat fee per article summarized. You know you can only handle X articles per second, while guaranteeing Y query duration. So you implement rate limiting, and your API actually starts turning requests away with a HTTP 429. This is equivalent to saying: I don’t feel good charging you money if I can’t handle your request in a timely manner. Please try coming back another time. While this is not a good situation – you are turning away demand – this does allow you to guarantee a certain query duration.
+What are you supposed to do? At the end of the day, technology is all about communication. Let’s say you charge your customers some flat fee per article summarized. You know you can only handle X articles per second, while guaranteeing Y query duration. So you implement rate limiting, and your API actually starts turning requests away with a HTTP 429. This is equivalent to saying: I don’t feel good charging you money if I can’t handle your request in a timely manner. Please try coming back another time. While this is not a good situation – you are turning away demand – this does allow you to guarantee a certain query duration. Meanwhile, you can work to improve your architecture.
 
 ### Oops
+To be continued.
+
 This basically ended up becoming a draft for the throughput vs duration article I mentioned earlier. I think in the future version of this draft, I’ll leave out the park analogy entirely. Analogies just tend to confuse me. What do you think?
 
 ### Next time
