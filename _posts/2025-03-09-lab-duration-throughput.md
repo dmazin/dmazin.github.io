@@ -110,7 +110,7 @@ One day, you get drunk on the job, and you send out a marketing campaign and ent
 
 Indeed, the next day you let all 100,000 visitors in, without waiting at the queue at the park gates. To your horror, soon hordes of angry visitors start leaving the park: the lines for all the rides are thousands-long. What you failed to think about is the fact that people care how long it takes them before they are able to get on a ride.
 
-Let me explicitly draw parallels between this and database queries. In this case, throughput is how many park visitors you allow in during a time period (100,000 in a day). This is kind of abstract, but you can think of a query time as “how long does it take to get on and off a ride, after entering the park?” Because the queues for all the rides are so long, it takes a really long time before someone can actually get on a ride.
+Let me explicitly draw parallels between this and database queries. In this case, throughput is how many park visitors you allow in during a time period (100,000 in a day). This is kind of abstract, but you can think of a query time as “after entering the park, how long passes until I have gotten onto a ride, ridden that ride, and gotten off?” Because the queues for all the rides are so long, it takes a really long time before someone can actually get on a ride.
 
 #### What are you supposed to do?
 OK, you learned your lesson. You now know that visitors will be angry if it takes more than, say, 60 minutes before they can get on their first ride. But now what?
