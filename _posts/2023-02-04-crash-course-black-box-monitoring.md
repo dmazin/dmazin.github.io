@@ -125,3 +125,10 @@ It’s important to monitor the client experience of a service, because it direc
 Availability and duration are so important that both customers and people inside your company will pay attention to them. You should, too.
 
 There are many intricacies to all of this – including how to actually implement it – but I hope this has been a worthy introduction.
+
+If you read this far, maybe you’ll want to hear from me again.
+* Sign up to an [RSS feed of my posts on this site](https://archvile.net/feed.xml).
+* [Follow me on Mastodon](https://file-explorers.club/@dmitry).
+* Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
+
+If you'd like to discuss this post, please do reach out! My email is [dm@archvile.net]().
