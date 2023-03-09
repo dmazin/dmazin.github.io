@@ -470,7 +470,9 @@ font-size: 1em/1.6em;
   }
 }
 .post-content h4 {
-  font-size: 20px;
+  font-size: 22px;
+  margin-top: 0.75em;
+  margin-bottom: 0.3em;
 }
 @media screen and (max-width: 800px) {
   .post-content h4 {
