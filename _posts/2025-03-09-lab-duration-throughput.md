@@ -106,7 +106,7 @@ Let me illustrate this with a non-technical example.
 
 Let’s say you run a theme park, and there’s a queue to get in. Inside the theme park, there are a bunch of rides, each one with its own queue.
 
-One day, you get drunk on the job, and you send out a marketing campaign and entice hundreds of thousands of people to attend your park, all on the same day. “Very nice,” you tell yourself, “because my park can surely handle 100,000 visitors at the same time.”
+One day, you get drunk on the job, and you send out a marketing campaign proclaiming that there is absolutely no queue to enter the park, and entice 100,000 people to attend your park, all on the same day. “Very nice,” you tell yourself, “because my park can surely handle 100,000 visitors at the same time.”
 
 Indeed, the next day you let all 100,000 visitors in, without waiting at the queue at the park gates. To your horror, soon hordes of angry visitors start leaving the park: the lines for all the rides are thousands-long. What you failed to think about is the fact that people care how long it takes them before they are able to get on a ride.
 
@@ -115,7 +115,7 @@ Let me explicitly draw parallels between this and database queries. In this case
 #### What are you supposed to do?
 OK, you learned your lesson. You now know that visitors will be angry if it takes more than, say, 60 minutes before they can get on their first ride. But now what?
 
-Well, unfortunately, what it means is that at your current capacity you simply cannot let more than, a few thousand visitors into your park at any time. The rest either have to wait in queue outside the park, or you need to turn them away.
+Well, unfortunately, what it means is that at your current capacity you simply cannot let more than, say, a few thousand visitors into your park at any time. The rest either have to wait in queue outside the park, or you need to turn them away.
 
 If you have _demand_ for 100,000 visitors in a day, you should be able to find the capital resources to scale your park to meet that demand while trying to guarantee 60-minute waiting time. Until then, though, the only thing you can do is set expectations: you must ask people to wait outside your park, turn them away, or don’t invite so many in the first place.
 
