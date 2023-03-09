@@ -81,12 +81,12 @@ Threads fairness:
     execution time (avg/stddev):   10.0041/0.00
 ```
 
-With 2 threads, we reached 2,703 qps with a p95 duration of 24ms.
-4 threads – 4,847 qps  – p95 duration 30ms.
-8 threads – 8,201 qps  – p95 duration 36ms.
-16 threads – 10,875 qps  – p95 duration 61ms.
-32 threads – 11,612 qps  – p95 duration 132ms.
-64 threads – 8,951 qps  – p95 duration 370ms.
+* With 2 threads, we reached 2,703 qps with a p95 duration of 24ms.
+* 4 threads – 4,847 qps  – p95 duration 30ms.
+* 8 threads – 8,201 qps  – p95 duration 36ms.
+* 16 threads – 10,875 qps  – p95 duration 61ms.
+* 32 threads – 11,612 qps  – p95 duration 132ms.
+* 64 threads – 8,951 qps  – p95 duration 370ms.
 
 After 8 threads the throughput started plateauing, and after 32 it actually dropped due to resource contention.
 
