@@ -17,6 +17,7 @@ title: Dmitry Mazin
 email: dm@archvile.net
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
+analytics: true
 
 # Build settings
 markdown: kramdown
