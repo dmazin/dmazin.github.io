@@ -19,12 +19,12 @@ I didn’t write this down, but yesterday I noticed that the disk was 100% utili
 ### An experiment involving dead uncles and elevators
 I do have a theory! Despite the disk being 100% utilized, it doesn’t mean it was at 100% capacity. How can that be? Let me illustrate using an elevator.
 
-Say that your rich uncle died, and you have inherited his elevator. I don’t know! And, I guess, now you are going to run experiments on this elevator. Say that the elevator has a capacity of 10 people. Your friends are extremely enthusiastic people, and you convince them to try an experiment. You are all on the bottom floor, and you send 1 friend up. It takes 30 seconds. The friend gets off on the top floor. The elevator comes back down, which takes 30 seconds. and immediately you send another 1 friend up. You repeat. The elevator is at 100% utilization: it is always busy. The throughput is 1 friend per minute. Now, instead of sending 1 friend at a time, you send 10. Now, your utilization is still 100%, but your throughput has increased to 10 friends per minute.
+Say that your rich uncle died, and you have inherited his elevator. I don’t know! And, I guess, now you are going to run experiments on this elevator. Say that the elevator has a capacity of 10 people. Your friends are extremely enthusiastic people, and you convince them to try an experiment. You are all on the bottom floor, and you send 1 friend up. It takes 30 seconds. The friend gets off on the top floor. The elevator comes back down, which takes 30 seconds, and immediately you send another 1 friend up. You repeat. The elevator is at 100% utilization: it is always busy. The throughput is 1 friend per minute. Now, instead of sending 1 friend at a time, you send 10. Now, your utilization is still 100%, but your throughput has increased to 10 friends per minute.
 
 I don’t know if this is handled in the OS or in the disk itself, but I am sure there is something similar happening for writes.
 
 ### How can I verify this theory?
-I can use `iostat` to monitor the disk. (What is iostat? It’s a monitoring utility for disks). What I will look for is the utilization %, the throughput (MB per second) [this will be indicated by the `wkB/s` field], and the request size (this will correspond to how many friends we are putting in the elevator at the same time) [this will be the `wareq-sz` field].
+I can use `iostat` to monitor the disk. (What is iostat? It’s a monitoring utility for IO, like disks). What I will look for is the utilization %, the throughput (MB per second) [this will be indicated by the `wkB/s` field], and the request size (this will correspond to how many friends we are putting in the elevator at the same time) [this will be the `wareq-sz` field].
 
 I expect the utilization to remain at 100%, but the throughput will increase, which will happen thanks to us stuffing more friends in the elevator (`wareq-sz` will go up).
 
@@ -54,7 +54,7 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
 
 Now, let’s run 16 threads: `docker compose run sysbench --threads=1 oltp_read_write run`.
 
-Aha! The `%util` is  still100%, but we are now writing 59 MB per second, and the `wareq-sz` is 25.4 KB.
+Aha! The `%util` is  still 100%, but we are now writing 59 MB per second, and the `wareq-sz` is 25.4 KB.
 ```
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
           18.5%    0.0%   10.7%    8.9%    0.0%   62.0%
@@ -71,6 +71,8 @@ avg-cpu:  %user   %nice %system %iowait  %steal   %idle
      f/s f_await  aqu-sz  %util Device
   631.00    1.23    1.85 100.0% sda
 ``` 
+
+This means that, as expected, we are able to increase the disk throughput even though the utilization was already 100%.
 
 ### What is the maximum write speed of my disk?
 Even if I increase the number of sysbench threads (so that I can send more queries per second to MySQL), the disk write speed doesn’t go above 60 MB per second. This is probably the disk’s maximum write speed. However, I’d like to confirm this. The reason is that `oltp_read_write` is not a pure test of disk write speed. For example, as I increase the number of sysbench threads, MySQL has to spend more resources juggling the connections, which could prevent it from fully utilizing the disk.
@@ -226,7 +228,7 @@ I can “upload” the file into the container, without modifying the Dockerfile
       - /home/dmitry/dev/labs/sysbench-mysql-basic/scripts:/scripts
 ```
 
-And then I can execute the script inside the container: `docker compose run sysbench scripts/run_test.sh fileio --file-test-mode=seqwr`.
+And then I can execute the prepare/run steps inside a single container: `docker compose run sysbench scripts/run_test.sh fileio --file-test-mode=seqwr`.
 
 So… does it work? Yes!
 
@@ -256,7 +258,7 @@ Threads fairness:
     execution time (avg/stddev):   9.9938/0.00
 ```
 
-Huh. It’s only doing ~6 MB_s. Although, strangely the disk write throughput from iostat is extremely different: ~50 MB_s.
+Huh. It’s only doing ~6 MB/s. Very slow. Although, strangely the disk write throughput from iostat is extremely different: ~50 MB_s.
 
 ```
 avg-cpu:  %user   %nice %system %iowait  %steal   %idle
@@ -279,9 +281,11 @@ Let me see if there’s a similar discrepancy between iostat’s throughput and 
 
 Running `docker compose run sysbench scripts/run_test.sh fileio --file-test-mode=seqwr --threads=1`.
 
-Sysbench’s throughput: 178 MB/s. Iostat’s: 200 MB’s. I mean, this is pretty close. This is not nearly as much of a discrepancy as iostat’s. Let me double-check iostat’s output against another monitoring utility (atop). No, atop agrees with iostat!
+Sysbench’s throughput is 178 MB/s like before. Iostat’s: 200 MB’s. I mean, this is pretty close. This is not nearly as much of a discrepancy as iostat’s. Let me double-check iostat’s output against another monitoring utility (atop). No, atop agrees with iostat!
 
 Something mysterious is going on. I’ll dive into this on Monday. Have a good weekend!
+
+Meanwhile, we can safely say that 60 MB/s is not the disk's maximum write speed. It is more like 200 MB/s.
 
 If you read this far, maybe you’ll want to hear from me again.
 * Sign up to an [RSS feed of my posts on this site](https://archvile.net/feed.xml).
