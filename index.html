@@ -3,24 +3,15 @@ layout: none
 ---
 
 <head>
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=UA-111078066-1"
-  ></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-
-    gtag("config", "UA-111078066-1");
-  </script>
-
   <meta name="viewport" content="width=device-width" />
   <meta name="poo" content="dumb" />
   <link rel="stylesheet" href="/assets/index.css" />
+
+  <!-- TODO if you figure out how to edit the workflow and set JEKYLL_ENV, you can use this conditional -->
+  <!--  if jekyll.environment == 'production' and site.analytics  -->
+  {% if site.analytics %}
+  {% include analytics.html %}
+  {% endif %}
 </head>
 
 <body>
