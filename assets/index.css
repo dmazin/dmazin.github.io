@@ -1,8 +1,30 @@
-body { margin: 0; padding: 5px; font-size: 24px; text-align: center; font-family: sans-serif; }
-ul { margin: 0; padding: 0; list-style: none; }
+body {
+  margin: 0;
+  padding: 5px;
+  font-size: 24px;
+  text-align: center;
+  font-family: serif;
+  background-color: #131316;
+  color: #f0eff7;
+  /* font-family: Monaco, Menlo, monospace; */
+}
+body .cyberdemon-h4 {
+  height: 2em;
+  width: 2em;
+}
+body div.main-heading * {
+  display: inline;
+}
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .index-illustration {
   max-width: 664px;
 }
 @media screen and (max-width: 664px) {
-  .index-illustration { max-width: 100%; }
+  .index-illustration {
+    max-width: 100%;
+  }
 }
