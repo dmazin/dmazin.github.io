@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "A crash course in black-box monitoring"
-byline: By <a href="http://archvile.net/">Dmitry Mazin</a>.
+byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-02-04
 ---
 ### Note
@@ -127,7 +127,7 @@ Availability and duration are so important that both customers and people inside
 There are many intricacies to all of this – including how to actually implement it – but I hope this has been a worthy introduction.
 
 If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](https://archvile.net/feed.xml).
+* Sign up to an [RSS feed of my posts on this site](https://cyberdemon.org/feed.xml).
 * [Follow me on Mastodon](https://file-explorers.club/@dmitry).
 * Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
 

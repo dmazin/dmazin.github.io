@@ -1,15 +1,12 @@
 ---
 layout: post
 title: "Lab Notes: 10 Mar 2023: Something weird is happening with sysbench"
-byline: By <a href="http://archvile.net/">Dmitry Mazin</a>.
+byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-10
 tags: labs
 ---
 ## Hello
 Hello. It is 2 PM. This morning, I took Eamon to see my cousin Sasha. We got some coffee, and Eamon was very cute, asking the bartenders their names and thanking them.
-
-## Where am I?
-Now, I am sat in a strange environment: a free co-working space that my friend Dmitri invited me to. In theory, I find such environments hostile, because it’s full of people who call themselves “founders” and ask you if you are a “founder” too. We’re all founders here, right? Just a bunch of founders. But it’s been a long time since I was deeply embedded in the Silicon Valley-style tech scene, and, being far removed from it now, I find it pleasant to visit it in small doses.
 
 ## What am I doing?
 Yesterday, I ran initial sysbench MySQL benchmarks and found that my Intel Mac can handle about 10,000 queries per second without ruining the query duration (keeping it around ~60ms). I reached 10k qps by twiddling with how many threads sysbench used: 16 sysbench threads took me to 10k qps.
@@ -291,5 +288,6 @@ If you read this far, maybe you’ll want to hear from me again.
 * Sign up to an [RSS feed of my posts on this site](https://archvile.net/feed.xml).
 * [Follow me on Mastodon](https://file-explorers.club/@dmitry).
 * Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
-
+cyberdemon.org
 If you'd like to discuss this post, please do reach out! My email is [dm@archvile.net]().
+cyberdemon.org

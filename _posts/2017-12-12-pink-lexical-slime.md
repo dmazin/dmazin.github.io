@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Pink Lexical Slime: The Dark Side of Autocorrect"
-byline: By <a href="http://archvile.net/">Dmitry Mazin</a>. Illustrations by <a href="https://www.instagram.com/sean_muscles/">Sean McOmber</a>.
+byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>. Illustrations by <a href="https://www.instagram.com/sean_muscles/">Sean McOmber</a>.
 date: 2017-12-12
 ---
 This post originally appeared on [Mondo 2000](http://www.mondo2000.com/2018/01/17/pink-lexical-goop-dark-side-autocorrect/).
