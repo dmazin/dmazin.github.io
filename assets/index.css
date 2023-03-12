@@ -3,7 +3,7 @@ body {
   padding: 5px;
   font-size: 24px;
   text-align: center;
-  font-family: serif;
+  font-family: "New York", "Times New Roman", serif;
   background-color: #131316;
   color: #f0eff7;
   /* font-family: Monaco, Menlo, monospace; */
@@ -27,4 +27,13 @@ ul {
   .index-illustration {
     max-width: 100%;
   }
+}
+a {
+  color: #6969d3;
+}
+a:visited {
+  color: #414193;
+}
+a:hover {
+  color: #8a8ad1;
 }
