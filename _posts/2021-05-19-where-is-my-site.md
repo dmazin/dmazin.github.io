@@ -95,7 +95,7 @@ Mystery solved!
 I’ll leave the poo meta tag as a present for the future.
 
 If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](https://cyberdemon.org/feed.xml).
+* Sign up to an [RSS feed of my posts on this site](/feed.xml).
 * [Follow me on Mastodon](https://file-explorers.club/@dmitry).
 * Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
 

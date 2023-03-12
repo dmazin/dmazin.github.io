@@ -139,7 +139,7 @@ This basically ended up becoming a draft for the throughput vs duration article 
 One thing I did not write about is that I actually used atop (which is like top on steroids, much more-so than htop, and it allows for historical analysis) to monitor resource usage during my benchmarks. What I found was that the CPUs were largely unstressed, but the disk write got maxed out at 30 MB/s even for the 1-thread benchmark, while the disk was not read at all (which makes sense given that the entire database fits in memory). Tomorrow, I might explore how I could also exercise the disk for reads or, see how much of the query duration is accounted for by internal queues for the disk. OR, I am also thinking about starting to play with Kafka. I want to continue exploring duration vs throughput, and Kafka is the perfect service for that.
 
 If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](https://cyberdemon.org/feed.xml).
+* Sign up to an [RSS feed of my posts on this site](/feed.xml).
 * [Follow me on Mastodon](https://file-explorers.club/@dmitry).
 * Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
 
