@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Lab Notes: 10 Mar 2023: Something weird is happening with sysbench"
-byline: By <a href="http://archvile.net/">Dmitry Mazin</a>.
+byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-10
 tags: labs
 ---
@@ -288,5 +288,6 @@ If you read this far, maybe you’ll want to hear from me again.
 * Sign up to an [RSS feed of my posts on this site](https://archvile.net/feed.xml).
 * [Follow me on Mastodon](https://file-explorers.club/@dmitry).
 * Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
-
+cyberdemon.org
 If you'd like to discuss this post, please do reach out! My email is [dm@archvile.net]().
+cyberdemon.org

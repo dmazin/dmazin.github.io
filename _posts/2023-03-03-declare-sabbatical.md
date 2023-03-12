@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "I hereby declare a sabbatical"
-byline: By <a href="http://archvile.net/">Dmitry Mazin</a>.
+byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-03
 ---
 In November 2022 I quit my job (I ran the infrastructure team at Rollbar) and moved from New Jersey to London with my wife and 2-year-old. After running around the city a bunch and getting settled, I started preparing for job interviews.
@@ -38,8 +38,8 @@ One more thing, and a very important thing. Now that I’m studying for my own p
 Anyway, maybe no one will give a shit about this, I mean, look at this guy, congratulations, you have the privilege to not work for 6 months. Indeed, maybe this is boring. But note that I didn’t just talk about myself in this post. I voiced a strong opinion about all of us: I believe that people waste the opportunity to learn between jobs. Instead of building on what we learned in the job we just left, we hyper-optimize for job interviews, especially for LeetCode questions. I could have written a think piece about this opinion, but I find it easiest to write in the context of my own experience.
 
 If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](https://archvile.net/feed.xml).
+* Sign up to an [RSS feed of my posts on this site](https://cyberdemon.org/feed.xml).
 * [Follow me on Mastodon](https://file-explorers.club/@dmitry).
 * Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
 
-If you'd like to discuss this post, please do reach out! My email is [dm@archvile.net]().
+If you'd like to discuss this post, please do reach out! My email is [dm@cyberdemon.org]().
