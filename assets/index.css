@@ -12,6 +12,12 @@ body .cyberdemon-h4 {
   height: 2em;
   width: 2em;
 }
+h4.slogan {
+  margin-top: 0.5em;
+  margin-bottom: -0.5em;
+  font-size: 1em;
+  font-weight: normal;
+}
 body div.main-heading * {
   display: inline;
 }
@@ -36,4 +42,7 @@ a:visited {
 }
 a:hover {
   color: #8a8ad1;
+}
+.content {
+  margin: 0.5em;
 }
