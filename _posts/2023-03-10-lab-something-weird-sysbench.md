@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Lab Notes: 10 Mar 2023: Something weird is happening with sysbench"
+title: "Lab Notes: Something weird is happening with sysbench"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-10
 tags: labs

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Lab Notes: Throughput vs Duration (9 Mar 2023)"
+title: "Lab Notes: Throughput vs Duration"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-09
 tags: labs
