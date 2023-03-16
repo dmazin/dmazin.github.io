@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Archvile
-email: dm@archvile.net
+email: dm@cyberdemon.org
 analytics: true
 
 # Build settings
