@@ -5,9 +5,9 @@ byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-20
 tags: labs
 ---
-Hello. I am sat at a cafe in Kentish Town. Today I needed to return some packages at an Evri, up on Brecknock Road. I hate walking all the way up to it, so I rented a Lime bike. Thought I was going to die the whole time; this shit weighs 70+ lbs; 10/10.
+Hello. I am sat at a cafe in Kentish Town. Today I needed to return some packages at an Evri, up on Brecknock Road. I hate walking all the way up to it, so I rented a Lime bike. Thought I was going to die the whole time; this bike weighs 70+ lbs; 10/10.
 
-One of the things that has arrived is my copy of Kerrisk’s Linux Programming Interface. I’ve had the PDF all along, but listing through it physically made me notice that it discusses file I/O extensively. I’m reading through it now.
+Recently all my crap arrived from the States. One of the things that has arrived is my copy of Kerrisk’s Linux Programming Interface. I’ve had the PDF all along, but listing through it physically made me notice that it discusses file I/O extensively. I'm reading through it now.
 
 First, Kerrisk gives a good way to think of file I/O syscalls like `write`: don’t think of them as writing to disk; think of them as transferring data from your program’s buffer to the kernel buffer.
 
@@ -19,7 +19,6 @@ $ cat /proc/sys/vm/dirty_expire_centisecs
 
 If we track what actually gets written to disk using the disk stats revealed through `/sys/dev`, we can see this happening.
 
-In this experiment, 
 ```bash
 # call disk_stat_diff at the beginning to checkpoint the current state of the disk
 python3 disk_stat_diff.py sda5 &> /dev/null
