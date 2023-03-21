@@ -3,7 +3,6 @@ layout: post
 title: "A crash course in black-box monitoring"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-02-04
-tags: featured
 ---
 ### Note
 This is an alpha-release article: a good strategy for anything you make is to release it so early that it embarrasses you, and then iterate. I'm applying the same idea to what I write. If nothing else, currently this article is too long.

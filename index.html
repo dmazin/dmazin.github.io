@@ -37,7 +37,7 @@ layout: none
     I'm taking a sabbatical, i.e. I don't have a job so I'm playing around with computers and writing this blog. <a href="/2023/03/03/declare-sabbatical.html">This blog post explains a lot more about my sabbatical.</a>
     </p>
     <div style="margin-top: 5px">
-      Here are my posts most worthy of your time.
+      Here are my most interesting posts.
       <ul>
         {% assign featured_posts = site.posts | where_exp:"post","post.tags contains 'featured'"  %}
         {% for post in featured_posts %}
@@ -48,7 +48,7 @@ layout: none
         {% endfor %}
       </ul>
       <br />
-      And here are <i>all</i> my posts.
+      And here are all my other posts.
       <ul>
         {% for post in site.posts %}
         <li>
