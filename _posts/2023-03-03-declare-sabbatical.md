@@ -3,6 +3,7 @@ layout: post
 title: "I hereby declare a sabbatical"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-03
+tags: featured
 ---
 In November 2022 I quit my job (I ran the infrastructure team at Rollbar) and moved from New Jersey to London with my wife and 2-year-old. After running around the city a bunch and getting settled, I started preparing for job interviews.
 
