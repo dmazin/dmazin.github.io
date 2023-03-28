@@ -37,10 +37,3 @@ Here are some of the things I’m interested in, and will be writing about.
 One more thing, and a very important thing. Now that I’m studying for my own pleasure rather than job interviews, I can take it easier. And, so, for the first half of the day I’ve been watching my kid, and I’ll continue this. I mean, I’m present more than your average dad (it’s a super low bar), but the brightest thing about all of this is the chance to spend a lot more time with him.
 
 Anyway, maybe no one will give a shit about this, I mean, look at this guy, congratulations, you have the privilege to not work for 6 months. Indeed, maybe this is boring. But note that I didn’t just talk about myself in this post. I voiced a strong opinion about all of us: I believe that people waste the opportunity to learn between jobs. Instead of building on what we learned in the job we just left, we hyper-optimize for job interviews, especially for LeetCode questions. I could have written a think piece about this opinion, but I find it easiest to write in the context of my own experience.
-
-If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](/feed.xml).
-* [Follow me on Mastodon](https://file-explorers.club/@dmitry).
-* Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
-
-If you'd like to discuss this post, please do reach out! My email is [dm@cyberdemon.org](mailto:dm@cyberdemon.org).

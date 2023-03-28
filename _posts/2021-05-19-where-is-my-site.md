@@ -93,10 +93,3 @@ Now, where do I manage the DNS settings for archvile.net? I actually remember th
 Mystery solved!
 
 I’ll leave the poo meta tag as a present for the future.
-
-If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](/feed.xml).
-* [Follow me on Mastodon](https://file-explorers.club/@dmitry).
-* Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
-
-If you'd like to discuss this post, please do reach out! My email is [dm@cyberdemon.org](mailto:dm@cyberdemon.org).

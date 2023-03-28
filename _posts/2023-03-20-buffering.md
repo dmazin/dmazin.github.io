@@ -90,10 +90,3 @@ written after 10s:
 Why are we writing 20480 and 16384 bytes later? I think that’s metadata updates, and figuring that out is most definitely the top thing on my mind since I noticed this last week.
 
 Also, if you’re wondering why we wrote 2048 bytes to disk when we asked `dd` to write only 512, that’s because the record size of my file system is 2048 bytes – see my previous posts to understand the meaning of this.
-
-If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](/feed.xml).
-* [Follow me on Mastodon](https://file-explorers.club/@dmitry).
-* Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
-
-If you'd like to discuss this post, please do reach out! My email is [dm@cyberdemon.org](mailto:dm@cyberdemon.org).

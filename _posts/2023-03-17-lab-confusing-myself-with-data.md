@@ -85,10 +85,3 @@ Note that 20480 - 18432 = 2048.
 It’s clear that removing `/data/foo` first has some sort of effect.
 
 Anyway, I didn’t have much time today, but I wanted to collect some numbers, mostly just to confuse myself, because I am definitely more more confused. That's OK, though! We just filled our house with 80 boxes of shit we brought from the States. First, everything will be a mess. But hopefully we'll come out better off. Same thing with my file writing adventure.
-
-If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](/feed.xml).
-* [Follow me on Mastodon](https://file-explorers.club/@dmitry).
-* Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
-
-If you'd like to discuss this post, please do reach out! My email is [dm@cyberdemon.org](mailto:dm@cyberdemon.org).

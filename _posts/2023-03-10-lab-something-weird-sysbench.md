@@ -283,11 +283,3 @@ Sysbench’s throughput is 178 MB/s like before. Iostat’s: 200 MB’s. I mean,
 Something mysterious is going on. I’ll dive into this on Monday. Have a good weekend!
 
 Meanwhile, we can safely say that 60 MB/s is not the disk's maximum write speed. It is more like 200 MB/s.
-
-If you read this far, maybe you’ll want to hear from me again.
-* Sign up to an [RSS feed of my posts on this site](/feed.xml).
-* [Follow me on Mastodon](https://file-explorers.club/@dmitry).
-* Sign up to [get my posts via email](https://docs.google.com/forms/d/e/1FAIpQLSePJIQBenOoP1GGe26exOhgPCKdqgY4j36D_WAvhTzudcioWA/viewform?usp=sf_link).
-cyberdemon.org
-If you'd like to discuss this post, please do reach out! My email is [dm@cyberdemon.org](mailto:dm@cyberdemon.org).
-cyberdemon.org
