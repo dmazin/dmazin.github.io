@@ -127,7 +127,7 @@ You can get it from PyPi: `pip install git-lazy-commit`. You’ll need an [OpenA
 And here's the [source repo](https://github.com/dmazin/git-lazy-commit). Feel free to open issues and make pull requests! One of the funny things about ChatGPT is that additions and modifications are not daunting given that ChatGPT is so good at generating code.
 
 ## Caveats
-It works surprisingly well. Sometimes, I have to ask it a couple times before it describes my changes well. Of course, I doubt this will work super well for giant diffs. Interestingly, I am finding myself committing more often so that it’s easier for `git-lazy-commit` to generate its changes. This is a positive change: I think breaking work into multiple commits makes tracking your work easier. We just don’t do it because writing commit messages is a bit of a pain!
+git-lazy-commit works much better with small diffs. I am finding myself committing more often for this reason. This is a positive change: breaking work into multiple commits makes tracking your work easier. We just don’t do it because writing commit messages is a bit of a pain!
 
 One thing you may notice between my commit messages and ChatGPT’s is that I explain the why while ChatGPT doesn’t. This is important. I think the output is great for quick, lazy commits in personal projects, but for collaborative projects you should add the *why* as well. This is why `git-lazy-commit` augments, rather than replaces you: use it come up with an initial message, and then add the why. (This is honestly something we aren't great at in general. Our comments, commit messages, and PR descriptions need a lot more "why".)
 
