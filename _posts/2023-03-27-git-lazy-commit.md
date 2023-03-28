@@ -2,7 +2,7 @@
 layout: post
 title: "Using ChatGPT to generate git commit messages"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
-date: 2023-03-27
+date: 2023-03-28
 tags: ai, featured
 ---
 More than 5 years ago, in [Pink Lexical Slime](/2017/12/12/pink-lexical-slime.html), I warned that choosing an AI’s suggestion over coming up with your own idea was tantamount to voting yourself out of existence.
