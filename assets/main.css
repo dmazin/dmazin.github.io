@@ -177,9 +177,8 @@ blockquote > :last-child {
 pre,
 code {
   font-size: 15px;
-  border: 1px solid #e8e8e8;
   border-radius: 3px;
-  background-color: #eef;
+  background-color: #1b1818;
 }
 
 code {
@@ -483,12 +482,6 @@ font-size: 1em/1.6em;
 /**
  * Syntax highlighting styles
  */
-.highlight {
-  background: #fff;
-}
-.highlighter-rouge .highlight {
-  background: #eef;
-}
 .highlight .c {
   color: #998;
   font-style: italic;
@@ -680,4 +673,21 @@ font-size: 1em/1.6em;
 }
 .highlight .il {
   color: #099;
+}
+
+body .cyberdemon-h4 {
+  height: 2em;
+  width: 2em;
+}
+h4.slogan {
+  margin-top: 0.5em;
+  margin-bottom: -0.5em;
+  font-size: 1em;
+  font-weight: normal;
+}
+body div.main-heading * {
+  display: inline;
+}
+div.main-heading h1 {
+  vertical-align: bottom;
 }
