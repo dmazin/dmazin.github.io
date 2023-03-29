@@ -32,8 +32,8 @@ body {
  */
 body {
   font: 400 20px/1.6em "Palatino", serif;
-  color: #111;
-  background-color: #fdfdfd;
+  background-color: #131316;
+  color: #f0eff7;
   -webkit-text-size-adjust: 100%;
   -webkit-font-feature-settings: "kern" 1;
   -moz-font-feature-settings: "kern" 1;
@@ -139,14 +139,14 @@ h6 {
  * Links
  */
 a {
-  color: #2a7ae2;
+  color: #6969d3;
   text-decoration: none;
 }
 a:visited {
-  color: #1756a9;
+  color: #414193;
 }
 a:hover {
-  color: #111;
+  color: #8a8ad1;
   text-decoration: underline;
 }
 .social-media-list a:hover {
