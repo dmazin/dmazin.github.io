@@ -29,7 +29,7 @@ There are many tasks, even complex ones, where I am fine with the fact that AI c
 
 But, recently, I found the line. I used ChatGPT to write a script that generates data for an upcoming article. (Specifically, I used it to model the query durations against an imaginary service, and calculate some statistics about them.) The data the script generated looked right, so I felt a draw to move on. Here, I realized that I was being pulled toward a previously unknown line, a boundary I knew I must resist. By not delving deeper into the modeling of query durations, I was passing up the opportunity to learn about something I found genuinely interesting.
 
-Finding that line did not, at all, mean ending my relationship with ChatGPT. ChatGPT generated the code I wanted to understand in the first place, and I continued to engage with that code. I used ChatGPT to explain the code (it’s infinitely patient, at least until you hit the token limit). I asked ChatGPT follow-on questions and about alternate solutions. I even used it to help generate some Anki cards (though manually creating cards is part of the memorization process for me).
+Finding that line did not, at all, mean ending my relationship with ChatGPT. ChatGPT generated the code I wanted to understand in the first place, and I continued to engage with that code. I used ChatGPT to explain the code (it’s infinitely patient, at least until you hit the token limit). I asked ChatGPT follow-on questions and about alternate solutions. This is, by the way, how Simon engages with ChatGPT: to generate code, yes, but also to learn.
 
 What I’ve realized is that there _are_ tasks I’m willing to let AI handle, as this enables me to take on more ambitious projects. But there is, very much, a line.
 
