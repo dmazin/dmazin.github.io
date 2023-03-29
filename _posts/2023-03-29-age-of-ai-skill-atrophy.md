@@ -6,9 +6,7 @@ date: 2023-03-29
 tags: ai, featured
 ---
 
-I grew up in Los Angeles. I have driven hundreds of thousands of miles. Yet, I astonish my friends with my lack of road knowledge.
-
-The reason is simple. I rely entirely on Google Maps, turning off my brain and following directions. My skills as a road navigator have atrophied.
+I grew up in Los Angeles. I have driven hundreds of thousands of miles. Yet, I astonish my friends with my lack of road knowledge. The reason is simple: I rely entirely on Google Maps, turning off my brain and following directions. My skills as a road navigator have atrophied.
 
 While Google Maps isn’t new, and the dilemma of letting a mental muscle atrophy due to technological innovations—such as handwriting skills declining due to typing—is nothing new either. What _is_ new is the increasing accessibility and skillfulness of AI.
 
