@@ -21,9 +21,9 @@ This development has led to a mix of worries and excitement about AI’s potenti
 
 As a personal example, I am able to add visual explanations and other front-end tricks to my articles that I previously would not have bothered with. I am also writing utilities ([git-lazy-commit](/2023/03/28/git-lazy-commit.html) and [disk-stat-diff](https://github.com/dmazin/disk-stat-diff)) that I would previously have found too difficult or tedious to write.
 
-However, each of us must walk a fine line: what are you willing to cede to AI?
-
 There are many tasks, even complex ones, where I am fine with the fact that AI can do it while I cannot. I used ChatGPT to write a [tedious function](https://github.com/dmazin/disk-stat-diff/blob/main/disk_stat_diff#LL13C8-L13C8) for command-line output, and remain happily ignorant of the specifics. I'm also happy to let AI take over tasks I don't currently find interesting, like generating HTML.
+
+However, each of us must walk a fine line: what are you willing to cede to AI?
 
 Recently, I found that line. I used ChatGPT to write a script that generates data for an upcoming article. (Specifically, I used it to model the query durations against an imaginary service, and calculate some statistics about them.) The data the script generated looked right, so I felt a draw to move on. Here, I realized that I was being pulled toward a previously unknown line, a boundary I knew I must resist. By not delving deeper into the modeling of query durations, I was passing up the opportunity to learn about something I found genuinely interesting.
 
