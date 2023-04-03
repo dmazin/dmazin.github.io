@@ -21,7 +21,7 @@ The transparency issue is not limited to OpenAI – and we should demand it from
 
 By the way, for a cogent argument why OpenAI is now a consumer technology company, see [Ben Thompson's “The Accidental Consumer Tech Company”](https://stratechery.com/2023/the-accidental-consumer-tech-company-chatgpt-meta-and-product-market-fit-aggregation-and-apis/).
 
-The reasons OpenAI gives for its lack of transparency are two-fold: business and safety.
+The reasons OpenAI gives for its lack of transparency are two-fold: business and safety. Note that I pulled OpenAI's arguments mostly from a [recent Verge interview with their chief scientist, Ilya Sutskever](https://www.theverge.com/2023/3/15/23640180/openai-gpt-4-launch-closed-research-ilya-sutskever-interview).
 
 ## Public Welfare Must Take Precedence Over OpenAI's Business
 Let's start with the reason of business. Getting to where OpenAI is today took billions of dollars, talent, and work. Understandably, OpenAI wants to recoup its investment. At the end of the day, though, public welfare should take precedence over OpenAI's liabilities. If necessary, the public should pay to spin out, and continue to fund, OpenAI's research division. This would hamper the now-thriving consumer business (precluding them from first access to future models), but tying the research division to the consumer business is untenable if it means lack of transparency.
