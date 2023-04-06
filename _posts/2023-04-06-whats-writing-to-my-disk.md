@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "What's writing to my brand-new disk?"
+title: "What's Writing to My Brand-new Disk?"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-04-06
 tags: featured

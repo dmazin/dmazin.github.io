@@ -139,11 +139,11 @@ h6 {
  * Links
  */
 a {
-  color: #6969d3;
+  color: #afafe8;
   text-decoration: none;
 }
 a:visited {
-  color: #414193;
+  color: #7979c0;
 }
 a:hover {
   color: #8a8ad1;
@@ -164,7 +164,6 @@ blockquote {
   border-left: 4px solid #e8e8e8;
   padding-left: 15px;
   font-size: 18px;
-  letter-spacing: -1px;
   font-style: italic;
 }
 blockquote > :last-child {

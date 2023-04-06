@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Using ChatGPT to generate git commit messages"
+title: "Using ChatGPT to Generate Git Commit Messages"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-28
 tags: ai, featured

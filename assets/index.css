@@ -26,6 +26,9 @@ ul {
   padding: 0;
   list-style: none;
 }
+ul.featured-posts li {
+  margin-top: 0.2em;
+}
 .index-illustration {
   max-width: 664px;
 }
@@ -35,10 +38,11 @@ ul {
   }
 }
 a {
-  color: #6969d3;
+  color: #afafe8;
+  text-decoration: none;
 }
 a:visited {
-  color: #414193;
+  color: #7979c0;
 }
 a:hover {
   color: #8a8ad1;

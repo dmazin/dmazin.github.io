@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "I hereby declare a sabbatical"
+title: "I Hereby Declare a Sabbatical"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-03-03
 tags: featured
