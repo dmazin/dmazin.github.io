@@ -6,6 +6,8 @@ date: 2023-06-14
 tags: ai, featured
 description: Interpreting Reddit's API changes in light of how it serves OpenAI.
 ---
+*Edit: This blew up on [Hacker News](https://news.ycombinator.com/item?id=36325958). An HN mod edited the title to add a ? at the end. It was not me. The answer to any headline with a ? at the end is “no.” This is obviously an opinion piece, so there is no need for the ?. Whoever at HN edited it — that's cowardly and lazy. Feel free to argue against the piece on its merits. (Obviously, I don't need to write an article about Hacker News' affiliations.)*
+
 Much has been written about the Reddit boycott recently, but I have kind of a wild take. A lot of the analyses have examined the issue as if Reddit is an independent company preparing for an IPO. That is, they have examined Reddit's attempts to capture its value as a training corpus or its attempts to show its users more ads. But what if we thought of Reddit as, functionally, subservient to OpenAI?
 
 Now, hear me out. Organizations/people with an interest in OpenAI – like Sam Altman and a16z – have a significant stake in Reddit, and strong ties to the board. Altman himself was on the board until 2022, [participated in the 2014 YC takeover of Reddit](https://blog.samaltman.com/a-new-team-at-reddit), and thus likely has strong influence over the company.
@@ -23,6 +25,8 @@ One way that Altman is aiming to cover OpenAI from threat of open-source models 
 Similarly, while access to compute is not a moat for developing LLMs, access to high quality data is. And that is where Reddit enters the picture.
 
 There is no question that Reddit is extremely valuable as training data. How often do you append “reddit” to your searches?
+
+*Edit: I mention this later, but I want to make it abundantly clear that Reddit's **future** data is what OpenAI is most concerned about protecting. Existing data has already been scraped.*
 
 It's no secret that [Reddit’s API changes are being driven significantly by the desire to capture the value of its corpus](https://www.theverge.com/2023/4/18/23688463/reddit-developer-api-terms-change-monetization-ai). I think the missing piece, though, is that it doesn’t matter if anyone buys the data or not. The important piece is that it's easiest for OpenAI to get the data (given that companies with co-investors help each other), somewhat harder for Google, and extremely hard for upstarts.
 
