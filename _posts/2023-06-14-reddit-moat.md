@@ -6,7 +6,7 @@ date: 2023-06-14
 tags: ai, featured
 description: Interpreting Reddit's API changes in light of how it serves OpenAI.
 ---
-*Edit: This blew up on [Hacker News](https://news.ycombinator.com/item?id=36325958). An HN mod edited the title to add a ? at the end. It was not me. The answer to any headline with a ? at the end is “no.” I would not own myself like that. Whoever at HN edited it — that's cowardly and lazy. Feel free to argue against the piece on its merits. (Obviously, I don't need to write an article about Hacker News' affiliations.) Edit: another HN mod [shat all over the article](https://news.ycombinator.com/item?id=36328562) and retitled it again. Again, that was not me.*
+*Edit: This blew up on [Hacker News](https://news.ycombinator.com/item?id=36325958). An HN mod edited the title to add a ? at the end. It was not me. The answer to any headline with a ? at the end is “no.” I would not own myself like that. Whoever at HN edited it — that's cowardly and lazy. Feel free to argue against the piece on its merits. (Obviously, I don't need to write an article about Hacker News' affiliations.) Edit: another HN mod [shat all over the article](https://news.ycombinator.com/item?id=36328562) and retitled it again. Again, that was not me. Edit: the HN title has been reverted to the original, which I appreciate.*
 
 Much has been written about the Reddit boycott recently, but I have kind of a wild take. A lot of the analyses have examined the issue as if Reddit is an independent company preparing for an IPO. That is, they have examined Reddit's attempts to capture its value as a training corpus or its attempts to show its users more ads. But what if we thought of Reddit as, functionally, subservient to OpenAI?
 
