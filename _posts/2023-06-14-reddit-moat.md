@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Reddit is OpenAI’s moat"
+title: "Reddit is OpenAI's Moat"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-06-14
 tags: ai, featured
