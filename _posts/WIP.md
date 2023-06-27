@@ -5,15 +5,70 @@ byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: TODO
 description: I examine a common, but wrong, mental model of file writes in Linux.
 ---
-My friends, I want to tell you a shocking thing I learned some time ago about files in Linux. I was living my little life, carrying around a mental model of how writes and read work. This mental model got me far, but it was wrong. The truth is more interesting, and you may agree.
+My friends – programmers and operators – I would like to talk to you about the way that file writes work in Linux.
 
-I used to think that files "lived" on disk. This is a fairly useful mental model, but it's wrong.
+I used to think they worked a certain way, and I think most people think the same. It turns out that they work very differently. The way they really work is interesting, and important to know.
 
-In this article, I'll explore that mental model, and then explain how writes actually work (by default). You should read this article if you want to understand how writes work in most operating systems.
+Let us begin by stating the way I used to think file writes worked.
 
-Let's now go back to the mental model and examine it in more detail.
+Files live on disk. So, if you write to a file – like, if you `echo "foo" > bar.txt` – that means you are writing to disk.
 
-## The (wrong) mental model
+<!-- TODO explain echo and > -->
+
+It turns out that most of the words in that statement are wrong! In this article, we will explore that statement in detail, and then discuss how writes *actually* work.
+
+The goal of this article is to explore the difference between a thing, and an abstract representation of that thing. It's kind of out there, but hopefully we can make sense by repeatedly circling it until we get closer to the center.
+
+So, let's start by picking that statement apart, piece-by-piece.
+
+> files live on disk
+
+This is not true. You may have heard that, in Unix, "everything is a file." Another way of saying that is "files are used as an abstraction to represent lots of things, like sockets and files on block devices."
+
+That starts to explain why it's not true that files "live" on disk. Something else lives on disk.
+
+What actually lives on disk, then? Well, bytes. These bytes have a structure, and we can refer to this structure as an *inode*. The reality is a bit more complicated, but let's start by saying that *inodes* live on disk.
+
+Let's go back to files, then. What is a file? A file is an abstract interface that lets us do stuff to the inode. You can think of file in object oriented programming terms: a file is an instance of a class, with fields and methods.
+
+Take a look at the next part of my original statement.
+
+> if you write to a file
+
+This helps explain the whole "abstract interface" thing: a file instance has a method that lets you write to it.
+
+Let's finish the statement.
+
+> that means you are writing to disk
+
+This is again not true. *You* are not writing the disk. The operating system is. The *file* is how you ask the operating system to write to disk.
+
+What is the point of this misdirection?
+
+Before we get to that, let's reflect on the fact that our mental model of how file writes on Linux is already changing. We used to think that files lived on disk, but in fact they don't. It's more accurate to say that inodes live on disk, and files are the interface that lets us interact with inodes.
+
+Now, let's try to answer the point of that misdirection.
+
+Why do computer systems use abstractions?
+
+One reason is that it allows us to define a common interface that can represent lots of different entities. For example, I mentioned above that files can represent both sockets and files on block devices. This means that a programmer can call the same methods for both sockets and block device files without having to learn a new set of methods each time.
+
+That's not the point of this article, though. The point of this article is to deeply examine this sentence I said earlier:
+
+> The *file* is how you ask the operating system to write to disk.
+
+What happens after we ask the operating system to write to disk? What exactly does the operating system do?
+
+That's what we'll focus on for the rest of the article.
+
+Let's rewind a little bit again, and think about the implication of our original mental model. A file lives on disk, so when we write to a file, we write to disk. This implies that when you write to a file, then some data gets written to disk immediately. To put it concretely: we are saying that after `echo "foo" > bar.txt` completes, that means that "foo" has been written to disk and it's safe to unplug the computer.
+
+That is not at all true. In fact, "foo" may be written to disk up to 30 seconds later, asynchronously.
+
+Initially, I found this shocking. But it actually makes sense, and has good reasons. Let's explore them.
+
+Here comes another reason why file abstraction is useful. It allows us to say, hey, operating system, write to this file. And the operating system can say "OK, sure. Done! As far as you're concerned, the write is complete." This misdirection allows the operating system to then implement the actual disk write however it sees fit.
+
 So, again, the mental model: files "live" on disk.
 
 So, if you write to a file – like, if you `echo "foo" > bar.txt` – that means you are writing to disk.
