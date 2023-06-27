@@ -3,6 +3,7 @@ layout: post
 title: "Linux writes don't work the way you think they do"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-06-27
+tags: featured
 description: I examine a common, but wrong, mental model of file writes in Linux.
 ---
 
