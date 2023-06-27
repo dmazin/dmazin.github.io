@@ -174,7 +174,3 @@ I hope I helped make your mental model of file writes more subtle. Files don't l
 There is a lot more to this subject – the difference between file IO and disk IO is even more profoundly different than I let on. For example, if you write 1 byte to a file, how much will get written to disk? Would you be surprised if I told you that that 1 byte write causes 65 THOUSAND bytes to get written to disk? If that's interesting to you, I urge you to subscribe to this blog. More stuff like this is coming.
 
 Thanks for reading.
-
-## PS: I'm looking for a Linux job
-
-I've had a happy career as a cloud-based SRE. Most recently, I ran the infrastructure team at Rollbar. But, now, I want to work more directly with Linux. I'm London-based and am interviewing for Linux engineering and/or HPC jobs. If you have any leads, reach out! I'm happy to share my CV. Thanks!
