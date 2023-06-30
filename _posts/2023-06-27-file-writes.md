@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Linux writes don't work the way you think they do"
+title: "How does Linux really handle writes?"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-06-27
 tags: featured
-description: I examine a common, but wrong, mental model of file writes in Linux.
+description: I examine how Linux handles writes.
 ---
 
 My friends – programmers and operators – I would like to talk to you about the way that file writes work in Linux.
