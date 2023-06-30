@@ -135,6 +135,11 @@ h6 {
   font-weight: 400;
 }
 
+h2 {
+  margin-top: 0.8em;
+  margin-bottom: 0.3em;
+}
+
 /**
  * Links
  */
