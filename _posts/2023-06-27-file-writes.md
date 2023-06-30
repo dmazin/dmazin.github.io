@@ -127,7 +127,7 @@ There are many ways to make writes durable. I'll cover two of them.
 
 There's a system call called `sync`, which you can call at any time. It says: operating system, dump everything from page cache to disk NOW! And the operating system will do it. You can even put that command into your shell right now just to try it.
 
-In programs, you will often see a series of writes interspersed with `sync` calls. Like, every `n` writes, there will be a `sync` call. This allows applications to finely tune the trade off between durability and write throughput.
+In programs, you will often see a series of writes interspersed with `sync` calls. Like, every `n` writes, there will be a `sync` call. This allows applications to finely tune the tradeoff between durability and write throughput.
 
 ### `O_SYNC` file mode
 
