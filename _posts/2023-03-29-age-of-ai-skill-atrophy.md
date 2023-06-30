@@ -6,6 +6,7 @@ date: 2023-03-29
 tags: ai, featured
 description: Exploring the balance between relying on AI assistance like ChatGPT and maintaining personal skills in a world of increasing AI capabilities.
 ---
+Feel free to check out the [Hacker News discussion](https://news.ycombinator.com/item?id=35361979).
 
 I grew up in Los Angeles. I have driven hundreds of thousands of miles. Yet, I astonish my friends with my lack of road knowledge. The reason is simple: I rely entirely on Google Maps, turning off my brain and following directions. My skills as a road navigator have atrophied.
 

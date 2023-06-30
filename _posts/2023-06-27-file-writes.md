@@ -6,6 +6,7 @@ date: 2023-06-27
 tags: featured
 description: I examine the somewhat surprising way how Linux handles writes.
 ---
+Please feel free to join the [lively discussion on Hacker News](https://news.ycombinator.com/item?id=36534512#36536526).
 
 My friends – programmers and operators – I would like to talk to you about the way that file writes work in Linux.
 

@@ -6,6 +6,8 @@ date: 2023-06-14
 tags: ai, featured
 description: Interpreting Reddit's API changes in light of how it serves OpenAI.
 ---
+Feel free to check out [the Hacker News discussion](https://news.ycombinator.com/item?id=36325958).
+
 Much has been written about the Reddit boycott recently, but I have kind of a wild take. A lot of the analyses have examined the issue as if Reddit is an independent company preparing for an IPO. That is, they have examined Reddit's attempts to capture its value as a training corpus or its attempts to show its users more ads. But what if we thought of Reddit as, functionally, subservient to OpenAI?
 
 Now, hear me out. Organizations/people with an interest in OpenAI – like Sam Altman and a16z – have a significant stake in Reddit, and strong ties to the board. Altman himself was on the board until 2022, [participated in the 2014 YC takeover of Reddit](https://blog.samaltman.com/a-new-team-at-reddit), and thus likely has strong influence over the company.
