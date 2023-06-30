@@ -4,7 +4,7 @@ title: "How does Linux really handle writes?"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-06-27
 tags: featured
-description: I examine how Linux handles writes.
+description: I examine the somewhat surprising way how Linux handles writes.
 ---
 
 My friends – programmers and operators – I would like to talk to you about the way that file writes work in Linux.
