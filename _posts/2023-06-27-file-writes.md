@@ -36,7 +36,7 @@ What _does_ live on disk, then? Bytes.
 
 A disk is just a bag of bytes. These bytes have a structure, of course. If they didn't, they would be random, and we would have no way to ever make sense of them. The specific way we order bytes on disk is called an _inode_. An _inode_ is what we end up representing using a _file_.
 
-One way to think of an inode is the same way you think of a jpeg: it's a way to order bytes in a certain way. For example, an inode specifies that at a certain location in your bag of bits, you put the file size. At another location, you put when the file was created.
+One way to think of an inode is the same way you think of a jpeg: it's a way to order bytes in a certain way. For example, an inode specifies that at a certain location in your bag of bytes, you put the file size. At another location, you put when the file was created.
 
 Why don't we just interact with the inodes directly, then?
 
