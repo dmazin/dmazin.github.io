@@ -59,7 +59,7 @@ Let's go back to this statement.
 
 This is totally false. If it were true, computers would feel terribly slow. Disks are sloooow.
 
-How slow? An SSD is 1,000 times slower than memory. A spinning hard drive is one MILLION times slower. Disks are multiple orders of magnitude slower than memory!
+How slow? Fetching a small amount of data from SSD is 1,000 times slower than memory. Fetching that same data from a spinning hard drive is one MILLION times slower. Disks are multiple orders of magnitude slower than memory!
 
 Consider that, before SSDs, disks were the last mechanical thing about computers (other than fans). In a world of speedy electron-pushing, we were _actually pushing atoms_. The disparity in speed between the electrical and mechanical world is huge.
 
