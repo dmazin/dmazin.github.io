@@ -64,6 +64,8 @@ Change: 2023-07-18 14:52:26.349625767 +0100
 
 Don't try too hard to understand all of the output. Just notice that you see metadata like the file size, owner, and timestamps. Everything you see comes from the inode (other than the name, which came from the directory entry).
 
+<!-- footnote: Well, also, the inode number itself (11 in this case) isn't stored in the inode either. Instead, it's the inode's position in the inode table. -->
+
 But we want to see the raw bits for this inode, right? How can we see the raw bits?
 
 One of the most OG kernel hackers, [Ted Ts'o](https://en.wikipedia.org/wiki/Theodore_Ts%27o), maintains a set of filesystem debugging tools knows as e2fsprogs. We can use one of these tools, debugfs, to play with the inode.
@@ -115,7 +117,9 @@ Inode 11 is part of block group 0
 
 Let me decipher this: a filesystem is broken up into blocks. In my case, a block is 4,096 bytes (this is the default for many Linux distributions). So, this output is saying "start at the beginning of the filesystem, and walk forward 73 blocks, i.e. 73*4096 bytes". That sort of tells us what street the inode is on. The house number is the offset: `0x0a00` bytes. In decimal, that's 2560 bytes.
 
-So, to find our inode, we need to start at the beginning of the disk partition (which is also the beginning of the filesystem), then skip forward `4096*73+2560=301568` bytes.
+<!-- Footnote: Why 2560 bytes? Recall that this inode's number is 11. That means that, on disk, there are 10 inodes before this one. Each inode is 260 bytes, so those inodes take up 2560 bytes. -->
+
+So, to find our inode, we need to start at the beginning of the disk partition (which is also the beginning of the filesystem), then skip forward `4096 * 73 + 2560 = 301568` bytes.
 
 Let's do it! Let's dump the raw bits from my disk and see if they match the `debugfs inode_dump` output.
 
@@ -137,7 +141,7 @@ $ sudo dd if=/dev/sdd1 bs=1 skip=301568 count=256 2>/dev/null | hexdump -C
 00000100
 ```
 
-Here is where the ASCII interpretation at the right comes in handy: visually, we can see that this stuff looks identical to the raw bytes from `debugfs inode_dump`! We found where the inode lives!
+Here is where the ASCII interpretation at the right comes in handy: visually, we can see that this stuff looks identical to the raw bytes from `debugfs inode_dump`! We found where the inode lives on disk!
 
 This feels way cooler than the `inode_dump` output did. In that case, we had asked a program written by a core kernel developer to please tell us what the inode looked like. In this case, we found the information directly on the disk ourselves.
 
@@ -175,3 +179,110 @@ We are going to write a small C program that will do the following.
 1. Ask the computer to set aside 256 bytes in memory (because that's how big an ext4_inode struct is).
 2. Ask it to copy 256 bytes from `/dev/sdd1/`, at location 301568, into that memory.
 3. Tell it how to parse those bytes using our ext4_inode struct.
+
+<!-- footnote: Technically, the compiler will pad the struct, which means it will insert empty space throughout the struct. So, in that sense, the struct doesn't *exactly* specify the order of the bits. However, given that the inode was generated on the same computer where it will be read, this means that the struct truly *is* the skeleton key to the seemingly random bits. -->
+
+Here's the above program in C (boiled down to its essence).
+```c
+// open the partition file
+int fd = open("/dev/sdd1/", O_RDONLY);
+
+// seek to the inode location
+lseek(fd, 301568, SEEK_SET);
+
+// initialize the struct and copy 256 bytes from disk to memory
+struct ext4_inode candidate_inode;
+read(fd, &candidate_inode, sizeof(struct ext4_inode));
+
+// now we can access the fields of the inode!
+printf("User:  %u", inode->i_uid);
+```
+
+Here's [the full script, with error checking](). If you want, you can build it and try it on your own computer.
+
+Let's run it! Are you excited? If this works, that means we have wrangled the bits. We have sussed out their structure.
+
+```bash
+$ sudo ./parse /dev/sdd1 301568
+
+Inode: 11   Mode:  0664
+User:  1000   Group:  1000   Size: 14
+Links: 1   Blockcount: 8
+Inode checksum: 0x0c5e4923
+```
+
+Yay! We've got ourselves a valid inode!
+
+Here's the output of `debugfs stat example.txt`. Look, every common field – importantly, the checksum – match!
+
+```
+debugfs: stat example.txt
+
+Inode: 11   Type: regular    Mode:  0664   Flags: 0x80000
+Generation: 2347119513    Version: 0x00000000:00000001
+User:  1000   Group:  1000   Project:     0   Size: 14
+File ACL: 0
+Links: 1   Blockcount: 8
+Fragment:  Address: 0    Number: 0    Size: 0
+ ctime: 0x64b6991a:535b769c -- Tue Jul 18 14:52:26 2023
+ atime: 0x64b68b40:c0c52cbc -- Tue Jul 18 13:53:20 2023
+ mtime: 0x64ac1348:2f9c34fc -- Mon Jul 10 15:18:48 2023
+crtime: 0x64ac1348:2f9c34fc -- Mon Jul 10 15:18:48 2023
+Size of extra inode fields: 32
+Inode checksum: 0x0c5e4923
+EXTENTS:
+(0):33280
+```
+
+Now, we're not done. At the beginning, I said that disks *and memory* are bunches of bits. Our program copies the raw inode bits into memory, right? That means we should be able to find those bits, in memory, and confirm that they are the same bits that came from disk!
+
+How will we do it? We're going to use a cool tool called `gdb`. It's a step debugger, like `pdb` for Python. We are going to use it to set a breakpoint, so that the process stops right after copying the inode to memory. At that point, we'll ask gdb to print exactly what resides in memory. What we'll find is that the bits in memory perfectly line up with the bits from disk.
+
+First, the bits from disk, to refresh our memory.
+```
+00000000  b4 81 e8 03 0e 00 00 00  40 8b b6 64 34 8b b6 64 
+00000010  48 13 ac 64 00 00 00 00  e8 03 02 00 08 00 00 00 
+00000020  00 00 08 00 01 00 00 00  0a f3 01 00 04 00 00 00 
+00000030  00 00 00 00 00 00 00 00  01 00 00 00 00 82 00 00 
+00000040  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 
+*
+00000060  00 00 00 00 99 33 e6 8b  00 00 00 00 00 00 00 00 
+00000070  00 00 00 00 00 00 00 00  00 00 00 00 71 61 00 00 
+00000080  20 00 20 fc e4 5e 97 d9  fc 34 9c 2f bc 2c c5 c0 
+00000090  48 13 ac 64 fc 34 9c 2f  00 00 00 00 00 00 00 00 
+000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 
+```
+
+And, now, the memory contents:
+```
+$ sudo gdb parse
+(gdb) break 167
+(gdb) run /dev/sdd1 301568
+(gdb) x/160xb &candidate_inode
+0x7fffffffe410: 0xb4    0x81    0xe8    0x03    0x0e    0x00    0x00    0x00
+0x7fffffffe418: 0x40    0x8b    0xb6    0x64    0x1a    0x99    0xb6    0x64
+0x7fffffffe420: 0x48    0x13    0xac    0x64    0x00    0x00    0x00    0x00
+0x7fffffffe428: 0xe8    0x03    0x01    0x00    0x08    0x00    0x00    0x00
+0x7fffffffe430: 0x00    0x00    0x08    0x00    0x01    0x00    0x00    0x00
+0x7fffffffe438: 0x0a    0xf3    0x01    0x00    0x04    0x00    0x00    0x00
+0x7fffffffe440: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+0x7fffffffe448: 0x01    0x00    0x00    0x00    0x00    0x82    0x00    0x00
+0x7fffffffe450: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+0x7fffffffe458: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+0x7fffffffe460: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+0x7fffffffe468: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+0x7fffffffe470: 0x00    0x00    0x00    0x00    0x99    0x33    0xe6    0x8b
+0x7fffffffe478: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+0x7fffffffe480: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+0x7fffffffe488: 0x00    0x00    0x00    0x00    0x23    0x49    0x00    0x00
+0x7fffffffe490: 0x20    0x00    0x5e    0x0c    0x9c    0x76    0x5b    0x53
+0x7fffffffe498: 0xfc    0x34    0x9c    0x2f    0xbc    0x2c    0xc5    0xc0
+0x7fffffffe4a0: 0x48    0x13    0xac    0x64    0xfc    0x34    0x9c    0x2f
+0x7fffffffe4a8: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
+```
+
+It's not the easiest thing to read, but look: the bytes match up (aaaaalmost) exactly! That is, except for the fact that the last 32 bits from the disk are missing – some sort of result of compilation optimization?
+
+But, 
+
+<!-- Footnote: Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode) when padding is disabled. -->
