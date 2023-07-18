@@ -6,108 +6,80 @@ date: 2023-07-18
 tags: featured
 description: TODO
 ---
-I'd like to show you something that greatly reduced the mystery of how a computer works. Perhaps it'll do the same for you.
+Have you ever heard someone say that a hard drive, or memory, is a "bunch of bits"?
 
-I've heard before that a hard drive, or an SSD, or computer memory, is just a "bunch of bits".
+I'm not sure about this idea's origin, but it's a pretty good idea. It reduces the mystery of computers. For example, it rules out the theory that inside of my computer is a very flat elf.
 
-That already demystifies computers somewhat. There are no elves inside: just bits, encoded on electrical components. All a computer does is push those bits around.
+No, inside are bits, encoded on electrical components.
 
-But what do these bits look like? What do they mean? Can we play with them, parse them, and make sense of them?
+Yet, computers are still pretty mysterious. What *are* these bits? What do they mean? Can we play with them, parse them, make sense of them?
 
-Yes, absolutely we can! In this post, we're going to roll up our sleeves, stick our hands into the bowels of the computer, and pull up a fistful of bits. At first, they will make no sense, but we will force sense onto them.
+In this post, I will show you that, yes, absolutely we can! For your entertainment, I am going to stick my hand into my computer, pull up a bunch of bits, and we will examine and make sense of them.
 
-For our exercise, let's explore the bits behind a disk-backed file. That is, say we have a file called `/data/example.txt`. It has some contents.
+What bits, exactly, should we explore? For this exercise, let's pick apart how a disk-backed file is represented on disk.
+
+Say we have a file called `/data/example.txt`:
 ```
 $ cat /data/example.txt
 
 Hello, world!
 ```
 
-Let's explore where the bits for `/data/example.txt` live and what they look like.
+Where does "Hello, world!" live?
 
-The first question is, what *is* `/data/example.txt`?
+Additionally, you may know that files have permissions (e.g. the file is executable), an owner, creation timestamp, etc. Where is this metadata stored?
 
-We could say, well, `/data/example.txt` is a file. It lives on disk.
+I mean, literally, where are the actual bits that store this information? Let's find them and try to parse them.
 
-In my [previous post](TODO), we discussed how this is not true. A file doesn't live on disk. No, a file is an interface that lets us get a grip on the stuff that *really* lives on disk.
+First, a bit of theory.
 
-> Files are an interface, much like a OOP instance with methods and attributes. The file is not the stuff on disk. It’s just the abstract interface for it.
+What even is `/data/example.txt`? It's what we call a *directory entry*. A directory entry is just a human-readable name – `example.txt`.
 
-So, what is the thing that the file abstracts away? It's called an *inode*. One way to think of an inode is the same way you think of a jpeg: it’s a way to order bits in a certain way. Whereas a jpeg is how we arrange bits for a picture, an inode is how we arrange bits for a disk-backed file.
+Directory entries are stored on disk, but they are not terribly interesting, because they are just names.
 
-For example, you may know that files have permissions (e.g. the file is executable, or, everyone can read it). This is stored on the inode. As another example, the inode stores when the file was created and when it was modified. Essentially, the inode stores almost everything about the file.
+A name *names* something, right? What does `example.txt` name? The thing it names is called an *inode*.
 
-I'm not awesome at explaining things, so let me take another stab at it. 
+inodes *are* interesting. When you say, "a file lives on disk", what you really mean is, "an inode lives on disk". They are the on-disk collections of bits that describe a file.
 
-On computers, we have directories with files in them, right? For example, here's my `/data` folder.
-```
-$ ls /data
-example2.txt  example.txt  hello.txt
-```
+An inode stores pretty much everything about a file, like the metadata we mentioned earlier.
 
-The things you see in `/data`, like `example.txt`, are called *directory entries*. A directory entry is just a nice name (like `example.txt`) and a pointer to the inode, which holds the actual information. (footnote: Though, I should say, this is only the case for stuff that lives on disk. A directory entry could point at something other than an inode. For example, it could point at a socket.)
+We're almost done with the theory. You should also know that inodes, files, and directory entries are all elements of what's called a *filesystem*. A filesystem is the software that takes the bits on your disk and turns them into familiar files and directories.
 
-I don't want this to turn into an article about file systems, but, files, inodes, and directory entries are all aspects of a *file system*. The file system is the thing that organizes the bits on your disk into meaningful structures like inodes.
+With that, we're ready to get our hands dirty.
 
-So, where do these inodes actually live? What do they look like?
+Let's start our exploration by listing some of the inode metadata. To do that, we can use `stat`.
 
-To answer that, let's get our hands dirty. Let's play with the file system. To do that, we are going to use a utility called `debugfs`. I can't explain it better than its own manpage:
+```bash
+$ stat /data/example.txt
 
-> The debugfs program is an interactive file system debugger. It can be used to  examine and change the state of an ext2, ext3, or ext4 file system.
-
-We can use `debugfs` to see the contents of the inode and to find out where it lives on disk. From the manpage:
-
-```
-stat filespec
-    Display the contents of the inode structure of the inode filespec.
+  File: /data/example.txt
+  Size: 14              Blocks: 8          IO Block: 4096   regular file
+Device: 831h/2097d      Inode: 11          Links: 1
+Access: (0664/-rw-rw-r--)  Uid: ( 1000/  dmitry)   Gid: ( 1000/  dmitry)
+Access: 2023-07-18 13:53:20.808536879 +0100
+Modify: 2023-07-10 15:18:48.199691583 +0100
+Change: 2023-07-18 14:52:26.349625767 +0100
+ Birth: 2023-07-10 15:18:48.199691583 +0100
 ```
 
-So, let's see what the inode actually holds.
-```
-$ sudo debugfs /dev/sdd1
+Don't try too hard to understand all of the output. Just notice that you see metadata like the file size, owner, and timestamps. Everything you see comes from the inode (other than the name, which came from the directory entry).
 
-debugfs: stat example.txt
+But we want to see the raw bits for this inode, right? How can we see the raw bits?
 
-Inode: 11   Type: regular    Mode:  0664   Flags: 0x80000
-Generation: 2347119513    Version: 0x00000000:00000001
-User:  1000   Group:  1000   Project:     0   Size: 14
-File ACL: 0
-Links: 1   Blockcount: 8
-Fragment:  Address: 0    Number: 0    Size: 0
- ctime: 0x64b68b34:d9975ee4 -- Tue Jul 18 13:53:08 2023
- atime: 0x64b68b40:c0c52cbc -- Tue Jul 18 13:53:20 2023
- mtime: 0x64ac1348:2f9c34fc -- Mon Jul 10 15:18:48 2023
-crtime: 0x64ac1348:2f9c34fc -- Mon Jul 10 15:18:48 2023
-Size of extra inode fields: 32
-Inode checksum: 0xfc206171
-EXTENTS:
-(0):33280
-```
+One of the most OG kernel hackers, [Ted Ts'o](https://en.wikipedia.org/wiki/Theodore_Ts%27o), maintains a set of filesystem debugging tools knows as e2fsprogs. We can use one of these tools, debugfs, to play with the inode.
 
-We won't dwell on this too much, but note how the inode stores the file permissions (`Mode:  0664`) and a bunch of timestamps about the file!
-
-Note that the inode *doesn't* store the file name: the directory entry stores that. Multiple directory entries can point at the same inode (you may have heard of this: hard links), so we decouple file names from inodes.
-
-And, well, you may see that the inode doesn't actually hold the file contents. The reason is that, conceptually, you can think of a file system as a bunch of boxes to store file contents, and a database to manage those boxes. The inodes are the database entries. They are pure metadata. So, our inode merely points at the box that holds our file contents:
-```
-EXTENTS:
-(0):33280
-```
-
-We'll return to the contents later.
-
-Now, let's finally look at some binary. We can actually ask debugfs to print the raw bytes of the inode:
+debugfs has a cool command that will spit out the raw binary for an inode. From the [manpage](https://www.man7.org/linux/man-pages/man8/debugfs.8.html):
 ```
 inode_dump filespec
     Print the contents of the inode data structure in hex and
     ASCII format.
 ```
 
-<!-- footnote: You may notice a bit of sleight of hand here: I said we're going to look at binary, but then said debugfs would print out the bytes. The fact of the matter is, we *could* look at binary (00011010 etc) but there are way more human-readable ways to parse binary. Such a way is to turn the binary into hexadecimal, which is how binary is usually presented to humans. -->
+So, here comes the raw binary I promised. Except, it's not going to be binary like 0011000. It's much easier for humans to read binary when it's converted into something called [hexadecimal](https://wizardzines.com/comics/hexadecimal/).
 
-Let's do it! Let's look at some raw bytes!
+```bash
+$ sudo debugfs /dev/sdd1
 
-```
 debugfs:  inode_dump example.txt
 0000  b481 e803 0e00 0000 408b b664 348b b664  ........@..d4..d
 0020  4813 ac64 0000 0000 e803 0200 0800 0000  H..d............
@@ -123,37 +95,29 @@ debugfs:  inode_dump example.txt
 *
 ```
 
-Well, there they are. The raw bytes for our inode. We can't make much sense of them, can we? The right column of the output is an attempt to interpret those bytes as text but, as you can see, that is meaningless too.
+Makes sense? Cool – thanks for reading!
 
-But, not to worry. This is where our experiment gets exciting. We're going to use technology to parse these bytes and make sense of them!
+Just kidding. Look, actually seeing the raw data of the inode is slightly cool, but we still don't know *where* on disk this lives and what the bits actually mean.
 
-We are going to write a small C program that will read the raw bytes from disk, parse them into an inode, and give us input similar to what we saw when we ran `debugfs stat`.
-
-But where on disk is that inode? `debugfs` can tell us. From the manpage:
+So, let's find the raw inode on disk. To do that, we can again use debugfs:
 ```
 imap filespec
     Print  the location of the inode data structure (in the inode table) of the
     inode filespec.
 ```
 
-So, let's fire up `debugfs` again and find out where to find the inode for `example.txt`.
+So, let's find the location.
 ```
 debugfs:  imap example.txt                                                                  
 Inode 11 is part of block group 0
         located at block 73, offset 0x0a00
 ```
 
-<!-- Note that I passed `/dev/sdd1` (the disk partition where `/data` lives) rather than `/data`. I think the reason for this is that `debugfs` can be used to debug a corrupted file system, which means we wouldn't have been able to mount it in the first place. (footnote) -->
+Let me decipher this: a filesystem is broken up into blocks. In my case, a block is 4,096 bytes (this is the default for many Linux distributions). So, this output is saying "start at the beginning of the filesystem, and walk forward 73 blocks, i.e. 73*4096 bytes". That sort of tells us what street the inode is on. The house number is the offset: `0x0a00` bytes. In decimal, that's 2560 bytes.
 
-Let me translate this into semi-human language: "The file system is broken up into 4,096 byte blocks. So, go to block 73, and you will find your inode 0x0a00 bytes (2560 bytes, in decimal) into the block."
+So, to find our inode, we need to start at the beginning of the disk partition (which is also the beginning of the filesystem), then skip forward `4096*73+2560=301568` bytes.
 
-<!-- (footnote: why is it broken up into 4 KiB blocks? subject for another article) -->
-
-What that means is that our inode is `4096*73+2560=301568` bytes deep in the disk partition.
-
-<!-- (footnote: note that we could actually use debugfs to print out the raw bytes of the inode, but that would not be as fun) -->
-
-Let's verify this by dumping the raw bytes directly from the disk partition.
+Let's do it! Let's dump the raw bits from my disk and see if they match the `debugfs inode_dump` output.
 
 ```bash
 $ sudo dd if=/dev/sdd1 bs=1 skip=301568 count=256 2>/dev/null | hexdump -C
@@ -173,44 +137,21 @@ $ sudo dd if=/dev/sdd1 bs=1 skip=301568 count=256 2>/dev/null | hexdump -C
 00000100
 ```
 
-Here is where the ASCII interpretation at the right comes in handy: visually, we can see that this stuff looks identical to the raw bytes from `debugfs inode_dump`!
+Here is where the ASCII interpretation at the right comes in handy: visually, we can see that this stuff looks identical to the raw bytes from `debugfs inode_dump`! We found where the inode lives!
 
-Let's take a moment to catch a breath. We found the inode on disk, and printed it *directly from disk*. That is already amazing: we know where the inodes are stored, and how to get them.
+This feels way cooler than the `inode_dump` output did. In that case, we had asked a program written by a core kernel developer to please tell us what the inode looked like. In this case, we found the information directly on the disk ourselves.
 
-Now, let's actually prove that this *is* our inode by parsing it.
+But we still don't know what these bytes mean. Can we parse them?
 
-But... how do we parse it? For a long time, I sat on this, because I did not actually understand how to take raw bytes and tell the computer what those bytes *mean*.
+For a few weeks, I sat on this. How do we ask a computer to turn a bunch of random bits into an inode?
 
-After some weeks, though, it hit me: that's literally what a struct is for. Let me take a bit of time to explain what a struct is.
+Then it hit me: that is exactly what a struct is for!
 
-First, let's recall what a class looks like in Python. Something like this.
+You may have come across structs. They're sort of like objects from dynamic languages, except confusing.
 
-```python
-class inode:
-    mode: int       = 0
-    uid: int        = 0
-    size_bytes: int = 0
-```
+Well, I think here's how I think about structs now, and it makes a ton of sense: let's say you come across a random bunch of bits. A struct is simply a specification of what those bits mean.
 
-That class is a template for what instances of `inode` should look like.
-
-<!-- (footnote: It would be even more accurate if I said this was a @dataclass, but I didn't want to get too deep into Python stuff) -->
-
-A struct is kind of like that, except that it's hyper-specific (and, of course, Python is dynamic while C is static). Here's what the same struct looks like.
-
-```c
-struct inode {
-	uint16_t	mode;          /* unsigned 16-bit integer */ 
-	uint16_t	uid;           /* unsigned 16-bit integer */ 
-	uint32_t	size_bytes;    /* unsigned 32-bit integer */
-}
-```
-
-This struct says, "if you come across a bunch of bits that you want to parse as an inode, here's how you do it: the first 16 bits are the file mode (the file permissions); the next 16 bits are the user ID of the owner of the file; the next 32 bits are the file size".
-
-So, in plain English, here is what our program will do: it will ask the computer to set aside some space in memory (256 bytes, to be exact), and to copy 256 bytes from disk location 301568 and put them into that little space in memory. We will define a struct that will specify exactly what each byte means.
-
-But, how will we know what the inode struct should look like? Here's the amazing thing: we are going to parse the bits of the inode *exactly* the same way that the operating system does it. It, itself, [defines the struct](https://github.com/torvalds/linux/blob/fdf0eaf11452d72945af31804e2a1048ee1b574c/fs/ext4/ext4.h#L769) we need:
+With that realization in hand, the Linux kernel must define a struct for the inode somewhere, right? [It does](https://github.com/torvalds/linux/blob/fdf0eaf11452d72945af31804e2a1048ee1b574c/fs/ext4/ext4.h#L769)!
 
 ```c
 /*
@@ -224,176 +165,13 @@ struct ext4_inode {
 }
 ```
 
-Let me repeat: this is *the* struct used to parse the raw bytes we dumped previously. If we feed our bytes through this struct, we will get back the exact information we saw earlier! This is how we will make sense of the bytes!
+I will repeat, for effect: this struct is how anything that runs on Linux knows how to parse the bytes we saw previously!
 
-<!-- (TODO some info about the program) -->
+It says, basically: the first 16 bits are the file permissions, the next 16 bits are the owner, and the next 32 are the file size, and so on.
 
-And... there we go!
+Let's use this struct to parse the raw bytes from before!
 
-```
-$ sudo ./parse /dev/sdd1 /dev/sdd1 301568
-
-Inode: 11   Type: regular   Mode:  0664   Flags: 0x00080000
-User:  1000   Group:  1000   Project:  0   Size: 14
-File ACL: 0
-Links: 1   Blockcount: 8
-ctime: 0x64b6991a -- (null)atime: 0x64b68b40 -- (null)mtime: 0x64ac1348 -- Mon Jul 10 15:18:48 2023
-crtime: 0x64ac1348 -- (null)Size of extra inode fields: 32
-Inode checksum: 0x0c5e4923
-```
-
-We have parsed the raw bytes into an inode.
-
-
-<!-- Here's how. We are going to say: computer, copy the 256 bytes at disk location 301568 and put them in memory. Then, please interpret the bytes as so: the first 2 bytes are the file mode (the file permissions); the next 2 bytes are the user ID of the owner of the file; the next 4 bytes are the file size, and so on. -->
-
-
-
-<!-- How do we do that? We can use a utility, `dd`, which is used to move data from one file to another. Since our disk partition is represented by a file, we can use `dd` to copy data from it to standard output (by that I mean we can use it to print the output to our shell).
-
-As an example, here is roughly what our dd command will look like: `dd if=/dev/sdd1 bs=512 skip=?`. By default, `dd` spits the information out to the shell (standard output). `bs` stands for "block size" and it tells `dd` how many bytes to read at a time. `skip` is how we tell `dd` *where* we want to read from, except that instead of using bytes, we tell `dd` how many multiples of blocks to skip at a time. (note to myself: this makes a lot more sense if you understand disk sectords and file system blocks)
-
-So, I'm not 100% sure what block 73 really means – it could be 73*512 (because disks are broken up into 512 byte sectors) or 73*4096 (because ext4 by default is broken up into 4 KiB blocks).
-
-The `skip` is how we tell `dd` *where* we want to read from. The `bs` stands for "block size" and it tells it 
-
-In many cases, you can say that each file you see when you list the contents of a directory corresponds to an inode, though this is not exactly true. For example, perhaps you have heard of hard links. A hard link is just a file that points to an inode.
-
-
-
-What are these bits? Can we see them? Can we make sense of them? *That's* what we're going to explore today. 
-
-In this post, we're going to roll up our sleeves, stick our hands into the bowels of the computer, and pull up a bunch of bytes. At first, they will make no sense, but we will force sense onto them.
-
-For me, this was a hugely revelatory exercise. It did more to reduce the mystery of computers than most other things I've done.
-
-Let's start by giving the bunch of bits a name.
-
-If you read my previous article, you already know that 
-
-We can do that by asking our OS to give us some metadata about our file.
-
-```
-$ stat /data/example.txt
-
-  File: /data/example.txt
-  Size: 14              Blocks: 8          IO Block: 4096   regular file
-Device: 831h/2097d      Inode: 11          Links: 1
-Access: (0664/-rw-rw-r--)  Uid: ( 1000/  dmitry)   Gid: ( 1000/  dmitry)
-Access: 2023-07-10 15:28:22.159110437 +0100
-Modify: 2023-07-10 15:18:48.199691583 +0100
-Change: 2023-07-10 15:18:48.199691583 +0100
- Birth: 2023-07-10 15:18:48.199691583 +0100
-```
-
-From this output, we see a couple things.
-1. The file has a bunch of metadata. That must be stored somewhere.
-2. The metadata tells us where to find `Device: 831h/2097d      Inode: 11`
-
-
-the file `/data/example.txt` is not the thing that lives on disk. The file is an interface that abstracts away the bits that *actually* live on disk.
-
-
-
-
-Call it `/data/example.txt`. In my [previous post](TODO), we discussed how a file is really just an interface for manipulating the bits that actually live on disk.
-
-Those bits have a name: **inode**. The inode is how we actually store information about `/data/example.txt`. For example, it's where we store when it was created, and how big it is.
-
-
-
-
-
-`/data/example.txt`.
-
-It has some contents.
-```
-$ cat /data/example.txt
-
-Hello, world!
-```
-
-The mystery is, what is `/data/example.txt`? Where does it live? What does it look like? What does it want?
-
-We could say, well, `/data/example.txt` is a file. It lives on disk.
-
-In my [previous post](TODO), we discussed how this is not true. A file doesn't live on disk. No, a file is an interface that lets us get a grip on the stuff that *really* lives on disk.
-
-> Files are an interface, much like a OOP instance with methods and attributes. The file is not the stuff on disk. It’s just the abstract interface for it.
-
-Then what *is* the stuff on disk? Bits. A disk is a bunch of bits.
-
-What are these bits? Can we see them? Can we make sense of them? *That's* what we're going to explore today. 
-
-In this post, we're going to roll up our sleeves, stick our hands into the bowels of the computer, and pull up a bunch of bytes. At first, they will make no sense, but we will force sense onto them.
-
-For me, this was a hugely revelatory exercise. It did more to reduce the mystery of computers than most other things I've done.
-
-Let's start by giving the bunch of bits a name. The bits on disk are not random, of course. They have a structure. We call that structure the **file system**. The file system is where we get our familiar files and directories.
-
-In essence, the file system is both the structured bits on disk as well as [the code](https://github.com/torvalds/linux/tree/master/fs/ext4) that knows what to do with the said bits.
-
-A file system has different components, like something called the "super block", which contains information about the file system itself. We are most interested in `/data/example.txt`, and the on-disk structure for it is called an **inode**.
-
-Here's one way to think about an inode. If the file is the interface for manipulating `/data/example.txt`, the inode is the actual bits on disk that the file manipulates.
-
-
-So, let's go back to `/data/example.txt`. It has contents: `Hello, world!`
-
-It also has metadata.
-```
-$ stat /data/example.txt
-
-  File: /data/example.txt
-  Size: 14              Blocks: 8          IO Block: 4096   regular file
-Device: 831h/2097d      Inode: 11          Links: 1
-Access: (0664/-rw-rw-r--)  Uid: ( 1000/  dmitry)   Gid: ( 1000/  dmitry)
-Access: 2023-07-10 15:28:22.159110437 +0100
-Modify: 2023-07-10 15:18:48.199691583 +0100
-Change: 2023-07-10 15:18:48.199691583 +0100
- Birth: 2023-07-10 15:18:48.199691583 +0100
-```
-
-
-
-
-You might say, well, `/data/example.txt` is a file. It lives on disk. That's a useful mental model, but, as we saw in my previous post, it's wrong.
-
-In my [previous post](TODO), 
-
-
-In my [previous post](TODO), we discussed how a file is actually an abstraction. One might think, "a file is a thing that lives on disk", but that's not right. 
-
-In the case of `/data/example.txt`, it's an abstraction for a bunch of bits that live somewhere on a hard disk. 
-
-
-
-But in my previous post, we discussed how a file is really an abstraction. What are we abstracting?
-
-`/data/example.txt` represents some information that lives on a hard disk.
-
-In in my [previous post](TODO), we discussed how a file is really an abstraction.
-
-> It’s reasonable to think that files live on disk, because files are what we interact with in order to write stuff to disk.
-
-> But, that’s exactly it: a file is an interface. The operating system uses this interface so that we can tell it what we want.
-
-> This is kind of theoretical, so let me say it again: files are an interface, much like a OOP instance with methods and attributes. The file is not the stuff on disk. It’s just the abstract interface for it.
-
-> What does live on disk, then? Bytes.
-
-> A disk is just a bag of bytes. These bytes have a structure, of course. If they didn’t, they would be random, and we would have no way to ever make sense of them. The specific way we order bytes on disk is called an inode. An inode is what we end up representing using a file.
-
-
-
-
-
-
- that lets us manipulate a bunch of bits that live on disk.
-
-What *are* these bits, though? Where, on disk, is the string "Hello, world!"? How does my computer know  
-
-And it has some metadata.
-```
-stat /data/example.txt
-``` -->
+We are going to write a small C program that will do the following.
+1. Ask the computer to set aside 256 bytes in memory (because that's how big an ext4_inode struct is).
+2. Ask it to copy 256 bytes from `/dev/sdd1/`, at location 301568, into that memory.
+3. Tell it how to parse those bytes using our ext4_inode struct.
