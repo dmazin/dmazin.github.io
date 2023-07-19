@@ -6,12 +6,14 @@ date: 2023-07-18
 tags: featured
 description: TODO
 ---
+# Introduction
 Have you ever heard someone say that a hard drive, or memory, is a "bunch of bits"?
 
 I'm not sure about this idea's origin, but it's a pretty good idea. It reduces the mystery of computers. For example, it rules out the theory that inside of my computer is a very flat elf.
 
 No, inside are bits, encoded on electrical components.
 
+# Bits and inodes
 Yet, computers are still pretty mysterious. What *are* these bits? What do they mean? Can we play with them, parse them, make sense of them?
 
 In this post, I will show you that, yes, absolutely we can! For your entertainment, I am going to stick my hand into my computer, pull up a bunch of bits, and we will examine and make sense of them.
@@ -31,6 +33,7 @@ Additionally, you may know that files have permissions (e.g. the file is executa
 
 I mean, literally, where are the actual bits that store this information? Let's find them and try to parse them.
 
+# How do files work?
 First, a bit of theory.
 
 What even is `/data/example.txt`? It's what we call a *directory entry*. A directory entry is just a human-readable name – `example.txt`.
@@ -47,6 +50,7 @@ We're almost done with the theory. You should also know that inodes, files, and 
 
 With that, we're ready to get our hands dirty.
 
+# Exploring inodes
 Let's start our exploration by listing some of the inode metadata. To do that, we can use `stat`.
 
 ```bash
@@ -66,6 +70,7 @@ Don't try too hard to understand all of the output. Just notice that you see met
 
 <!-- footnote: Well, also, the inode number itself (11 in this case) isn't stored in the inode either. Instead, it's the inode's position in the inode table. -->
 
+# Exploring the innards of an inode
 But we want to see the raw bits for this inode, right? How can we see the raw bits?
 
 One of the most OG kernel hackers, [Ted Ts'o](https://en.wikipedia.org/wiki/Theodore_Ts%27o), maintains a set of filesystem debugging tools knows as e2fsprogs. We can use one of these tools, debugfs, to play with the inode.
@@ -101,6 +106,7 @@ Makes sense? Cool – thanks for reading!
 
 Just kidding. Look, actually seeing the raw data of the inode is slightly cool, but we still don't know *where* on disk this lives and what the bits actually mean.
 
+# Where on disk is my inode?
 So, let's find the raw inode on disk. To do that, we can again use debugfs:
 ```
 imap filespec
@@ -147,6 +153,7 @@ This feels way cooler than the `inode_dump` output did. In that case, we had ask
 
 But we still don't know what these bytes mean. Can we parse them?
 
+# Making sense of the raw bits
 For a few weeks, I sat on this. How do we ask a computer to turn a bunch of random bits into an inode?
 
 Then it hit me: that is exactly what a struct is for!
@@ -234,6 +241,7 @@ EXTENTS:
 (0):33280
 ```
 
+# Memory is a bunch of bits, too
 Now, we're not done just yet.
 
 At the beginning, I said that disks *and memory* are bunches of bits. Our program copies the raw inode bits into memory, right?
@@ -306,6 +314,7 @@ What this shows is that the bits on disk and the bits in memory are the same. In
 
 <!-- Footnote: Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode) when padding is disabled. -->
 
+# Hey, where are my file contents?
 I know what you're thinking: we haven't actually seen the file contents!
 
 It's true. The inode does not itself store the file contents. They are elsewhere.
@@ -345,6 +354,7 @@ $1 = {127754, 4, 0, 0, 1, 33280, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 You can see the 33280 from debugfs's output in that array.
 -->
 
+# What have we learned?
 So, what have we learned? What have we done?
 
 We started with the common refrain that a disk, and memory, are just bunches of bits.
