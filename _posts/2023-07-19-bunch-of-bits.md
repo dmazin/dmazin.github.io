@@ -155,13 +155,13 @@ But we still don't know what these bits mean. Can we parse them?
 If you're enjoying yourself, may I ask if you'd like to follow me via [RSS feed](/feed.xml), [Mastodon](https://file-explorers.club/@dmitry), [email](https://cyberdemon.substack.com/?r=kk1l&utm_campaign=pub&utm_medium=web), or [Telegram channel](https://t.me/cyberdemon6)? Thanks!
 
 # Making sense of the raw bits
-For a few weeks, I sat on this. How do we ask a computer to turn a bunch of random bits into an inode?
+For a few weeks, I sat on this. How do we ask a computer to turn a bunch of bits into an inode?
 
 Then it hit me: that is exactly what a struct is for!
 
 You may have come across structs. They're sort of like objects from dynamic languages, except confusing.
 
-Well, I think here's how I think about structs now, and it makes a ton of sense: let's say you come across a random bunch of bits. A struct is simply a specification of what those bits mean.
+Well, I think here's how I think about structs now, and it makes a ton of sense: let's say you come across a bunch of bits. A struct is simply a specification of what those bits mean.
 
 With that realization in hand, the Linux kernel must define a struct for the inode somewhere, right? [It does](https://github.com/torvalds/linux/blob/fdf0eaf11452d72945af31804e2a1048ee1b574c/fs/ext4/ext4.h#L769)!
 
