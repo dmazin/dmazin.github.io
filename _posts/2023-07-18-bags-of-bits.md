@@ -199,7 +199,7 @@ read(fd, &candidate_inode, sizeof(struct ext4_inode));
 printf("User:  %u", inode->i_uid);
 ```
 
-Here's [the full script, with error checking](). If you want, you can build it and try it on your own computer.
+Here's [the full program, with error checking](https://gist.github.com/dmazin/ed608be38e4b0ec7ed2db65a74bc123a). If you want, you can build it and try it on your own computer.
 
 Let's run it! Are you excited?! If this works, that means we have wrangled the bits. We have sussed out their structure.
 
@@ -271,7 +271,7 @@ $ sudo gdb parse
 0x7fffffffe4a8: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
 ```
 
-It's not the easiest thing to read, so I used a [script](TODO) to make the gdb output look more like `hexdump -C`:
+It's not the easiest thing to read, so I used a [script](https://gist.github.com/dmazin/7348f61312c647e79e75eb6e8521ef68) to make the gdb output look more like `hexdump -C`:
 ```
 b4 81 e8 03 0e 00 00 00 40 8b b6 64 1a 99 b6 64
 48 13 ac 64 00 00 00 00 e8 03 01 00 08 00 00 00
@@ -354,15 +354,25 @@ Along the way, we learned a little bit about the ext4 filesystem (and filesystem
 When I performed this exercise for myself, it was one of the most revelatory experiences I've had on a computer. It reduced the mystery. I hope the mystery has been reduced for you too.
 
 # Notes
-<a name="inode-number"></a>**Also, the inode number itself** Well, also, the inode number itself (11 in this case) isn't stored in the inode either. Instead, it's the inode's position in the inode table. <a href="#inode-number-return">(back)</a>
+<a name="inode-number"></a>**Also, the inode number itself**
 
-<a name="2560"></a>**Why 2560?** Recall that this inode's number is 11. That means that, on disk, there are 10 inodes before this one. Each inode is 260 bytes, so those inodes take up 2560 bytes. <a href="#2560-return">(back)</a>
+Well, also, the inode number itself (11 in this case) isn't stored in the inode either. Instead, it's the inode's position in the inode table. <a href="#inode-number-return">(back)</a>
 
-<a name="padding-1"></a>**It's a tad more complicated because of padding** Technically, the compiler will pad the struct, which means it will insert empty space throughout the struct. So, in that sense, the struct doesn't *exactly* specify the order of the bits. However, given that the inode was generated on the same computer where it will be read, this means that the struct truly *is* the skeleton key to the seemingly random bits. <a href="#padding-1-return">(back)</a>
+<a name="2560"></a>**Why 2560?**
 
-<a name="padding-2"></a>**Note about struct padding** Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode) when padding is disabled. <a href="#padding-2-return">(back)</a>
+Recall that this inode's number is 11. That means that, on disk, there are 10 inodes before this one. Each inode is 260 bytes, so those inodes take up 2560 bytes. <a href="#2560-return">(back)</a>
 
-<a name="struct-extents-location"></a>**Could we have gotten the location straight from the inode struct?** We could also parse the location from the inode we loaded into memory, via the `i_block` field, but the contents are a slightly cryptic array that it takes a bit of code to decode. It was easier to just call on the debugfs code to do it for us. For the curious, here's what that array looks like:
+<a name="padding-1"></a>**It's a tad more complicated because of padding**
+
+Technically, the compiler will pad the struct, which means it will insert empty space throughout the struct. So, in that sense, the struct doesn't *exactly* specify the order of the bits. However, given that the inode was generated on the same computer where it will be read, this means that the struct truly *is* the skeleton key to the seemingly random bits. <a href="#padding-1-return">(back)</a>
+
+<a name="padding-2"></a>**Note about struct padding**
+
+Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode) when padding is disabled. <a href="#padding-2-return">(back)</a>
+
+<a name="struct-extents-location"></a>**Could we have gotten the location straight from the inode struct?**
+
+We could also parse the location from the inode we loaded into memory, via the `i_block` field, but the contents are a slightly cryptic array that it takes a bit of code to decode. It was easier to just call on the debugfs code to do it for us. For the curious, here's what that array looks like:
 ```
 (gdb) p candidate_inode->i_block
 $1 = {127754, 4, 0, 0, 1, 33280, 0, 0, 0, 0, 0, 0, 0, 0, 0}
