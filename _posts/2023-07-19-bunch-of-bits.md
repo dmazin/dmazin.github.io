@@ -177,7 +177,7 @@ struct ext4_inode {
 }
 ```
 
-I will repeat, for effect: this struct is how the ext4 filesystem knows how to parse the bits we saw previously!
+I will repeat, for effect: this struct is exactly how the ext4 filesystem knows how to parse the bits we saw previously! This is the skeleton key.
 
 It says, basically: the first 16 bits are the file permissions, the next 16 bits are the owner, and the next 32 are the file size, and so on<a name="padding-1-return"></a><sup>[[It's a tad more complicated because of padding.]](#padding-1)</sup>.
 
