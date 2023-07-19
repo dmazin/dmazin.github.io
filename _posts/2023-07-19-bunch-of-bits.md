@@ -161,7 +161,7 @@ Then it hit me: that is exactly what a struct is for!
 
 You may have come across structs. They're sort of like objects from dynamic languages, except confusing.
 
-Well, here's how I think about structs now, and it makes a ton of sense: let's say you come across a bunch of bits. A struct is simply a specification of what those bits mean.
+Well, here's how I think about structs now: let's say you come across a bunch of bits. A struct is simply a specification of what those bits mean.
 
 With that realization in hand, the Linux kernel must define a struct for the inode somewhere, right? [It does](https://github.com/torvalds/linux/blob/fdf0eaf11452d72945af31804e2a1048ee1b574c/fs/ext4/ext4.h#L769)!
 
