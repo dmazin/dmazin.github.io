@@ -2,9 +2,9 @@
 layout: post
 title: "A disk is a bunch of bits"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
-date: 2023-07-18
+date: 2023-07-19
 tags: featured
-description: TODO
+description: We've heard that a disk is a "bunch of bits", so let's get dirty and personal with those bits.
 ---
 # Introduction
 Have you ever heard someone say that a hard drive or memory is a "bunch of bits"?
