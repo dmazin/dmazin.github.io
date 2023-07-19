@@ -318,7 +318,7 @@ I know what you're thinking: we haven't actually seen the file contents!
 
 It's true. The inode does not itself store the file contents. They are elsewhere.
 
-First, allow me to briefly explain why. You can think of a filesystem as having two components: a bunch of boxes to put file contents into, and a database for managing those boxes. It's sort of like a distributed system, where you store records in a database (all the metadata), but you put actual file blobs in something like S3 or a disk.
+Allow me to briefly explain why. You can think of a filesystem as having two components: a bunch of boxes to put file contents into, and a database for managing those boxes. It's sort of like a distributed system, where you store records in a database (all the metadata), but you put actual file blobs in something like S3 or a disk.
 
 So, the inode doesn't actually hold the contents; it points to them.
 
