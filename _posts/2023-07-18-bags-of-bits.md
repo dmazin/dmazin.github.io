@@ -13,7 +13,7 @@ I'm not sure about this idea's origin, but it's a pretty good idea. It reduces t
 
 No, inside are bits, encoded on electrical components.
 
-# Bits and inodes
+# Getting close and personal with bits
 Yet, computers are still pretty mysterious. What *are* these bits? What do they mean? Can we play with them, parse them, make sense of them?
 
 In this post, I will show you that, yes, absolutely we can! For your entertainment, I am going to stick my hand into my computer, pull up a bunch of bits, and we will examine and make sense of them.
@@ -143,11 +143,11 @@ $ sudo dd if=/dev/sdd1 bs=1 skip=301568 count=256 2>/dev/null | hexdump -C
 00000100
 ```
 
-Here is where the ASCII interpretation at the right comes in handy: visually, we can see that this stuff looks identical to the raw bytes from `debugfs inode_dump`! We found where the inode lives on disk!
+Here is where the ASCII interpretation at the right comes in handy: visually, we can see that this stuff looks identical to the raw bits from `debugfs inode_dump`! We found where the inode lives on disk!
 
 This feels way cooler than the `inode_dump` output did. In that case, we had asked a program written by a core kernel developer to please tell us what the inode looked like. In this case, we found the information directly on the disk ourselves.
 
-But we still don't know what these bytes mean. Can we parse them?
+But we still don't know what these bits mean. Can we parse them?
 
 # Making sense of the raw bits
 For a few weeks, I sat on this. How do we ask a computer to turn a bunch of random bits into an inode?
@@ -172,11 +172,11 @@ struct ext4_inode {
 }
 ```
 
-I will repeat, for effect: this struct is how the ext4 filesystem knows how to parse the bytes we saw previously!
+I will repeat, for effect: this struct is how the ext4 filesystem knows how to parse the bits we saw previously!
 
 It says, basically: the first 16 bits are the file permissions, the next 16 bits are the owner, and the next 32 are the file size, and so on<a name="padding-1-return"></a><sup>[[It's a tad more complicated because of padding.]](#padding-1)</sup>.
 
-Let's use this struct to parse the raw bytes from before!
+Let's use this struct to parse the raw bits from before!
 
 We are going to write a small C program that will do the following.
 1. Ask the computer to set aside 256 bytes in memory (because that's how big an ext4_inode struct is).
