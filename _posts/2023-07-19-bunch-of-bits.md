@@ -73,7 +73,7 @@ Don't try too hard to understand all of the output. Just notice that you see met
 # Exploring the innards of an inode
 But we want to see the raw bits for this inode, right? How can we see the raw bits?
 
-Long-timer kernel developer [Ted Ts'o](https://en.wikipedia.org/wiki/Theodore_Ts%27o), maintains a set of filesystem debugging tools knows as e2fsprogs. We can use one of these tools, debugfs, to play with the inode.
+Long-timer kernel developer [Ted Ts'o](https://en.wikipedia.org/wiki/Theodore_Ts%27o), maintains a set of filesystem debugging tools called e2fsprogs. We can use one of these tools, debugfs, to play with the inode.
 
 debugfs has a cool command that will spit out the raw binary for an inode. From the [manpage](https://www.man7.org/linux/man-pages/man8/debugfs.8.html):
 ```
