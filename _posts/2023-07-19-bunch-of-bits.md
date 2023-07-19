@@ -82,7 +82,7 @@ inode_dump filespec
     ASCII format.
 ```
 
-So, here comes the raw binary I promised. Except, it's not going to be binary like 0011000. It's much easier for humans to read binary when it's converted into something called [hexadecimal](https://wizardzines.com/comics/hexadecimal/).
+So, here comes the raw binary I promised. Except, it's not going to be binary like 0011000. It's much easier for humans to read binary when it's converted into a representation called [hexadecimal](https://wizardzines.com/comics/hexadecimal/), so that's what we'll use.
 
 ```bash
 $ sudo debugfs /dev/sdd1
