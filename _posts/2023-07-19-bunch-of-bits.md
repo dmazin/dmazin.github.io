@@ -33,9 +33,9 @@ Also, you may know that files have permissions (e.g. the file is executable), an
 
 I mean, literally, where are the actual bits that store this information? Let's find them and try to parse them.
 
-# How do files work?
 First, a bit of theory.
 
+# How do files work?
 The following applies to the ext4 filesystem commonly used in Linux (and, in fact, the whole article is ext4-specific). Some of these concepts are common to most filesystems, though.
 
 What even is `/data/example.txt`? It's what we call a *directory entry*. A directory entry is just a human-readable name – `example.txt`.
