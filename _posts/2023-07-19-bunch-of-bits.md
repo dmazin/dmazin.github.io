@@ -27,9 +27,9 @@ $ cat /data/example.txt
 Hello, world!
 ```
 
-Where does "Hello, world!" live?
+Here's one big question: where does "Hello, world!" live?
 
-Additionally, you may know that files have permissions (e.g. the file is executable), an owner, creation timestamp, etc. Where is this metadata stored?
+Also, you may know that files have permissions (e.g. the file is executable), an owner, creation timestamp, etc. Where is this metadata stored?
 
 I mean, literally, where are the actual bits that store this information? Let's find them and try to parse them.
 
