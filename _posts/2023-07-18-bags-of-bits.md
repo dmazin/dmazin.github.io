@@ -83,15 +83,15 @@ So, here comes the raw binary I promised. Except, it's not going to be binary li
 $ sudo debugfs /dev/sdd1
 
 debugfs:  inode_dump example.txt
-0000  b481 e803 0e00 0000 408b b664 348b b664  ........@..d4..d
-0020  4813 ac64 0000 0000 e803 0200 0800 0000  H..d............
+0000  b481 e803 0e00 0000 408b b664 1a99 b664  ........@..d...d
+0020  4813 ac64 0000 0000 e803 0100 0800 0000  H..d............
 0040  0000 0800 0100 0000 0af3 0100 0400 0000  ................
 0060  0000 0000 0000 0000 0100 0000 0082 0000  ................
 0100  0000 0000 0000 0000 0000 0000 0000 0000  ................
 *
 0140  0000 0000 9933 e68b 0000 0000 0000 0000  .....3..........
-0160  0000 0000 0000 0000 0000 0000 7161 0000  ............qa..
-0200  2000 20fc e45e 97d9 fc34 9c2f bc2c c5c0   . ..^...4./.,..
+0160  0000 0000 0000 0000 0000 0000 2349 0000  ............#I..
+0200  2000 5e0c 9c76 5b53 fc34 9c2f bc2c c5c0   .^..v[S.4./.,..
 0220  4813 ac64 fc34 9c2f 0000 0000 0000 0000  H..d.4./........
 0240  0000 0000 0000 0000 0000 0000 0000 0000  ................
 *
@@ -126,15 +126,15 @@ Let's do it! Let's dump the raw bits from my disk and see if they match the `deb
 ```bash
 $ sudo dd if=/dev/sdd1 bs=1 skip=301568 count=256 2>/dev/null | hexdump -C
 
-00000000  b4 81 e8 03 0e 00 00 00  40 8b b6 64 34 8b b6 64  |........@..d4..d|
-00000010  48 13 ac 64 00 00 00 00  e8 03 02 00 08 00 00 00  |H..d............|
+00000000  b4 81 e8 03 0e 00 00 00  40 8b b6 64 1a 99 b6 64  |........@..d...d|
+00000010  48 13 ac 64 00 00 00 00  e8 03 01 00 08 00 00 00  |H..d............|
 00000020  00 00 08 00 01 00 00 00  0a f3 01 00 04 00 00 00  |................|
 00000030  00 00 00 00 00 00 00 00  01 00 00 00 00 82 00 00  |................|
 00000040  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 *
 00000060  00 00 00 00 99 33 e6 8b  00 00 00 00 00 00 00 00  |.....3..........|
-00000070  00 00 00 00 00 00 00 00  00 00 00 00 71 61 00 00  |............qa..|
-00000080  20 00 20 fc e4 5e 97 d9  fc 34 9c 2f bc 2c c5 c0  | . ..^...4./.,..|
+00000070  00 00 00 00 00 00 00 00  00 00 00 00 23 49 00 00  |............#I..|
+00000080  20 00 5e 0c 9c 76 5b 53  fc 34 9c 2f bc 2c c5 c0  | .^..v[S.4./.,..|
 00000090  48 13 ac 64 fc 34 9c 2f  00 00 00 00 00 00 00 00  |H..d.4./........|
 000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
 *
@@ -234,26 +234,14 @@ EXTENTS:
 (0):33280
 ```
 
-Now, we're not done. At the beginning, I said that disks *and memory* are bunches of bits. Our program copies the raw inode bits into memory, right? That means we should be able to find those bits, in memory, and confirm that they are the same bits that came from disk!
+Now, we're not done just yet.
 
-How will we do it? We're going to use a cool tool called `gdb`. It's a step debugger, like `pdb` for Python. We are going to use it to set a breakpoint, so that the process stops right after copying the inode to memory. At that point, we'll ask gdb to print exactly what resides in memory. What we'll find is that the bits in memory perfectly line up with the bits from disk.
+At the beginning, I said that disks *and memory* are bunches of bits. Our program copies the raw inode bits into memory, right?
 
-First, the bits from disk, to refresh our memory.
-```
-00000000  b4 81 e8 03 0e 00 00 00  40 8b b6 64 34 8b b6 64 
-00000010  48 13 ac 64 00 00 00 00  e8 03 02 00 08 00 00 00 
-00000020  00 00 08 00 01 00 00 00  0a f3 01 00 04 00 00 00 
-00000030  00 00 00 00 00 00 00 00  01 00 00 00 00 82 00 00 
-00000040  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 
-*
-00000060  00 00 00 00 99 33 e6 8b  00 00 00 00 00 00 00 00 
-00000070  00 00 00 00 00 00 00 00  00 00 00 00 71 61 00 00 
-00000080  20 00 20 fc e4 5e 97 d9  fc 34 9c 2f bc 2c c5 c0 
-00000090  48 13 ac 64 fc 34 9c 2f  00 00 00 00 00 00 00 00 
-000000a0  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 
-```
+That means we should be able to find those bits, in memory, and confirm that they are the same bits that came from disk!
 
-And, now, the memory contents:
+To do this, let's run our program in a debugger called `gdb` (kind of like Python's `pdb`). We'll use it to pause the program's process, and then spy on the process's memory.
+
 ```
 $ sudo gdb parse
 (gdb) break 167
@@ -281,8 +269,90 @@ $ sudo gdb parse
 0x7fffffffe4a8: 0x00    0x00    0x00    0x00    0x00    0x00    0x00    0x00
 ```
 
-It's not the easiest thing to read, but look: the bytes match up (aaaaalmost) exactly! That is, except for the fact that the last 32 bits from the disk are missing – some sort of result of compilation optimization?
+It's not the easiest thing to read, so I used a [script](TODO) to make the gdb output look more like `hexdump -C`:
+```
+b4 81 e8 03 0e 00 00 00 40 8b b6 64 1a 99 b6 64
+48 13 ac 64 00 00 00 00 e8 03 01 00 08 00 00 00
+00 00 08 00 01 00 00 00 0a f3 01 00 04 00 00 00
+00 00 00 00 00 00 00 00 01 00 00 00 00 82 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 99 33 e6 8b 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 23 49 00 00
+20 00 5e 0c 9c 76 5b 53 fc 34 9c 2f bc 2c c5 c0
+48 13 ac 64 fc 34 9c 2f 00 00 00 00 00 00 00 00
+```
 
-But, 
+Let's compare that to the raw bits from disk:
+```
+b4 81 e8 03 0e 00 00 00  40 8b b6 64 1a 99 b6 64
+48 13 ac 64 00 00 00 00  e8 03 01 00 08 00 00 00
+00 00 08 00 01 00 00 00  0a f3 01 00 04 00 00 00
+00 00 00 00 00 00 00 00  01 00 00 00 00 82 00 00
+00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+*
+00 00 00 00 99 33 e6 8b  00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00  00 00 00 00 23 49 00 00
+20 00 5e 0c 9c 76 5b 53  fc 34 9c 2f bc 2c c5 c0
+48 13 ac 64 fc 34 9c 2f  00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+```
+
+They match!
+
+(The asterisk just means that the row was all 0's. A keen observer would also notice that the last 16 bytes of 0s are missing from the `gdb` output – I think due to a compiler optimization).
+
+What this shows is that the bits on disk and the bits in memory are the same. In retrospect, it may be obvious, but we have seen it with our very own eyes.
 
 <!-- Footnote: Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode) when padding is disabled. -->
+
+I know what you're thinking: we haven't actually seen the file contents!
+
+It's true. The inode does not itself store the file contents. They are elsewhere.
+
+First, allow me to briefly explain why. You can think of a filesystem as having two components: a bunch of boxes to put file contents into, and a database for managing those boxes. It's sort of like a distributed system, where you store records in a database (all the metadata), but you put actual file blobs in something like S3 or a disk.
+
+So, the inode doesn't actually hold the contents; it points to them.
+
+Let's use debugfs to parse the location from the inode. From the manpage:
+```
+blocks filespec
+    Print the blocks used by the inode filespec to stdout.
+```
+
+```
+debugfs:  blocks example.txt
+33280
+```
+
+What this says is that the contents are 33,280 4 KiB blocks from the start of the filesystem. Let's dump the disk at that location!
+
+```
+$ sudo dd if=/dev/sdd1 skip=33280 bs=4096 count=1 2>/dev/null | hexdump -C
+00000000  48 65 6c 6c 6f 2c 20 77  6f 72 6c 64 21 0a 00 00  |Hello, world!...|
+00000010  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|
+*
+00001000
+```
+
+There it is! Our hello world, hot and fresh from disk!
+
+<!-- Footnote: We could also parse the location from the inode we loaded into memory, via the `i_block` field, but the contents are a slightly cryptic array that it takes a bit of code to decode. It was easier to just call on the debugfs code to do it for us. For the curious, here's what that array looks like:
+```
+(gdb) p candidate_inode->i_block
+$1 = {127754, 4, 0, 0, 1, 33280, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+```
+You can see the 33280 from debugfs's output in that array.
+-->
+
+So, what have we learned? What have we done?
+
+We started with the common refrain that a disk, and memory, are just bunches of bits.
+
+So we set out on a quest to become familiar with those bits. Specifically, the bits that encode disk-backed files: inodes.
+
+We got very familiar with said bits: we found them on disk, parsed them using a program that loaded them into memory and applied a struct to them, and then turned around and saw the very same bits in memory.
+
+Along the way, we learned a little bit about the ext4 filesystem (and filesystems in general), too!
+
+When I performed this exercise for myself, it was one of the most revelatory experiences I've had on a computer. It reduced the mystery. I hope the mystery has been reduced for you too.
