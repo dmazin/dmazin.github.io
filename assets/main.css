@@ -140,7 +140,7 @@ body {
  */
 body {
   /* font: 400 20px/1.6em "Palatino", serif; */
-  font: 400 18px/1.4em "Palatino", serif;
+  font: 400 18px/1.6em "Palatino", serif;
   background-color: var(--color-background);
   color: var(--color-text);
   -webkit-text-size-adjust: 100%;
@@ -242,11 +242,6 @@ h4,
 h5,
 h6 {
   font-weight: 400;
-}
-
-h2 {
-  margin-top: 0.8em;
-  margin-bottom: 0.3em;
 }
 
 /**
@@ -564,9 +559,10 @@ pre > code {
   margin-top: 28px;
   margin-bottom: 20px;
 }
-font-size: 1em/1.6em;
 .post-content h2 {
   font-size: 32px;
+  margin-top: 28px;
+  margin-bottom: 20px;
 }
 @media screen and (max-width: 800px) {
   .post-content h2 {
