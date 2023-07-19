@@ -240,7 +240,7 @@ EXTENTS:
 (0):33280
 ```
 
-To me, this is super cool. We set out to find the raw bits for an inode on disk, found it, and then made sense of the bits.
+To me, this is super cool. We set out to find the raw bits for an inode on disk, found them, and then made sense of the bits.
 
 # Memory is a bunch of bits, too
 Now, we're not done just yet.
