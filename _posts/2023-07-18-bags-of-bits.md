@@ -66,7 +66,7 @@ Change: 2023-07-18 14:52:26.349625767 +0100
  Birth: 2023-07-10 15:18:48.199691583 +0100
 ```
 
-Don't try too hard to understand all of the output. Just notice that you see metadata like the file size, owner, and timestamps. Everything you see comes from the inode (other than the name, which came from the directory entry)<a name="inode-number-return"></a>[[Also, the inode number itself]](#inode-number).
+Don't try too hard to understand all of the output. Just notice that you see metadata like the file size, owner, and timestamps. Everything you see comes from the inode (other than the name, which came from the directory entry)<a name="inode-number-return"></a><sup>[[Also, the inode number itself]](#inode-number)</sup>.
 
 # Exploring the innards of an inode
 But we want to see the raw bits for this inode, right? How can we see the raw bits?
