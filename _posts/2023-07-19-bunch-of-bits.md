@@ -375,7 +375,7 @@ Technically, the compiler will pad the struct, which means it will insert empty 
 
 <a name="padding-2"></a>**Note about struct padding**
 
-Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode) when padding is disabled. <a href="#padding-2-return">(back)</a>
+Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode)` when padding is disabled. <a href="#padding-2-return">(back)</a>
 
 <a name="struct-extents-location"></a>**Could we have gotten the location straight from the inode struct?**
 
