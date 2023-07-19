@@ -36,6 +36,8 @@ I mean, literally, where are the actual bits that store this information? Let's 
 # How do files work?
 First, a bit of theory.
 
+The following applies to the ext4 filesystem commonly used in Linux (and, in fact, the whole article is ext4-specific). Some of these concepts are common to most filesystems, though.
+
 What even is `/data/example.txt`? It's what we call a *directory entry*. A directory entry is just a human-readable name – `example.txt`.
 
 Directory entries are stored on disk, but they are not terribly interesting, because they are just names.
