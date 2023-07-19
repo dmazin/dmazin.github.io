@@ -66,9 +66,7 @@ Change: 2023-07-18 14:52:26.349625767 +0100
  Birth: 2023-07-10 15:18:48.199691583 +0100
 ```
 
-Don't try too hard to understand all of the output. Just notice that you see metadata like the file size, owner, and timestamps. Everything you see comes from the inode (other than the name, which came from the directory entry).
-
-<!-- footnote: Well, also, the inode number itself (11 in this case) isn't stored in the inode either. Instead, it's the inode's position in the inode table. -->
+Don't try too hard to understand all of the output. Just notice that you see metadata like the file size, owner, and timestamps. Everything you see comes from the inode (other than the name, which came from the directory entry)<a name="inode-number-return"></a>[[Also, the inode number itself]](#inode-number).
 
 # Exploring the innards of an inode
 But we want to see the raw bits for this inode, right? How can we see the raw bits?
@@ -121,9 +119,7 @@ Inode 11 is part of block group 0
         located at block 73, offset 0x0a00
 ```
 
-Let me decipher this: a filesystem is broken up into blocks. In my case, a block is 4,096 bytes (this is the default for many Linux distributions). So, this output is saying "start at the beginning of the filesystem, and walk forward 73 blocks, i.e. 73*4096 bytes". That sort of tells us what street the inode is on. The house number is the offset: `0x0a00` bytes. In decimal, that's 2560 bytes.
-
-<!-- Footnote: Why 2560 bytes? Recall that this inode's number is 11. That means that, on disk, there are 10 inodes before this one. Each inode is 260 bytes, so those inodes take up 2560 bytes. -->
+Let me decipher this: a filesystem is broken up into blocks. In my case, a block is 4,096 bytes (this is the default for many Linux distributions). So, this output is saying "start at the beginning of the filesystem, and walk forward 73 blocks, i.e. 73*4096 bytes". That sort of tells us what street the inode is on. The house number is the offset: `0x0a00` bytes. In decimal, that's 2560 bytes.<a name="2560-return"></a><sup>[[Why 2560?]](#2560)</sup>
 
 So, to find our inode, we need to start at the beginning of the disk partition (which is also the beginning of the filesystem), then skip forward `4096 * 73 + 2560 = 301568` bytes.
 
@@ -176,9 +172,9 @@ struct ext4_inode {
 }
 ```
 
-I will repeat, for effect: this struct is how anything that runs on Linux knows how to parse the bytes we saw previously!
+I will repeat, for effect: this struct is how the ext4 filesystem knows how to parse the bytes we saw previously!
 
-It says, basically: the first 16 bits are the file permissions, the next 16 bits are the owner, and the next 32 are the file size, and so on.
+It says, basically: the first 16 bits are the file permissions, the next 16 bits are the owner, and the next 32 are the file size, and so on<a name="padding-1-return"></a><sup>[[It's a tad more complicated because of padding.]](#padding-1)</sup>.
 
 Let's use this struct to parse the raw bytes from before!
 
@@ -186,8 +182,6 @@ We are going to write a small C program that will do the following.
 1. Ask the computer to set aside 256 bytes in memory (because that's how big an ext4_inode struct is).
 2. Ask it to copy 256 bytes from `/dev/sdd1/`, at location 301568, into that memory.
 3. Tell it how to parse those bytes using our ext4_inode struct.
-
-<!-- footnote: Technically, the compiler will pad the struct, which means it will insert empty space throughout the struct. So, in that sense, the struct doesn't *exactly* specify the order of the bits. However, given that the inode was generated on the same computer where it will be read, this means that the struct truly *is* the skeleton key to the seemingly random bits. -->
 
 Here's the above program in C (boiled down to its essence).
 ```c
@@ -207,7 +201,7 @@ printf("User:  %u", inode->i_uid);
 
 Here's [the full script, with error checking](). If you want, you can build it and try it on your own computer.
 
-Let's run it! Are you excited? If this works, that means we have wrangled the bits. We have sussed out their structure.
+Let's run it! Are you excited?! If this works, that means we have wrangled the bits. We have sussed out their structure.
 
 ```bash
 $ sudo ./parse /dev/sdd1 301568
@@ -246,7 +240,7 @@ Now, we're not done just yet.
 
 At the beginning, I said that disks *and memory* are bunches of bits. Our program copies the raw inode bits into memory, right?
 
-That means we should be able to find those bits, in memory, and confirm that they are the same bits that came from disk!
+That means we should be able to find those bits, in memory, and confirm that they are the same bits that came from disk<a name="padding-2-return"></a><sup>[[Note about struct padding]](#padding-2)</sup>!
 
 To do this, let's run our program in a debugger called `gdb` (kind of like Python's `pdb`). We'll use it to pause the program's process, and then spy on the process's memory.
 
@@ -312,8 +306,6 @@ They match!
 
 What this shows is that the bits on disk and the bits in memory are the same. In retrospect, it may be obvious, but we have seen it with our very own eyes.
 
-<!-- Footnote: Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode) when padding is disabled. -->
-
 # Hey, where are my file contents?
 I know what you're thinking: we haven't actually seen the file contents!
 
@@ -334,7 +326,9 @@ debugfs:  blocks example.txt
 33280
 ```
 
-What this says is that the contents are 33,280 4 KiB blocks from the start of the filesystem. Let's dump the disk at that location!
+What this says is that the contents are 33,280 4 KiB blocks from the start of the filesystem.<a name="struct-extents-location-return"></a><sup>[[Could we have gotten the location straight from the inode struct?]](#struct-extents-location)</sup>
+
+Let's dump the disk at that location!
 
 ```
 $ sudo dd if=/dev/sdd1 skip=33280 bs=4096 count=1 2>/dev/null | hexdump -C
@@ -345,14 +339,6 @@ $ sudo dd if=/dev/sdd1 skip=33280 bs=4096 count=1 2>/dev/null | hexdump -C
 ```
 
 There it is! Our hello world, hot and fresh from disk!
-
-<!-- Footnote: We could also parse the location from the inode we loaded into memory, via the `i_block` field, but the contents are a slightly cryptic array that it takes a bit of code to decode. It was easier to just call on the debugfs code to do it for us. For the curious, here's what that array looks like:
-```
-(gdb) p candidate_inode->i_block
-$1 = {127754, 4, 0, 0, 1, 33280, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-```
-You can see the 33280 from debugfs's output in that array.
--->
 
 # What have we learned?
 So, what have we learned? What have we done?
@@ -366,3 +352,19 @@ We got very familiar with said bits: we found them on disk, parsed them using a 
 Along the way, we learned a little bit about the ext4 filesystem (and filesystems in general), too!
 
 When I performed this exercise for myself, it was one of the most revelatory experiences I've had on a computer. It reduced the mystery. I hope the mystery has been reduced for you too.
+
+# Notes
+<a name="inode-number"></a>**Also, the inode number itself** Well, also, the inode number itself (11 in this case) isn't stored in the inode either. Instead, it's the inode's position in the inode table. <a href="#inode-number-return">(back)</a>
+
+<a name="2560"></a>**Why 2560?** Recall that this inode's number is 11. That means that, on disk, there are 10 inodes before this one. Each inode is 260 bytes, so those inodes take up 2560 bytes. <a href="#2560-return">(back)</a>
+
+<a name="padding-1"></a>**It's a tad more complicated because of padding** Technically, the compiler will pad the struct, which means it will insert empty space throughout the struct. So, in that sense, the struct doesn't *exactly* specify the order of the bits. However, given that the inode was generated on the same computer where it will be read, this means that the struct truly *is* the skeleton key to the seemingly random bits. <a href="#padding-1-return">(back)</a>
+
+<a name="padding-2"></a>**Note about struct padding** Earlier, I mentioned that the compiler pads the struct, adding extra bytes between the fields. This would make the in-memory representation hard to compare to the on-disk representation, so I prevented padding as much as possible by appending `__attribute__((__packed__))` to the struct definition. That is why in the memory dump I pasted, we only printed 160 bytes – that is `sizeof(struct ext4_inode) when padding is disabled. <a href="#padding-2-return">(back)</a>
+
+<a name="struct-extents-location"></a>**Could we have gotten the location straight from the inode struct?** We could also parse the location from the inode we loaded into memory, via the `i_block` field, but the contents are a slightly cryptic array that it takes a bit of code to decode. It was easier to just call on the debugfs code to do it for us. For the curious, here's what that array looks like:
+```
+(gdb) p candidate_inode->i_block
+$1 = {127754, 4, 0, 0, 1, 33280, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+```
+You can see the 33280 from debugfs's output in that array. <a href="#struct-extents-location-return">(back)</a>
