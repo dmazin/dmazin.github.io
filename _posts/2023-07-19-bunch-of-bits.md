@@ -365,7 +365,7 @@ Well, also, the inode number itself (11 in this case) isn't stored in the inode 
 
 <a name="2560"></a>**Why 2560?**
 
-Recall that this inode's number is 11. That means that, on disk, there are 10 inodes before this one. Each inode is 260 bytes, so those inodes take up 2560 bytes. <a href="#2560-return">(back)</a>
+Recall that this inode's number is 11. That means that, on disk, there are 10 inodes before this one. Each inode is 256 bytes, so those inodes take up 2560 bytes. <a href="#2560-return">(back)</a>
 
 <a name="padding-1"></a>**It's a tad more complicated because of padding**
 
