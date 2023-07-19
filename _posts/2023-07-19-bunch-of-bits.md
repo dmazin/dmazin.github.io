@@ -219,7 +219,7 @@ Inode checksum: 0x0c5e4923
 
 Yay! We've got ourselves a valid inode!
 
-Here's the output of `debugfs stat example.txt`. Look, every common field – importantly, the checksum – match!
+To verify that this output makes sense, here's the output of `debugfs stat example.txt`. Look, every common field – importantly, the checksum – match!
 
 ```
 debugfs: stat example.txt
