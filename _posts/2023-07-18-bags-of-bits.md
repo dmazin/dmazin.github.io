@@ -7,7 +7,7 @@ tags: featured
 description: TODO
 ---
 # Introduction
-Have you ever heard someone say that a hard drive, or memory, is a "bunch of bits"?
+Have you ever heard someone say that a hard drive or memory is a "bunch of bits"?
 
 I'm not sure about this idea's origin, but it's a pretty good idea. It reduces the mystery of computers. For example, it rules out the theory that inside of my computer is a very flat elf.
 
