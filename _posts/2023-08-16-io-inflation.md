@@ -1,3 +1,11 @@
+---
+layout: post
+title: "TODO"
+byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
+date: 2023-08-16
+tags: featured
+description: TODO
+---
 In [How does Linux really handle writes?](TODO), I covered the way that Linux (and operating systems, in general) shield applications from the slowness of disk access by making writes asynchronous. Today, we're going to keep exploring what happens when you perform a write in Linux. At the end of that article, I teased a (hopefully) intriguing detail: if you write 1 byte to a file on disk, 1 byte will not be written to disk. No. We will write far more: 65 THOUSAND bytes, maybe. Sometimes more. That's a huge disparity, right? It blew my mind. Let's dive right into what's going on.
 
 First, I want to introduce how I discovered this. Six months ago, I began a [sabbatical](TODO) so I could play with Linux. The first thing I wanted to do was run an I/O benchmark against a hard disk (as in, measuring how many megabytes per second I could write to the disk, for example). I thought this would be a simple exercise, but yet the results stunned me and sent me down a disk and file rabbit hole that I am still exploring, 6 months later. So, anyway, what sent me down this rabbit hole?
