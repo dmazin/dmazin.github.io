@@ -171,6 +171,7 @@ Specifically, we are going to trace when `vfs_read` and `vfs_write` finish (all 
 Note that we never even read disk, even though we read the file. That's because the read came from the page cache!
 
 ## Caveat: this behavior isn't universal
+
 Whether or not the page cache is used for reads and writes is actually filesystem-specific. However, all the most common Linux filesystems (ext4, btrfs, XFS) use the page cache. The story with ZFS is more complicated. While it uses the page cache, it also has its own relatively complex caching mechanism.
 
 ## Conclusion
