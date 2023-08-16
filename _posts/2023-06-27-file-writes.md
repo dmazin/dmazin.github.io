@@ -8,9 +8,11 @@ description: I examine the somewhat surprising way how Linux handles writes.
 ---
 *Please feel free to join the [lively discussion on Hacker News](https://news.ycombinator.com/item?id=36534512#36536526).*
 
+This article is the first from a series on block IO. If you like this article, check out my next post, for a behind-the-scenes look of [how a file is represented on disk](https://www.cyberdemon.org/2023/07/19/bunch-of-bits.html).
+
 My friends – programmers and operators – I would like to talk to you about the way that file writes work in Linux.
 
-I used to think they worked a certain way, and like John Lennon, I'm not the only one. It turns out that they work very differently. The way they really work is interesting, and important to know.
+I used to think they worked a certain way, and I think I'm not the only one. It turns out that they work very differently. The way they really work is interesting, and important to know.
 
 Let us begin by stating the way I used to think file writes worked.
 
@@ -179,6 +181,4 @@ There is a lot more to this subject – the difference between file IO and disk 
 
 Thanks for reading.
 
-## PS: I'm looking for a Linux job
-
-I've had a happy career as a cloud-based SRE. Most recently, I ran the infrastructure team at Rollbar. But, now, I want to work more directly with Linux. I'm London-based and am interviewing for Linux engineering and/or HPC jobs. If you have any leads, reach out! I'm happy to share my CV. Thanks!
+This article is the first from a series on block IO. If you like this article, check out my next post, for a behind-the-scenes look of [how a file is represented on disk](https://www.cyberdemon.org/2023/07/19/bunch-of-bits.html).
