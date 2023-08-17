@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Why does "Hello, World!" take up 73 kilobytes on disk?
+title: "Why does writing 14 bytes to a file write 73 kilobytes to disk?"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-08-17
 tags: featured
