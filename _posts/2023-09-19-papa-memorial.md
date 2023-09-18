@@ -6,6 +6,8 @@ date: 2023-09-18
 tags: featured
 description: In memory of my father, Yevgeniy Mazin.
 ---
+![](/assets/papa.jpeg)
+
 My father Yevgeniy Mazin (also known as Zheka, Zhenya, Papa, or, resentfully, Eugene) died on Friday September 8th 2023. He was 59 years old.
 
 This will serve as my online memorial to him. Once, my grandmother wrote a memorial to her own father, and stumbling upon it was special to me. So, maybe some day my child or grandchild will similarly learn about papa.
