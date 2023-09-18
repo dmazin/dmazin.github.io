@@ -49,9 +49,9 @@ Papa was a rare combination. He had a deep knowledge of physics, especially elec
 
 The subfield papa focused almost his entire career on was finite element analysis. His software (his own FEA package, [QuickField](https://quickfield.com/), as well as the LightTools package from Synopsys) has been used in prestigious research labs and for medical research, which he was immensely proud of.
 
-But Papa wasn’t just a hard science guy. He loved music, literature, and film, especially the Italians. He worked hard to pass along those passions. Mama and papa took us to many, many concerts and operas. I have many fond memories falling asleep at them.
+But Papa wasn’t just a hard science guy. He loved music, literature, and film, especially the Italians. He worked hard to pass along those passions. Mama and papa took us to many, many concerts, operas, and ballets. I have many fond memories falling asleep at them.
 
-Papa and I started, and fell asleep during, 8½ at least three times. I find it strangely comforting that papa and I finally watched Brat together last year.
+Papa and I started, and fell asleep during, 8½ at least three times. I find it strangely comforting that papa and I finally watched Brat together last year. The whole movie he reminded me, "You realize this is ironic, right?"
 
 ***
 
@@ -81,11 +81,11 @@ Sometimes I was frustrated by all his energy, all the adventures, but now I am g
 
 In July, he messaged me to say that he had an unexpected layover in London tomorrow, and we should meet up. So I took Eamon and met him at Gatwick airport. We took the train together to Brighton, a beach town, and I took papa to a seafood shack I had been hoping to show him.
 
-Of course, papa didn’t order mussels or crab like I intended. He ordered something called jellied eel, which I think even most British people would agree is revolting. Papa made a mission to eat all five eels, convincing me the entire time that they were actually delicious and that I should try one.
+Of course, papa didn’t order mussels or crab like I intended. He ordered something called jellied eel, which I think even most British people would agree is revolting. Papa made a mission to eat all five eels, convincing me the entire time that they were actually delicious and that I should try one. (I did – it wasn't that good!)
 
 After that we chased Eamon around on the beach for a bit and took the train to Gatwick and said goodbye. All in all, I think we spent three hours together.
 
-I came home that day, and I thought: One day papa will die. And I will wish that I could spend just three more hours with him. And I knew, even then, somehow, that those three hours in Brighton were exactly that.
+I came home that day, and I thought: one day papa will die. And I will wish that I could spend just three more hours with him. And I knew, even then, somehow, that those three hours in Brighton were exactly that.
 
 Finally, I’d like to say something to mama. Mama, I have lost my father, but you have lost your partner. I feel your pain. At the same time, despite your pain, this week you have been a source of strength, stability, and comfort. Thank you mama.
 
