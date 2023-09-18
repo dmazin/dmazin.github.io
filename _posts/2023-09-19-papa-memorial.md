@@ -20,7 +20,7 @@ Even more importantly, he died a happy man.
 
 I miss him terribly, and I am in pain, yet I feel thankful about the situation – it could be a lot worse.
 
-Now, please allow me to share with you the eulogy I delivered at his funeral, which was attended by over 60 people, including old friends, family (including his own mother), and colleagues.
+Now, please allow me to share with you the eulogy I delivered at his funeral, which was attended by over 60 people, including old friends, family (his wife, his four children, his three grandchildren, his beloved mother-in-law, and unfortunately his own mother), and colleagues.
 
 ***
 
