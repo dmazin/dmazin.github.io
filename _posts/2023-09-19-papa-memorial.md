@@ -12,13 +12,13 @@ This will serve as my online memorial to him. Once, my grandmother wrote a memor
 
 What can I say? Let me start with the basics.
 
-Papa experienced discomfort in his chest on Thursday, and scheduled an appointment for the next morning. Unfortunately, he died that night, in his sleep. We are confident that he died without pain or even awareness.
+Papa experienced discomfort in his chest on Thursday and died that night, in his sleep. We are confident that he died without pain or even awareness.
 
 For this, I am thankful. It is a blessing to die in your sleep.
 
 Even more importantly, he died a happy man.
 
-I miss him terribly, and I am in pain, yet I feel thankful about the situation – it could be a lot worse.
+Yes, this is a tragedy. We miss him terribly, and we are in pain, yet I feel thankful about the situation – it could be a lot worse.
 
 Now, please allow me to share with you the eulogy I delivered at his funeral, which was attended by over 60 people, including old friends, family (his wife, his four children and their partners, his three grandchildren, his mother-in-law, and unfortunately his own mother), and colleagues.
 
