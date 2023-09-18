@@ -22,7 +22,8 @@ Yes, this is a tragedy. We miss him terribly, and we are in pain, yet I feel tha
 
 Now, please allow me to share with you the eulogy I delivered at his funeral, which was attended by over 60 people, including old friends, family (his wife, his four children and their partners, his three grandchildren, his mother-in-law, and unfortunately his own mother), and colleagues.
 
-***
+
+# Eulogy for my Father
 
 I want to start by thanking you all for being here, and by thanking all those who wish to be here but can’t. It warms my heart to know that papa is so loved and celebrated and missed.
 
