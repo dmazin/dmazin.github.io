@@ -1,13 +1,11 @@
 ---
-layout: post_no_footer
+layout: post_no_footer_no_header
 title: "Remembering my father Yevgeniy Mazin, 1964-2023"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-09-18
 tags: featured
 description: In memory of my father, Yevgeniy Mazin.
 ---
-Hi, friends. I am sorry to say that this will be a sad post.
-
 My father Yevgeniy Mazin (also known as Zheka, Zhenya, Papa, or, resentfully, Eugene) died on Friday September 8th 2023. He was 59 years old.
 
 This will serve as my online memorial to him. Once, my grandmother wrote a memorial to her own father, and stumbling upon it was special to me. So, maybe some day my child or grandchild will similarly learn about papa.
