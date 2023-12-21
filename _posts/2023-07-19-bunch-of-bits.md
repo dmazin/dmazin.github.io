@@ -152,7 +152,7 @@ This feels way cooler than the `inode_dump` output did. In that case, we had ask
 But we still don't know what these bits mean. Can we parse them?
 
 # Commercial interruption
-If you're enjoying yourself, may I ask if you'd like to follow me via [RSS feed](/feed.xml), [Mastodon](https://file-explorers.club/@dmitry), [email](https://cyberdemon.substack.com/?r=kk1l&utm_campaign=pub&utm_medium=web), or [Telegram channel](https://t.me/cyberdemon6)? Thanks!
+If you're enjoying yourself, may I ask if you'd like to follow me via [RSS feed](/feed.xml), [Mastodon](https://file-explorers.club/@dmitry), or [Telegram channel](https://t.me/cyberdemon6)? Thanks!
 
 # Making sense of the raw bits
 For a few weeks, I sat on this. How do we ask a computer to turn a bunch of bits into an inode?
