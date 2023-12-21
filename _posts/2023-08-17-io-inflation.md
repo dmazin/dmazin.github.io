@@ -68,7 +68,7 @@ Forgive me for introducing one more term, but this is called **IO inflation**. I
 Note that IO inflation is *not* [write amplification](https://en.wikipedia.org/wiki/Write_amplification). Whereas IO inflation is necessary and fine, write amplification is undesirable.
 
 # Commercial interruption
-If you're enjoying yourself, may I ask if you'd like to follow me via [RSS feed](/feed.xml), [Mastodon](https://file-explorers.club/@dmitry), [email](https://cyberdemon.substack.com/?r=kk1l&utm_campaign=pub&utm_medium=web), or [Telegram channel](https://t.me/cyberdemon6)? Thanks!
+If you're enjoying yourself, may I ask if you'd like to follow me via [RSS feed](/feed.xml), [Mastodon](https://file-explorers.club/@dmitry), or [Telegram channel](https://t.me/cyberdemon6)? Thanks!
 
 # Causes of IO inflation
 We are ready to start answering our question: why do we write 73 KiB just to store "Hello, world!"?
