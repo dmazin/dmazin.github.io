@@ -38,7 +38,7 @@ Note that this post is ext4-specific, but the general ideas apply to all filesys
 
 What's ext4, by the way? It's simply an extremely common filesystem for Linux. It's the default for many distributions.
 
-And if you haven't read my previous posts, a filesystem is the software that turns the raw bytes on your disk into your familiar disks and directories.
+And if you haven't read my previous posts, a filesystem is the software that turns the raw bytes on your disk into your familiar files and directories.
 
 First, allow me to lay some (probably overly theoretical and verbose) groundwork.
 
