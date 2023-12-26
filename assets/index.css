@@ -48,8 +48,12 @@ ul {
   list-style: none;
 }
 
-ul.featured-posts li {
+ul.post-list li {
   margin-top: 0.2em;
+}
+
+div.non-featured-posts {
+  font-size: 0.75em;
 }
 
 .index-illustration {

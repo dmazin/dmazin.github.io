@@ -3,10 +3,12 @@ layout: post
 title: "How does Linux really handle writes?"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-06-27
-tags: featured
+tags:
+    - featured
+    - filesystems
 description: I examine the somewhat surprising way how Linux handles writes.
 ---
-*Please feel free to join the [lively discussion on Hacker News](https://news.ycombinator.com/item?id=36534512#36536526).*
+[Hacker News discussion](https://news.ycombinator.com/item?id=36534512#36536526)
 
 This article is the first from a series on block IO. If you like this article, check out my next post, for a behind-the-scenes look of [how a file is represented on disk](https://www.cyberdemon.org/2023/07/19/bunch-of-bits.html).
 

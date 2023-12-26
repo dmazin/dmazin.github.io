@@ -24,7 +24,7 @@ Yes, this is a tragedy. We miss him terribly, and we are in pain, yet I feel tha
 
 Now, please allow me to share with you the eulogy I delivered at his funeral, which was attended by over 60 people, including old friends, family (his wife, his four children and their partners, his three grandchildren, his mother-in-law, and unfortunately his own mother), and colleagues.
 
-
+<br />
 # Eulogy for my Father
 
 I want to start by thanking you all for being here, and by thanking all those who wish to be here but can’t. It warms my heart to know that papa is so loved and celebrated and missed.
@@ -35,7 +35,7 @@ I am grateful that, in my eyes, papa died having just finished the best year of 
 
 In other words, papa died immensely happy.
 
-***
+<br />
 
 I want to now take some time to reflect on papa.
 
@@ -55,7 +55,7 @@ But Papa wasn’t just a hard science guy. He loved music, literature, and film,
 
 Papa and I started, and fell asleep during, 8½ at least three times. I find it strangely comforting that papa and I finally watched Brat together last year. The whole movie he reminded me, "You realize this is ironic, right?"
 
-***
+<br />
 
 It will surprise no one to hear that Papa was an absolute sweetheart. Of course, he was incredibly sarcastic and ironic. But he loved to tell us he loved us. He told us he was proud of us. He called us nicknames like malish. He sent us hearts, gave us hugs, held our hands – even as adults. Even just a few weeks ago. He was an incredibly affectionate person.
 
@@ -79,7 +79,7 @@ How did this guy have so much more energy than his children, even though he was 
 
 Sometimes I was frustrated by all his energy, all the adventures, but now I am glad to have been on every one.
 
-***
+<br />
 
 In July, he messaged me to say that he had an unexpected layover in London tomorrow, and we should meet up. So I took Eamon and met him at Gatwick airport. We took the train together to Brighton, a beach town, and I took papa to a seafood shack I had been hoping to show him.
 
@@ -88,9 +88,3 @@ Of course, papa didn’t order mussels or crab like I intended. He ordered somet
 After that we chased Eamon around on the beach for a bit and took the train to Gatwick and said goodbye. All in all, I think we spent three hours together.
 
 I came home that day, and I thought: one day papa will die. And I will wish that I could spend just three more hours with him. And I knew, even then, somehow, that those three hours in Brighton were exactly that.
-
-***
-
-Finally, I’d like to say something to mama. Mama, I have lost my father, but you have lost your partner. I feel your pain. At the same time, despite your pain, this week you have been a source of strength, stability, and comfort. Thank you mama.
-
-And I’d also like to thank you all again for being here, for sharing in our pain, yes, but also our celebration of papochka.

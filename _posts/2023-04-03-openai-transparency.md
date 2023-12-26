@@ -3,7 +3,9 @@ layout: post
 title: "On OpenAI's Terrible Arguments Against Transparency"
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2023-04-03
-tags: ai, featured
+tags:
+  - ai
+  - featured
 description: In the name of public welfare, AI research transparency must take precedence over business interests and presumed safety concerns.
 ---
 Unlike the slew of AI letters released in the past couple weeks, you will find no signatures of respected researchers under this letter. I am just a guy. But I have to get on the soap box and say my piece.

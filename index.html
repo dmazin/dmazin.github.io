@@ -41,7 +41,7 @@ layout: none
     </div>
     <h4 class="slogan">"cyberdemon.org is a cool domain"</h4>
     <p>
-      <a href="mailto:dm@cyberdemon.org">email</a>
+      <a href="mailto:dm@cyberdemon.org">email me</a>
       /
       <a href="https://file-explorers.club/@dmitry">mastodon</a>
       /
@@ -52,13 +52,16 @@ layout: none
     </p>
     <p>Read this blog if computers interest you.</p>
     <p>
-      I live in London. I am an SRE and sysadmin. These days I am a "Linux engineer" at a trading company.
+      I live in London. These days I am a Linux engineer at a trading company.
+    </p>
+    <p>
+      <a href="/2023/09/18/papa-memorial.html">Remembering my father Yevgeniy Mazin, 1964-2023</a>
     </p>
     <div style="margin-top: 5px">
-      Here are my most interesting posts.
-      <ul class="featured-posts">
-        {% assign featured_posts = site.posts | where_exp:"post","post.tags
-        contains 'featured'" %} {% for post in featured_posts %}
+	    Here are some of my favorite posts about file systems.
+      <ul class="featured-posts post-list">
+        {% assign featured_posts = site.posts | where_exp:"post", "post.tags contains 'featured'" | where_exp:"post", "post.tags contains 'filesystems'" %}
+        {% for post in featured_posts %}
         <li>
           <!-- {{ post.date | date: "%d %b '%y" }} -->
           <a href="{{ post.url }}">{{ post.title }}</a>
@@ -66,15 +69,29 @@ layout: none
         {% endfor %}
       </ul>
       <br />
-      And here are all my other posts.
-      <ul>
-        {% for post in site.posts %}
+      Also, here are some posts about AI.
+      <ul class="ai-posts post-list">
+        {% assign ai_posts = site.posts | where_exp:"post", "post.tags contains 'featured'" | where_exp:"post", "post.tags contains 'ai'" %}
+        {% for post in ai_posts %}
         <li>
-          {{ post.date | date: "%d %b '%y" }}
+          <!-- {{ post.date | date: "%d %b '%y" }} -->
           <a href="{{ post.url }}">{{ post.title }}</a>
         </li>
         {% endfor %}
       </ul>
+      <br />
+      <div class="non-featured-posts">
+        And here are all my other posts.
+        <ul class="non-featured-posts post-list">
+          {% for post in site.posts %}
+            {% unless post.tags contains 'featured' %}
+              <li>
+                <a href="{{ post.url }}">{{ post.title }}</a>
+              </li>
+            {% endunless %}
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
 </body>
