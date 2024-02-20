@@ -73,7 +73,7 @@ $ file inner-repo
 inner-repo: directory
 ```
 
-But if you clone `inner-repo` afresh, you'll see that `inner-repo` is utterly empty:
+`inner-repo` is a real git repo, but if you clone `outer-repo` afresh, you'll see that the `inner-repo` directory is empty.
 ```
 $ ls -halt inner-repo
 total 0
@@ -81,9 +81,9 @@ drwxr-xr-x  5 dmitry  staff   160B 19 Feb 20:33 ..
 drwxr-xr-x  2 dmitry  staff    64B 19 Feb 20:28 .
 ```
 
-So, how does git know anything about `inner-repo`? For example, if we ran `git submodule update --init --recursive` to actually initialize `inner-repo`, how would git know where to get the data?
+So how does git know anything about `inner-repo`? How does it know where to download it from? This instroduces the first file used for tracking submoduiles: `.gitmodules`.
 
-This is stored in a file `.gitmodules`:
+If you repo uses submodules, this file appears in the root directory of your repo (e.g. the same place you might put .gitignore).
 ```
 $ cat .gitmodules
 [submodule "inner-repo"]
@@ -91,14 +91,45 @@ $ cat .gitmodules
         url = https://github.com/dmazin/inner-repo.git
 ```
 
-`.gitmodules` lives in your normal repo, _outside_ `.git`. That is, it's totally normal file. This is nice, because changes to it are tracked just like any other file.
+.gitmodules is a normal file. For example, if you want to change the remote URL of `inner-repo`, that change will be tracked in git like any other change. Because it works like normal files, it's not confusing, so that's nice. What _is_ confusing is that it does not mention which commit of the submodule the `outer-repo` wants. (TODO: this relies on me earlier explaining that a repo points at a specific comit) So where is _that_ stored?
 
 # How does git know which commit of the submodule to point to?
-However, that file doesn't store everything. The outer repo _always_ points at a specific commit of the submodule: it never simply points at a branch or tag (the way that a Docker image can always point at "latest").
+Submodules become obvious once you understand how exactly git tracks them. Let’s peek inside .git, where git stores your repo’s state.
 
-It has always confused me that `.gitmodules` does not store this information. If not there, then where is it stored?
 
-One would be tempted to say that this is stored in the git repo of the submodule, that is, somewhere in `inner-repo/.git`. But, no, recall that `inner-repo` is empty.
+## What's inside .git?
+First, recall the state of things: we have cloned `webapp`, but have not done anything to initialize the submodule `library`. Yet, somehow git knows what commit of `library` to use. We're firuging out how. (this last sentence may be unnecessary)
+
+This is what `.git` looks like.
+```bash
+$ ls .git
+HEAD        description index       logs        packed-refs
+config      hooks       info        objects     refs
+```
+
+What you're looking at is a database that contains the entire state of your repo. The most interesting things to us are `refs` and `objects`: not only are they directories, but also git concepts. Let's introduce them.
+
+### refs
+You can think of a ref as a pointer or, of course, a reference. The only information they hold is the identifier of something else. The most famous example of a ref is a **branch**.
+
+#### branches
+A branch is merely a reference to a commit. Specifically, it's a reference to the latest commit of a list of commits. That means that a branch is a lightweight thing, and when you do something like `git checkout -b dmazin/scary-branch-backup` what you're really saying is "make it easy for me to remember the last commit before I did something scary".
+
+Our only branch is `main`, and you can see it here:
+```bash
+$ ls .git/refs/heads
+main
+```
+
+The entirety of that file is the latest commit of the branch.
+```
+$ cat .git/refs/heads/main
+df04c42416fa9c5e8c3a324a3dec100ce155b0c9
+```
+
+
+#### HEAD
+
 
 # A brief primer on git internals
 To understand how git tracks which commit of a submodule a repo points to, it's helpful to understand how git tracks things in the first place.
@@ -138,7 +169,7 @@ HEAD is now at 1145d81 something?
 dmitry@dmitry-mba-m1 [21:33:21] [~/dev/outer-repo] git:(1145d81)
 
 As you can see, HEAD now simply points at a specific commit:
-```
+```bash
 $ cat .git/HEAD
 1145d813c06535c27534a68644dbdb034b475239
 ```
