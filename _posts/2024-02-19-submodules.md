@@ -81,6 +81,7 @@ drwxr-xr-x  5 dmitry  staff   160B 19 Feb 20:33 ..
 drwxr-xr-x  2 dmitry  staff    64B 19 Feb 20:28 .
 ```
 
+**what follows is stuff i wrote feb 20**
 So how does git know anything about `inner-repo`? How does it know where to download it from? This instroduces the first file used for tracking submoduiles: `.gitmodules`.
 
 If you repo uses submodules, this file appears in the root directory of your repo (e.g. the same place you might put .gitignore).
@@ -96,6 +97,7 @@ $ cat .gitmodules
 # How does git know which commit of the submodule to point to?
 Submodules become obvious once you understand how exactly git tracks them. Let’s peek inside .git, where git stores your repo’s state.
 
+What follows is a brief primer on .git. If you are comfortable with the contents of .git, feel free to skip to [TODO]().
 
 ## What's inside .git?
 First, recall the state of things: we have cloned `webapp`, but have not done anything to initialize the submodule `library`. Yet, somehow git knows what commit of `library` to use. We're firuging out how. (this last sentence may be unnecessary)
@@ -124,12 +126,84 @@ main
 The entirety of that file is the latest commit of the branch.
 ```
 $ cat .git/refs/heads/main
-df04c42416fa9c5e8c3a324a3dec100ce155b0c9
+6c607c1cea9feffb63cad6ec0e6c38190c2d20a5
 ```
 
+Let's cover the next most important kind of ref: HEAD.
 
 #### HEAD
+How does git track which branch you have actually checked out? You guessed it -- a ref. All it does it point to the branch you've checked out.
 
+```
+$ cat .git/HEAD
+ref: refs/heads/main
+```
+
+Have you ever seen something like this?
+```
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+```
+
+You get there by checking out a specific commit:
+```
+$ git co 49f1966cc55fd39c23d7d5d44625dd520818d030
+HEAD is now at 49f1966 add tests
+
+$ git st
+## HEAD (no branch)
+```
+
+You can see that HEAD now points to a specific commit.
+```
+$ cat .git/HEAD
+49f1966cc55fd39c23d7d5d44625dd520818d030
+```
+
+branches and HEAD are sufficient to track the local state of your repo. There are other refs, for tracking what's going on remotely, but we don't need to worry about that to understand submodules.
+
+HEAD points to branches, and branches point to commits. Naturally, let's explain what a commit is.
+
+### objects
+refs need to point to _something_, right? They can point to other refs, but at some point, there needs to be some substance.
+
+#### commit
+Commits are only slightly heavier than branches. The only data they really store is the commit message and a little metadata. For the most part, commits are actually also references.
+
+Earlier, we saw that the main branch points to a specific commit.
+```
+$ cat .git/refs/heads/main
+6c607c1cea9feffb63cad6ec0e6c38190c2d20a5
+```
+
+What _is_ a commit? Like, is it a file? Sort of! If we want to, we are totally allowed to go visit the file, but it's not human-readable.
+
+```
+$ cat .git/objects/6c/607c1cea9feffb63cad6ec0e6c38190c2d20a5
+x10
+
+Hi6Y8!-
+a(      ~%BӸ]-"P@w,Fg"!g{
+'zRBLh6Vw<i,(Ytd]Kaf8|5H        tv3wXWQPU6^먾IW%
+```
+
+The really cool thing is that git is shipped with utilities for reading object files.
+```
+$ git cat-file -p 6c607c1cea9feffb63cad6ec0e6c38190c2d20a5
+
+tree cfa0eb4abae0b96ce3ef9caaea847ab58709f9d3
+parent df04c42416fa9c5e8c3a324a3dec100ce155b0c9
+author Dmitry Mazin <dm@cyberdemon.org> 1708461639 +0000
+committer Dmitry Mazin <dm@cyberdemon.org> 1708461639 +0000
+
+add test README
+```
+
+Here we see that a commit has two references: one to its parent, and one to a "tree".
+
+**end of stuff i wrote feb 20**
+**what follows is stuff i wrote on feb 19**
 
 # A brief primer on git internals
 To understand how git tracks which commit of a submodule a repo points to, it's helpful to understand how git tracks things in the first place.
@@ -216,3 +290,130 @@ What does it point to? A _tree_.
 # What's a tree?
 
 [2] need to make clear that it's not the same as a branch or HEAD, which are *refs*
+
+
+**everything below was written feb 21**
+Submodules seem to cause universal grumbling. They were a major pain in my ass. So, I sat down and learned how they work. Now they are just a slight pain in the ass. Join me on a journey into git's internals, and they can be a slight pain in your ass too.
+
+The implementation of submodules is fairly simple, so it will take only a bit of your time to prevent any further confusion about them.
+
+I'm going to start by explaining some important concepts of submodules. After that, we'll dive into how they work, and what's really doing on during common confusing scenarios.
+
+## What's a submodule?
+A git submodule is a full repo that's been nested inside another repo. Any repo can be a submodule of another.
+
+
+This will make more sense if we use examples, so let me describe a toy example that we'll be playing with.
+
+## The lay of the land
+Suppose you are working on a webapp. Call this repo **webapp**. Here's what the repo looks like.
+```
+$ ls -al
+total 16
+drwxr-xr-x   7 dmitry  staff   224 21 Feb 19:46 .
+drwxr-xr-x  75 dmitry  staff  2400 20 Feb 20:07 ..
+drwxr-xr-x  15 dmitry  staff   480 21 Feb 19:46 .git
+-rw-r--r--   1 dmitry  staff     4 21 Feb 19:46 README.md
+drwxr-xr-x   4 dmitry  staff   128 20 Feb 20:57 tests
+```
+
+Say you want to use some library. For example, maybe it defines some Python modules you can import. That stuff lives in a different git repo. Call this repo **library**. Here's what it looks like.
+```
+$ ls -al
+total 16
+drwxr-xr-x  5 dmitry  staff  160 21 Feb 19:49 .
+drwxr-xr-x  6 dmitry  staff  192 20 Feb 20:12 ..
+-rw-r--r--  1 dmitry  staff   32 20 Feb 20:06 .git
+-rw-r--r--  1 dmitry  staff   27 21 Feb 19:18 README.md
+-rw-r--r--  1 dmitry  staff    0 21 Feb 19:49 my_cool_functions.py
+```
+
+## How do I use "library" as a submodule?
+To use a repo as a submodule, invoke `git submodule add <url> <name of directory to stick the repo into>`.
+
+So, let's do that.
+```
+$ git submodule add https://github.com/dmazin/library.git library
+Cloning into '/Users/dmitry/dev/webapp/library'...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0
+Receiving objects: 100% (3/3), done.
+```
+
+This creates a (for now) empty directory named `library`, and a file called `.gitmodules`.
+
+`.gitmodules` starts to explain how git tracks submodules.
+
+## How does git know where to download a submodule from?
+You only need to add a submodule to a repo once. If someone else then clones your repo, they don't have to add it. This is because of `.gitmodules`. It tells git where to download a submodule, and where to stick it.
+
+```
+$ cat .gitmodules
+[submodule "library"]
+        path = library
+        url = https://github.com/dmazin/library.git
+```
+
+The nice thing about `.gitmodules` is that it's a regular file, tracked the regular way in git. That makes it not confusing.
+
+However, this is not the end of the story of how git tracks submodules. To see why, we need to know one more core conceptual fact.
+
+## A submodule is always pinned to a specific commit
+You know how package managers let you be relatively fuzzy when specifying a package version ("get me any version of requests so long as it's 2.x.x"), or to pin an exact version ("use requests 2.31.0 exactly").
+
+Submodules can _only_ be pinned to a specific commit. This is because a submodule isn't a package; it's code that you have embedded in another repo. Things would be pretty confusing if two people could check out the same commit of the webapp repo, yet on one person's computer the `library` directory had contents that differed from the contents of `library` on another computer.
+
+Wait, why am I saying "check out a commit"? We don't usually check out commits, we check out branches. We need to take a brief detour so that we can be precise with our language.
+
+## Detour: a branch is just a pointer to a commit
+We think of a branch as a set of commits, or even as the state of a repo's files. Internally, though, *commits* store the state of the git repo. On the other hand, a branch is an extremely light-weight thing: it's a pointer to a commit.
+
+So if you make a commit to `main` and push, what you're really saying "here's a new commit, and, y'all's main branches should now point to my commit".
+
+Let's prove this by looking at the tiny file that represents the `main` branch.
+
+First, note I am currently on the `main` branch of `webapp`. Here's the latest commit:
+```
+$ git log -1
+commit 41fd61ed3249a93434fb1926d5879142e63f96dd (HEAD -> main, origin/main, origin/HEAD)
+Author: Dmitry Mazin <dm@cyberdemon.org>
+Date:   Wed Feb 21 19:46:53 2024 +0000
+
+    add readme
+```
+
+See for yourself that the contents of `main` on disk is simply the identifier of that same commit:
+```
+$ cat .git/refs/heads/main
+41fd61ed3249a93434fb1926d5879142e63f96dd
+```
+
+This is why I say that, when you check out a branch, you're really checking out a commit. Commits store the state of your repo, not branches.
+
+Back to submodules.
+
+## How does git track which commit of a submodule we're supposed to use?
+Wait... look back at `.gitmodules`. It doesn't specify a commit. Then how does git track which commit of a submodule we're supposed to use?
+
+*here I can explain commits, trees, etc*
+
+**unused attempt to explain how submodules must use a specific commit**
+In Python, you can use a package manager called pip. pip allows you to use a "requirements" file, where you specify whatever packages you want, along with their versions. This file is always tracked via git.
+
+So, let's say your `requirements.txt` looks like:
+```
+requests>=2,<3
+```
+
+When you commit this file, what you're saying is, "when you run a Python app after checking out commit abcd, you can use any version of requests so long as the version is, like, 2.x.x". 
+
+Submodules aren't like that. Instead, they are more like a requirements file that pins to a specific version, like so:
+```
+requests==2.31.0
+```
+
+That is, you're saying, "if you're running after checking out commit a23d, you must use requests 2.31.0".
+
+Submodules work a lot like that. git does _not_ say, "your submodule should be on the main branch." It says, "your submodule should use exactly a specific commit."
+**end**
