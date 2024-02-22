@@ -1,3 +1,13 @@
+---
+layout: post
+title: "Demystifying git submodules"
+byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
+date: 2023-02-22
+tags:
+    - git
+    - featured
+description: TODO
+---
 # How git submodules work
 submodules, as a feature of git, seem to cause universal grumbling. They certainly made me grumble, until recently I finally sat down and read about how they work. It turns out that git submodules are simple. My personal experience is that learning how they work has made them a lot less painful.
 
@@ -396,8 +406,70 @@ Back to submodules.
 ## How does git track which commit of a submodule we're supposed to use?
 Wait... look back at `.gitmodules`. It doesn't specify a commit. Then how does git track which commit of a submodule we're supposed to use?
 
-*here I can explain commits, trees, etc*
+To answer that, let's briefly introduce how git tracks anything. In git, there are 3 main objects: **commits**, **trees**, and **blobs**.
 
+Roughly, **commits** represent history, **trees** represent directory structure, and **blobs** hold actual file contents.
+
+Every commit points to a tree. Basically, this is akin to saying "if you check out commit 41fd, when you `ls` you should see such-and-such files".
+
+### What's in a commit?
+Let's see for ourselves by looking at the commit we mentioned above, `41fd61ed3249a93434fb1926d5879142e63f96dd`.
+
+```
+$ cat .git/objects/41/fd61ed3249a93434fb1926d5879142e63f96dd
+x;0
+   @s
+HI|$X9c!-PNOx{:wpzŜ>)uEb)4XK#[VʓNS      I2j`lFvFC\Ny+oEh]8
+                                                          z8a\C"Д
+                                                                 GT%
+```
+
+Oh no! It's binary! That's fine. git isn't trying to hide anything. It comes out-of-the-box with tools for viewing objects: `git cat-file`..
+
+```
+$ git cat-file -p 41fd61ed3249a93434fb1926d5879142e63f96dd
+tree 69d049cd037debf8c12bd7bb092e762584888ab1
+parent 6c607c1cea9feffb63cad6ec0e6c38190c2d20a5
+author Dmitry Mazin <dm@cyberdemon.org> 1708544813 +0000
+committer Dmitry Mazin <dm@cyberdemon.org> 1708544813 +0000
+
+add readme
+```
+
+As you can see, a commit points to its parent commit (the commit that came before it), as well as to a tree.
+
+### What's in a tree?
+I said a tree represents directory structure, and let's make that concrete by looking at the tree referenced by the commit, `69d049cd037debf8c12bd7bb092e762584888ab1`.
+
+```
+$ git cat-file -p 69d049cd037debf8c12bd7bb092e762584888ab1
+100644 blob 6feaf03c7a9c805ff734a90a245a417e6a6c099b    .gitmodules
+100644 blob a72832b303c4d4f1833da79fc8a566e8a0eb37af    README.md
+160000 commit aa695bbda27b1023a35d8b0a8d1d937ce5d25ce2  library
+040000 tree a425c23ded8892f901dee7fbc8d4c5714bdcc40d    tests
+```
+
+Ooh, so that's interesting. The tree points to another tree (`tests/`)! This makes sense. Think of the way that directories contain other directories.
+
+You can also see that the tree points to a couple blobs, representing regular files -- `.gitmodules` and `README.md`.
+
+But what's that? It also points to a `commit`.
+```
+160000 commit aa695bbda27b1023a35d8b0a8d1d937ce5d25ce2  library
+```
+
+That's a little strange. But the fact that it's called `library` gives it away: this is our submodule. So this is how git tracks submodules: as a tree that points to a commit.
+
+## Recap: a submodule is always pinned to a specific commit
+This is why I say that a submodule is pinned to a specific commit.
+
+The `main` branch of `webapp` points to commit `41fd61ed3249a93434fb1926d5879142e63f96dd`, which points to tree `69d049cd037debf8c12bd7bb092e762584888ab1`, which points to submodule commit `aa695bbda27b1023a35d8b0a8d1d937ce5d25ce2`.
+
+So when you check out commit `41fd`, you accept that `library` should use commit `aa69`.
+
+
+
+### dump
 **unused attempt to explain how submodules must use a specific commit**
 In Python, you can use a package manager called pip. pip allows you to use a "requirements" file, where you specify whatever packages you want, along with their versions. This file is always tracked via git.
 
