@@ -241,29 +241,60 @@ committer Dmitry Mazin <dm@cyberdemon.org> 1708717288 +0000
 point submodule to newest commit
 ```
 
-What we want to focus on is the _tree_. A tree describes the contents of your repo.
-Recall the contents of `webapp`:
+You can see that the commit object stores the commit message, the author, and it points to another commit. But let's focus on `tree 92018fc6ac6e71ea3dfb57e2fab9d3fe23b6fdf4`.
+
+Briefly put, the _tree_ object represents the directory listing of your repo. When you think trees, think directories.
+
+The easiest way is to see it for yourself.
+
+First, recall the contents of the repo.
 ```
-$ ls -a
-.git        .gitmodules README.md   library     tests
+$ ls -a webapp
+.git
+.gitmodules
+README.md
+library
+tests
 ```
 
-Now, let's take a look at the tree from above. Compare it to the output of `ls`.
+Now, let's inspect the tree object.
 ```
 $ git cat-file -p 92018fc6ac6e71ea3dfb57e2fab9d3fe23b6fdf4
 100644 blob 6feaf03c7a9c805ff734a90a245a417e6a6c099b    .gitmodules
 100644 blob a72832b303c4d4f1833da79fc8a566e8a0eb37af    README.md
-160000 commit 2fb3d7b854c6779ebb8cfc9773470cd2bf4022ef  library
 040000 tree a425c23ded8892f901dee7fbc8d4c5714bdcc40d    tests
+160000 commit 2fb3d7b854c6779ebb8cfc9773470cd2bf4022ef  library
 ```
 
-Note how `README.md` and `.gitmodules` both make an appearance. But, look, what else do you see?
+See how it lists all the files tracked by git?
+
+Let's unpack this further.
+
+Briefly, **blobs** store the file contents, **trees** are other directories (just like directories can hold directories, trees can point to trees), and -- what's what? -- a **commit** object pointing to `library`!
+
 ```
 160000 commit 2fb3d7b854c6779ebb8cfc9773470cd2bf4022ef  library
 ```
 
-There it is -- library! 
+So... a commit references a tree, and the tree referefences yet another commit? Yes.
 
+`commit1->tree->commit2`? YES.
+
+It's pretty strange.
+
+`tree->blob` and `tree->tree` make sense: that's just how directories work. Think `directory->file` and `directory->directory`.
+
+But `tree->commit` doesn't map to any concept in the filesystem, nor is it based on any other git feature. We have nothing, conceptually, to hang our hat on. Plus, this way of tracking submodules is a one-off: so far as I know, **`tree->commit` is exclusively used to implement submodules**.
+
+Let's use this knowledge to unpack the situation.
+
+## Unpacking the situation
+Let's rewind.
+
+Lida updated `webapp`, pointing `library` at `2fb3d7`. When you pulled, git did not update the submodule for you. git generates `git diff` by comparing your working tree (your local files) to the state specified by the latest commit. Because the submodule still points to `aa695`, git thinks that you want to change `2fb3d7` to `aa695`.
+
+Let's `cd` into library and see what its latest commit is.
+```
 $ cd library
 $ git log -1
 commit aa695bbda27b1023a35d8b0a8d1d937ce5d25ce2 (HEAD)
@@ -273,47 +304,37 @@ Date:   Tue Feb 20 20:05:29 2024 +0000
     README
 ```
 
-That matches `aa695bb` above.
+See? It still points at `aa695`.
 
-What about the other part of the sentence?
+But how do you actually get out of this situation?
 
-
-## How does git track which commit of a submodule we're supposed to use?
-One potential answer is `.gitmodules`, but no. There is no mention of a commit in `.gitmodules`.
+## How to update a submodule
+One way to rectify it would be to go into `library` and literally check out the referenced commit:
 ```
-$ cat .gitmodules
-[submodule "library"]
-        path = library
-        url = https://github.com/dmazin/library.git
-```
+$ cd library
 
-Then how does git track it?
+$ git checkout 2fb3d7b854c6779ebb8cfc9773470cd2bf4022ef
+Previous HEAD position was aa695bb README
+HEAD is now at 2fb3d7b add some cool functions
 
-To answer that, let's briefly introduce how git tracks anything.
+$ cd ..
 
-## Detour: How git tracks stuff
-How does git actually track the state of your files?
+$ git st
+## main...origin/main
 
-Let's say you have checked out the main branch. How does git know what the contents of your repo should become?
-
-### branches
-The truth about branches is that they are embarrassingly simple. We think of them as collections of commits, but internally a branch is just a pointer to a commit.
-
-We can see for ourselves:
-```
-$ cat .git/refs/heads/main
-98fde8f68459b439e59b77aa528a9d7f39af12a2
+$ git diff
 ```
 
-`98fde` is just the latest commit of the `main` branch. See for yourself:
-```
-$ git log -1 | head -n 1
-commit 98fde8f68459b439e59b77aa528a9d7f39af12a2
-```
+See? Now git says there are no changes.
 
-So, when you check out the main branch, you're actually checking out a commit.
+But, you don't actually need to do that.
 
-But what is a commit, really?
+You don't actually need to do that: `git submodule update` does the same thing.
+
+Usually, I use `git submodule update --init --recursive`. `--init` downloads the submodule if it hasn't already been downloaded; and is a no-op otherwise, so it's safe to always pass. `--recursive` is used in cases the submodules themselves reference other submodules (!).
+
+
+
 
 ### commits
 A commit is how git tracks history. I mean this literally: every commit references the previous commit, and so this linked list of commits is the data structure known as "git history".
@@ -354,77 +375,6 @@ $ git cat-file -p 92018fc6ac6e71ea3dfb57e2fab9d3fe23b6fdf4
 This is worth picking apart a bit.
 
 As you can see, the tree references yet another tree -- `tests`: 
-```
-040000 tree a425c23ded8892f901dee7fbc8d4c5714bdcc40d    tests
-```
-
-This is why this object is called a "tree" -- it's very similar to directories. Just like a directory references other directories, a tree references other trees.
-
-You can see that the tree also references "blobs":
-```
-100644 blob a72832b303c4d4f1833da79fc8a566e8a0eb37af    README.md
-```
-
-blobs store actual file contents.
-```
-$ git cat-file -p 6feaf03c7a9c805ff734a90a245a417e6a6c099b
-[submodule "library"]
-        path = library
-        url = https://github.com/dmazin/library.git
-```
-
-But, finally, see that the tree references... a commit???
-```
-160000 commit 2fb3d7b854c6779ebb8cfc9773470cd2bf4022ef  library
-```
-
-The name -- `library` -- gives it away. This is how git tracks submodules.
-
-### How git really tracks submodules
-Let's recap: the main branch references a commit, which references a tree, which references a commit of a different repo. As far as I know, when a tree references a commit, it always means "submodule".
-
-This proves that every commit of webapp specifies an _exact_ commit of library to use: each commit specifies exactly one tree, which specifies exactly one commit of library.
-
-But what about our confusing scenario?
-
-## How to update a submodule
-Recall our git diff:
-```
-$ git diff
-diff --git a/library b/library
-index 2fb3d7b..aa695bb 160000
---- a/library
-+++ b/library
-@@ -1 +1 @@
--Subproject commit 2fb3d7b854c6779ebb8cfc9773470cd2bf4022ef
-+Subproject commit aa695bbda27b1023a35d8b0a8d1d937ce5d25ce2
-```
-
-We can now use our knowledge to answer what's going on: one of our colleagues updated `main` to use a different commit of `library` than we are currently using. **When you pull/checkout branches, git does not automatically update submodules for you.** So, your repo state does not currently match the state indicated by the latest commit of main.
-
-One way to rectify it would be to go into `library` and literally check out the referenced commit:
-```
-$ cd library
-
-$ git checkout 2fb3d7b854c6779ebb8cfc9773470cd2bf4022ef
-Previous HEAD position was aa695bb README
-HEAD is now at 2fb3d7b add some cool functions
-
-$ cd ..
-
-$ git st
-## main...origin/main
-
-$ git diff
-```
-
-See? Now git says there are no changes.
-
-You don't actually need to do that: `git submodule update` does the same thing.
-
-Usually, I use `git submodule update --init --recursive`. `--init` downloads the submodule if it hasn't already been downloaded; and is a no-op otherwise, so it's safe to always pass. `--recursive` is used in cases the submodules themselves reference other submodules (!).
-
-We've all learned something today. Let's recap.
 
 ## Recap
 It's possible to embed a repo within another repo. This is called a submodule.
@@ -434,6 +384,3 @@ Each commit of the outer repo always specifies _exactly_ which commit of the sub
 When you check out commits, git doesn't automatically update submodules for you. You have to do that using `git submodule update`.
 
 Hopefully, understanding how git tracks submodules makes them less confusing. It made them less confusing to me. Feel free to write me if anything still confuses you.
-
-## Notes
-[1] `git cat-file is a nifty utility that git ships with out-of-the-box. Objects are stored in binary and with some other special optimizations, so this lets us view them.
