@@ -9,20 +9,15 @@ tags:
 description: TODO
 ---
 # TODO
-- [ ] Julia Evans found the fact that git doesn't automatically update submodules surprising. Like she says, it "breaks git's model". I should focus on that more at the beginning.
-- [ ] One thing she suggested I expand on is what happens after you git pull. "After you git pull, git add used to be a no op" but (paraphrasing now) now you will undo the person's work.
-- [ ] Julia suggested cutting discussion of what a git branch is.
-- [ ] In fact, she suggested cutting all history and just focusing on a single commit.
-    - [ ] If I don't cut that, Vaibhav suggested that a commit isn't necessarily a linked list; it's a graph.
+- [x] Julia Evans found the fact that git doesn't automatically update submodules surprising. Like she says, it "breaks git's model". I should focus on that more at the beginning.
+- [x] One thing she suggested I expand on is what happens after you git pull. "After you git pull, git add used to be a no op" but (paraphrasing now) now you will undo the person's work.
+- [x] Julia suggested cutting discussion of what a git branch is.
+- [x] In fact, she suggested cutting all history and just focusing on a single commit.
+    - [-] If I don't cut that, Vaibhav suggested that a commit isn't necessarily a linked list; it's a graph.
 - [ ] Question from Julia: "does `git config submodule.recurse true` make it automatically update submodules?"
 - [ ] Julia mentioned an interesting post: https://diziet.dreamwidth.org/14666.html. I should see if I undertand the post. She mentioned that she still didn't understand some things after reading my psot
-- [ ] make shas easier to read
+- [x] make shas easier to read
 - [ ] each prompt should show the pwd
-```
-editing files and trying to commit them no longer reliably works
-git ls-files can disagree with git log and git cat-file
-" Some of the defects occur even if you don’t git submodule init"
-```
 - [ ] rearrange article as recommended by perplexity: https://www.perplexity.ai/search/The-flow-of-mISsQcI3SE.K2WOwkKVjbg#1
 ---
 
@@ -47,31 +42,14 @@ README.md
 my_cool_functions.py
 ```
 
-With those examples, let's dive into submodules.
-
-## What's a submodule?
-A git submodule is a full repo that's been nested inside another repo. Any repo can be a submodule of another.
-
-That doesn't seem so confusing, does it? However, there are two important, and tricky, facts about submodules.
-
-### 1. A submodule is always pinned to a specific commit
-You know how package managers let you be relatively fuzzy when specifying a package version ("get me any version of requests so long as it's 2.x.x"), or to pin an exact version ("use requests 2.31.0 exactly")?
-
-Submodules can _only_ be pinned to a specific commit. This is because a submodule isn't a package; it's code that you have embedded in another repo. I think the reason for this pinning is to force us to specify exactly what version of code we're working with.
-
-### 2. git does not automatically update submodules
-If you clone `webapp`, git _will not_ automatically download `library` for you.
-
-Similarly, if a collaborator points webapp at a new commit of library, and you `git pull`, git _will not_ automatically update `library` for you.
-
-These two facts lead to confusion. I think I can best illustrate this via a dramatic re-enactment of something that has happened to me multiple times before I understood submodules.
+Before we jump into understanding submodules, let's show what it looks like *not* to understand them. I think I can best illustrate this via a dramatic re-enactment of something that has happened to me multiple times before I understood submodules.
 
 ## A day in the life of someone who uses submodules
 Ah, 2013. What a time to be a "full-stack engineer"!
 
 I wonder what contributions are awaiting me on the main branch?
 
-```
+```bash
 $ git pull
 <some output>
 ```
@@ -124,40 +102,41 @@ $ git st
 
 I am really confused now!
 
-Well, usually when I make local changes, I need to `git add` them. But, huh, I never have to `git add` after `git pull`, and certainly not after doing a full `git reset --hard`...
+Usually, when `git diff` shows an `M`, it's because _I_ modified something. I guess one way to address that is to `git add` the change.
 
-```
-$ git add .
-$ git commit
-$ git push
-$ git st
-# (no output)
-```
+But if you do that, you will, without knowing it, actually be _rolling back_ a change someone else made. To understand why, read on.
 
-Nice! `git st` now shows no changes.
+What I did not know is that while `library` looks like a directory in my local filesystem, `git` does not really see it as a directory. It sees it as a _submodule_.
 
-(some time passes)
+## What's a submodule?
+A git submodule is a full repo that's been nested inside another repo. Any repo can be a submodule of another.
 
-Oh no, I just put up a PR and my coworker is saying that I undid their changes! What are they talking about?
+So, `library` is a full repo that has been nested inside `webapp` as a submodule.
 
-To understand what's going on, let's go into slow motion and explain what happened.
+That doesn't seem so confusing, does it? However, there are two important, and tricky, facts about submodules.
 
-## What happens when a submodule gets updated
+### 1. A submodule is always pinned to a specific commit
+You know how package managers let you be relatively fuzzy when specifying a package version ("get me any version of requests so long as it's 2.x.x"), or to pin an exact version ("use requests 2.31.0 exactly")?
+
+Submodules can _only_ be pinned to a specific commit. This is because a submodule isn't a package; it's code that you have embedded in another repo. I think the reason for this pinning is to force us to specify exactly what version of code we're working with.
+
+### 2. git does not automatically update submodules
+If you clone `webapp`, git _will not_ automatically download `library` for you.
+
+Similarly, if a collaborator points webapp at a new commit of library, and you `git pull`, git _will not_ automatically update `library` for you.
+
+## What happened before I `git pull`ed
 Let's say that, the day before the above monologue took place, my coworker wanted to add `my_really_cool_function()` to `my_cool_functions.py` in `library`. How did they do that?
 
 Updating library itself was straightforward: because `library` is a normal repo, they added a new commit to the `main` branch of library: `library_old_commit_sha`.
 
 Great! Now, how can `webapp` take advantage of `my_really_cool_function()`?
 
-Here is where we must remember one of the tricky facts about submodule: each repo points to an exact commit of `library`.
+So, my coworker added a new commit to `webapp` -- `webapp_new_commit_sha` -- which points to `library_new_commit_sha`.
 
-So, my coworker added a new commit to `webapp` -- call it `webapp_new_commit_sha` -- which points to `library_new_commit_sha`. (We'll cover how to do this later in the article) (TODO)
-
-But `git pull`ing this new commit is not enough.
+But when I `git pull`ed `webapp_new_commit_sha`, git _did not_ automatically point `library` to `library_new_commit_sha`.
 
 ## Proving that git pull does not update submodules
-Here we must remember the second tricky fact about submodules: git does not automatically update submodules when you `git pull`.
-
 Let's illustrate this.
 
 Because `library` is a full repo, we can see what its latest commit is.
@@ -175,6 +154,7 @@ Date:   Tue Feb 20 20:05:29 2024 +0000
 _git does not automatically update submodules_, so `library` still points at the old commit.
 
 This helps explain why `git diff` looks weird.
+
 
 ## Understanding why git diff says I modified something
 Let's think about the way `git` generates `git diff`. 
