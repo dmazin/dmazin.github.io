@@ -8,82 +8,75 @@ tags:
     - featured
 description: TODO
 ---
-# TODO
-- [x] Julia Evans found the fact that git doesn't automatically update submodules surprising. Like she says, it "breaks git's model". I should focus on that more at the beginning.
-- [x] One thing she suggested I expand on is what happens after you git pull. "After you git pull, git add used to be a no op" but (paraphrasing now) now you will undo the person's work.
-- [x] Julia suggested cutting discussion of what a git branch is.
-- [x] In fact, she suggested cutting all history and just focusing on a single commit.
-    - [-] If I don't cut that, Vaibhav suggested that a commit isn't necessarily a linked list; it's a graph.
-- [x] Question from Julia: "does `git config submodule.recurse true` make it automatically update submodules?"
-- [ ] Julia mentioned an interesting post: https://diziet.dreamwidth.org/14666.html. I should see if I undertand the post. She mentioned that she still didn't understand some things after reading my psot
-- [x] make shas easier to read
-- [ ] each prompt should show the pwd
-- [x] rearrange article as recommended by perplexity: https://www.perplexity.ai/search/The-flow-of-mISsQcI3SE.K2WOwkKVjbg#1
-- [x] one recurser mentioned that sometimes people override the work of others by comitting a submodule change by accident; this should be noted
-    - for example it seems easy to do this if you don't `git st` before beginning your work. you may do some stuff and then commit the submodule change without noticing
-- [x] mention git clone --recursive
----
+Throughout my career, I have found git submodules terribly confusing. Because I did not understand them, I kept getting myself into frustrating situations.
 
-Git submodules cause a fair amount of grumbling. They certainly have made me grumble, because I didn't understand them, and kept getting myself into confusing situations that I couldn't fix.
+So, I finally sat down and learned how git tracks submodules. Turns out, it's not complex at all. It's just different from how git tracks regular files. It's just one more thing you have to learn.
 
-So, I finally sat down and learned how git tracks submodules. Turns out, it's not that bad. But also, the way git tracks submodules is definitely different from how it tracks other stuff, so it makes sense that it's confusing.
-
-Note that I do _not_ discuss if submodules are "good"/"bad", nor do I discuss if you *should* use them. I also do not discuss alternatives. The goal of my article is only to explain how submodules work.
-
-Anyway, it's pretty great to not be confused anymore, so read on.
+In this article, I'll explain exactly what I needed to know in order to work with submodules without inflicting self-damage. That said, I will not discuss if submodules are good or bad, or if you should use them or not (a perfectly valid discussion, just not my goal).
 
 ## The lay of the land
-This will make more sense if we use examples, so let me describe a toy example that we'll be playing with.
+This article will make more sense if we use concrete examples.
 
-Suppose you are working on a webapp. Call this repo **webapp**. Here's what the repo looks like.
+Allow me to describe a toy webapp we're building. Call this repo `webapp`. Here are the contents of the repo.
 ```
+$ [/webapp] ls
+
+.git/
 README.md
 tests/
 ```
 
-Say you want to use some library. For example, maybe the library defines some Python modules you want to import.
-
-That stuff lives in a different git repo called **library**. Here's what it looks like.
+Say you want to import some library. It lives in its own repo, `library`.
 ```
+$ [/library] ls
+
+.git/
 README.md
 my_cool_functions.py
 ```
 
-## A day in the life of someone who uses submodules
-Before we understand submodules, let's see what it looks like *not* to understand them. I think I can best illustrate this via a dramatic re-enactment of something that has happened to me multiple times before I understood submodules.
+Shortly, I'll explain how submodules work. But, first, let me dramatically re-enact something that has happened to me multiple times. This is what it looks like to use submodules without understanding them.
 
-Ah, 2018. What a time to be a "full-stack engineer"! I wonder what contributions await me on the main branch!
+## A day in the life of someone who doesn't understand submodules
+Ah, 2012. What a time to be a "full-stack engineer"! I wonder what contributions await me on the main branch!
+
+(For the sake of readabitlity, in this article, instead of using real commit SHAs, I'm going to use fake descriptive ones)
+
+Let's pull to make sure I'm up-to-date with the remote.
 
 ```bash
-$ git pull
+$ [/webapp] git pull
 
-<some output>
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (1/1), done.
+remote: Total 2 (delta 1), reused 2 (delta 1), pack-reused 0
+Unpacking objects: 100% (2/2), 237 bytes | 118.00 KiB/s, done.
+From https://github.com/dmazin/webapp
+   98fde8f..ce4b30d  main       -> origin/main
+Updating webapp_old_commit_sha..webapp_new_commit_sha
+Fast-forward
+ library | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 ```
 
-Let's just confirm that my working tree is clean.
+After I pull, I like to confirm that my working tree is clean.
 
 ```
-$ git st
+$ [/webapp] git st
 
 ## main...origin/main
  M library
 ```
 
-What's this? I've made modifications? To `library`?
+What's this? I've made modifications to `library`? I never touch that directory.
 
-Hmmm... looks like `library` is a directory. What's in it?
-```
-$ ls library
-
-README.md            my_cool_functions.py
-```
-
-That's weird. I'm not used to git saying a whole _directory_ has been modified. Usually it just says a specific _file_ has been modified.
+It's weird that I've modified a _directory_. Usually git just says I've modified a specific _file_.
 
 Well, what does `git diff` have to say?
 
 ```
-$ git diff
+$ [/webapp] git diff
 
 diff --git a/library b/library
 index library_old_commit_sha..library_new_commit_sha 160000
@@ -94,22 +87,20 @@ index library_old_commit_sha..library_new_commit_sha 160000
 +Subproject commit library_old_commit_sha
 ```
 
-(For the sake of readabitlity, in this article, instead of using real commit SHAs, I'm going to use fake descriptive ones)
-
-Apparently, I have deleted `Subproject commit library_new_commit_sha` and added `Subproject commit library_old_commit_sha`.
+Apparently, I deleted `Subproject commit library_new_commit_sha` and added `Subproject commit library_old_commit_sha`.
 
 Surely I didn't do that. That's weird, let me do a hard reset.
 
 ```
-$ git reset --hard origin/main
+$ [/webapp] git reset --hard origin/main
 
-HEAD is now at 98fde8f point submodule to newest commit
+HEAD is now at webapp_new_commit_sha point submodule to newest commit
 ```
 
-Did it make it go away?
+Did it make the git diff go away?
 
 ```
-$ git st
+$ [/webapp] git st
 
 ## main...origin/main
  M library
@@ -117,53 +108,86 @@ $ git st
 
 It did not! I am really confused now!
 
-Usually, when `git diff` shows an `M`, it's because _I_ modified something.
+Well, the usual way I make local modifications go away is `git reset --hard`, and that didn't work. The other way is to commit the changes.
 
-I guess one way to address that is to `git add` the change.
+(Sometimes, people don't even notice the diff above, and accidentally do this.)
 
-*My future self teleports into the room*
+**My future self**: *Don't do it! If you `git add` that change, you'll be rolling back a change someone else made!*
 
-Oh no! If you `git add` that change, you'll actually be _rolling back_ a change someone else made.
+What's going on, of course, is that `library` is a submodule, and you have to do special stuff to deal with them.
 
-Sometimes, people don't even notice the diff above, and accidentally do this.
-
-The issue is that `library` is a **submodule** and git treats it differently than other files.
+Let's dive into submodules.
 
 ## What's a submodule?
-Let's start with the basics: a git submodule is a full repo that's been nested inside another repo. Any repo can be a submodule of another.
+A git submodule is a full repo that's been nested inside another repo. Any repo can be a submodule of another.
 
 So, `library` is a full repo that has been nested inside `webapp` as a submodule.
 
-That doesn't seem so confusing, does it? However, there are two important, and tricky, facts about submodules.
+That doesn't seem so confusing, does it? However, there are two important, and tricky, facts about submodules. These facts are why so many people trip up on submodules.
 
-### 1. A submodule is always pinned to a specific commit
-You know how package managers let you be relatively fuzzy when specifying a package version ("get me any version of requests so long as it's 2.x.x"), or to pin an exact version ("use requests 2.31.0 exactly")?
+### A submodule is always pinned to a specific commit
+You know how package managers let you be  fuzzy when specifying a package version ("get me any version of `requests` so long as it's 2.x.x"), or to pin an exact version ("use `requests` 2.31.0 exactly")?
 
 Submodules can _only_ be pinned to a specific commit. This is because a submodule isn't a package; it's code that you have embedded in another repo, and git wants you to be precise.
 
-### 2. git does not automatically download or update submodules
+We'll see exactly how this pinning works shortly.
+
+### git does not automatically download or update submodules
 If you clone `webapp` afresh, git _will not_ automatically download `library` for you. (Unless you clone using `git clone --recursive`)
 
-Similarly, if a collaborator pins webapp to a new commit of library, and you `git pull` webapp, git _will not_ automatically update `library` for you.
+Similarly, if a collaborator pins `webapp` to a new commit of `library`, and you `git pull` `webapp`, git _will not_ automatically update `library` for you.
 
-This is where the majority of confusion for submodules stem from. That's, in fact, what's going on in the dramatic reenactment above. Let's dive into how git actually tracks submodules to understand what's going on.
+This is actually what's happening in the dramatic re-enactment above. Let me rewind a little bit to show what happened.
+
+## What happens when someone updates a submodule?
+In the beginning, `webapp` pointed to `webapp_old_commit_sha`, which pinned `library` to `library_old_commit_sha`.
+
+**Before I git pulled**:
+```
+flowchart LR
+    subgraph library
+        library_old_commit_sha(library_old_commit_sha)
+    end
+
+    subgraph webapp
+        webapp_old_commit_sha(webapp_old_commit_sha)
+    end
+
+    webapp_old_commit_sha --> library_old_commit_sha
+
+    webapp_head_before_pull(current commit) --> webapp_old_commit_sha
+
+    library_head(current commit) --> library_old_commit_sha
+```
+
+Then, my collaborator did some work on `library`. Remember, `library` is a full repo, so after they did their work, they did what you always do after you make changes: they committed and pushed the change: they pushed up a new commit to the `library` repo, `library_new_commit_sha`.
+
+They weren't done, though. `webapp` must point to a specific commit of `library`, so in order to use `library_new_commit_sha`, my collaborator then pushed a new commit to `webpapp`, `webapp_new_commit_sha`, which points to `library_new_commit_sha`.
+
+Here's the thing, though! _git does not automatically update submodules_, so `library` still points to `library_old_commit_sha`.
+
+**After I git pulled**:
+```
+flowchart LR
+    subgraph library
+        library_old_commit_sha(library_old_commit_sha)
+        library_new_commit_sha(library_new_commit_sha)
+    end
+
+    subgraph webapp
+        webapp_old_commit_sha(webapp_old_commit_sha)
+        webapp_new_commit_sha(webapp_new_commit_sha)
+    end
+
+    webapp_old_commit_sha --> library_old_commit_sha
+    webapp_new_commit_sha --> library_new_commit_sha
+
+    webapp_head_before_pull(current commit) --> webapp_new_commit_sha
+
+    library_head(current commit) --> library_old_commit_sha
+```
 
 ## How git tracks submodules
-### How does git know where to download a submodule from?
-git uses a file called `.gitmodules` to track the basic facts of a submodule, like the repo URL.
-
-```
-$ cat .gitmodules
-
-[submodule "library"]
-        path = library
-        url = https://github.com/dmazin/library.git
-```
-
-The nice thing about `.gitmodules` is that it's a regular file, tracked the regular way in git. That makes it not confusing.
-
-But wait... doesn't git specify an _exact_ commit of a submodule? And yet that is nowhere to be found in `.gitmodules`. Then how does git track it?
-
 ### How does git pin a submodule to a specific commit?
 The latest commit of `webapp` is `webapp_new_commit_sha`. Let's inspect that commit.
 
@@ -179,19 +203,9 @@ committer Dmitry Mazin <dm@cyberdemon.org> 1708717288 +0000
 point submodule to newest commit
 ```
 
-Focus on `tree 92018fc6ac6e71ea3dfb57e2fab9d3fe23b6fdf4`. The _tree_ object represents the directory listing of your repo. When you think trees, think directories.
+What we care about is `tree 92018fc6ac6e71ea3dfb57e2fab9d3fe23b6fdf4`. The _tree_ object represents the directory listing of your repo. When you think trees, think directories.
 
-Here, see it for yourself.
-
-First, recall the contents of `webapp`.
-```
-.gitmodules
-README.md
-library
-tests
-```
-
-Now, let's inspect the tree object.
+Let's inspect the tree object.
 ```
 $ git cat-file -p 92018fc6ac6e71ea3dfb57e2fab9d3fe23b6fdf4
 
@@ -201,8 +215,6 @@ $ git cat-file -p 92018fc6ac6e71ea3dfb57e2fab9d3fe23b6fdf4
 160000 commit   library_new_commit_sha                      library
 ```
 
-See how it matches the directory listing?
-
 Note how `tests` is a `tree` (just like directories can hold directories, trees can point to trees).
 
 But `library` is a... commit?!
@@ -211,18 +223,13 @@ But `library` is a... commit?!
 160000 commit   library_new_commit_sha                      library
 ```
 
-This weirdness is how git tracks the fact that library is not a regular directory, but a submodule. And it points at an exact commit of library: `library_new_commit_sha`.
+That weirdness, right there, is precisely how git knows `library` points to `library_new_commit_sha`.
+
+In other words, the way git implements submodules is by doing a weird trick where a tree points to a _commit_. git is a bit of a contortionist.
 
 To recap: `webapp_new_commit_sha` points to `tree 92018fc6ac6e71ea3dfb57e2fab9d3fe23b6fdf4`, which points to `library_new_commit_sha`.
 
 Let's use this knowledge to understand the `git diff` from earlier.
-
-## Understanding what happened
-Let's go back to the confusing situation, where the `git diff` looked weird after I `git pull`ed.
-
-What must have happened is that a collaborator pushed up a new commit to `library` -- `library_new_commit_sha`. Because my collaborator wanted `webapp` to take advantage of `library_new_commit_sha`, they pushed a new commit to `webapp` -- `webapp_new_commit_sha` -- that pointed to `library_new_commit_sha`. So, when I `git pull`ed, I checked out `webapp_new_commit_sha`. But, of course, git did not update `library.`
-
-That hopefully makes sense, but the git diff is still confusing. Let's pick it apart.
 
 ## Understanding git diff
 Here's the diff again.
@@ -348,6 +355,22 @@ But note that `git submodule update --remote` will do this to _all_ your submdul
 For that reason, you have to do `git submodule update --remote -- library` to limit this to library only. (If you're thrown off by the fact that you have to do `-- library` -- yeah, it's kind of weird.)
 
 Because `--remote` might accidentally update all the submodules, honestly I usually do the "without a command" method.
+
+#### The .gitmodules file
+How does git know where to download `library` from?
+git uses a file called `.gitmodules` to track the basic facts of a submodule, like the repo URL.
+
+```
+$ cat .gitmodules
+
+[submodule "library"]
+        path = library
+        url = https://github.com/dmazin/library.git
+```
+
+The nice thing about `.gitmodules` is that it's a regular file, tracked the regular way in git. That makes it not confusing.
+
+(What I don't understand is, why git didn't just put the submodule commit right in .gitmodules? The commits of `webapp` would _still_ be able to specify exact commits of `library` to use.)
 
 ### Making submodules use branches other than main
 Remember .gitmodules?
