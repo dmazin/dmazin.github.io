@@ -159,6 +159,9 @@ Here's the thing, though! _git does not automatically update submodules_, so `li
 
 I think this will be a lot less confusing if we look at exactly how git tracks submodules.
 
+## Commercial interruption
+If you're enjoying yourself, may I ask if you'd like to follow me via [RSS feed](/feed.xml), [Mastodon](https://file-explorers.club/@dmitry), or [Telegram channel](https://t.me/cyberdemon6)? Thanks!
+
 ## How git tracks submodules
 ### How does git pin a submodule to a specific commit?
 The latest commit of `webapp` is `webapp_new_commit_sha`. Let's inspect that commit.
