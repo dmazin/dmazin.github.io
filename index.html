@@ -60,7 +60,7 @@ layout: none
     <div style="margin-top: 5px">
 	    Here are some of my favorite posts about file systems.
       <ul class="featured-posts post-list">
-        {% assign featured_posts = site.posts | where_exp:"post", "post.tags contains 'featured'" | where_exp:"post", "post.tags contains 'filesystems'" %}
+        {% assign featured_posts = site.posts | where_exp:"post", "post.tags contains 'featured'" %}
         {% for post in featured_posts %}
         <li>
           <!-- {{ post.date | date: "%d %b '%y" }} -->
