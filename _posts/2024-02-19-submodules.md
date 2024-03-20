@@ -6,6 +6,7 @@ date: 2024-03-20
 tags:
     - git
     - featured
+    - technical
 description: Demystifying git submodules by showing exactly how they work.
 ---
 Throughout my career, I have found git submodules to be a pain. Because I did not understand them, I kept getting myself into frustrating situations.

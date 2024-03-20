@@ -6,6 +6,7 @@ date: 2023-08-17
 tags:
     - featured
     - filesystems
+    - technical
 description: I investigate why writing 14 bytes to a file writes 73 kilobytes to disk. In other words, I explain the difference between file and disk IO, and explain IO inflation.
 ---
 # Personal note

@@ -82,3 +82,11 @@ a:hover {
 .content {
   margin: 0.5em;
 }
+
+.post_date {
+    font-family: sans-serif;
+    font-size: 0.75em;
+    color: #c1c1da;
+    min-width: 100px;
+    display: inline-block;
+}

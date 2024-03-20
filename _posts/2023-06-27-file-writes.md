@@ -6,6 +6,7 @@ date: 2023-06-27
 tags:
     - featured
     - filesystems
+    - technical
 description: I examine the somewhat surprising way how Linux handles writes.
 ---
 [Hacker News discussion](https://news.ycombinator.com/item?id=36534512#36536526)

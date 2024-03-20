@@ -58,12 +58,12 @@ layout: none
       <a href="/2023/09/18/papa-memorial.html">Remembering my father Yevgeniy Mazin, 1964-2023</a>
     </p>
     <div style="margin-top: 5px">
-	    Here are some of my favorite posts about file systems.
+	    Here are some of my favorite technical posts.
       <ul class="featured-posts post-list">
-        {% assign featured_posts = site.posts | where_exp:"post", "post.tags contains 'featured'" %}
+        {% assign featured_posts = site.posts | where_exp:"post", "post.tags contains 'featured'" | where_exp:"post", "post.tags contains 'technical'" %}
         {% for post in featured_posts %}
         <li>
-          <!-- {{ post.date | date: "%d %b '%y" }} -->
+          <span class="post_date">{{ post.date | date: "%b %Y" }}</span>
           <a href="{{ post.url }}">{{ post.title }}</a>
         </li>
         {% endfor %}
@@ -74,7 +74,7 @@ layout: none
         {% assign ai_posts = site.posts | where_exp:"post", "post.tags contains 'featured'" | where_exp:"post", "post.tags contains 'ai'" %}
         {% for post in ai_posts %}
         <li>
-          <!-- {{ post.date | date: "%d %b '%y" }} -->
+          <span class="post_date">{{ post.date | date: "%b %Y" }}</span>
           <a href="{{ post.url }}">{{ post.title }}</a>
         </li>
         {% endfor %}
@@ -86,6 +86,7 @@ layout: none
           {% for post in site.posts %}
             {% unless post.tags contains 'featured' %}
               <li>
+                  <span class="post_date">{{ post.date | date: "%b %Y" }}</span>
                 <a href="{{ post.url }}">{{ post.title }}</a>
               </li>
             {% endunless %}
