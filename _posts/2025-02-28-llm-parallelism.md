@@ -210,7 +210,7 @@ Say what you will about LLMs, but they are killer at boilerplate. That often sav
 Just remember that you should actually try to understand concurrency <a name="learn-concurrency-return"></a><sup>[[4]](#learn-concurrency)</sup>, because applying this without understanding what's going on can cause the loss of toes.
 
 # Notes
-<a name="as-name-suggests"></a>**1.** I know that's not what "embarrassingly parallelizable"` _really_ means. <a href="#as-name-suggests-return">(back)</a>
+<a name="as-name-suggests"></a>**1.** I know that's not what "embarrassingly parallelizable" _really_ means. <a href="#as-name-suggests-return">(back)</a>
 
 <a name="gil-footnote"></a>**2.** Can't blame the GIL for failing to parallelize in this case - that IO code runs outside Python. <a href="#gil-footnote-return">(back)</a>
 
