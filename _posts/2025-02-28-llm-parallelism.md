@@ -110,9 +110,9 @@ python download_posts.py  0.22s user 0.07s system 27% cpu 1.021 total
 
 ## If you know what you're doing, it's easy to parallelize non-embarrassing scripts too
 
-Often, your scripts store some data in some sort of in-memory data structure (e.g. the list of paths you've already visited) or write to a file (e.g. update a CSV).
+Often, your scripts store some data in an in-memory data structure (e.g. the set of paths you've already visited) or write to a file (e.g. update a CSV).
 
-That is not embarrassingly parallelizable: it requires a little bit of work. You will need to make your script thread-safe.
+That is not embarrassingly parallelizable: it takes more than boilerplate. You will need to make your script thread-safe.
 
 Let's say that I wanted to log to a CSV for every page I visited. Maybe I want to keep track of the response codes or something.
 
@@ -152,9 +152,9 @@ if __name__ == "__main__":
     csv_file.close()
 ```
 
-The above is not thread-safe. The download_single_page threads might try to write to that file concurrently, and `csv.writer` itself is not thread-safe.
+The above is not thread-safe. The `download_single_page` threads might try to write to that file concurrently, and `csv.writer` itself is not thread-safe.
 
-One easy way to prevent this is to make each thread take a lock before writing.
+One easy way to manage concurrent write access to a resource is to make each thread take a lock before mutating it.
 
 You can tell the LLM to implement it for you, of course, but importantly you need to know that you need to do it in the first place, and you need to understand concurrency well enough to make sure it's implemented right.
 
