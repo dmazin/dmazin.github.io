@@ -216,4 +216,4 @@ Just remember that you should actually try to understand concurrency <a name="le
 
 <a name="error-handling"></a>**3.** In real life I'd add more error handling and logging, even to a one-off script (yes, LLMs make that easy too). <a href="#error-handling-return">(back)</a>
 
-<a name="learn-concurrency"></a>**4.** What made concurrency click for me was Martin Kleppmann's DDIA (which, like, this is probably the 100th time you've seen this book recommended) (edition 2 is coming sometime soon!) and the <a href="https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf">notes from his Distributed Systems class</a>. <a href="#learn-concurrency-return">(back)</a>
+<a name="learn-concurrency"></a>**4.** What made concurrency click for me was [Martin Kleppmann's Designing Data-Intensive Applications](https://dataintensive.net) (which, like, this is probably the 100th time you've seen this book recommended) (edition 2 is coming sometime soon!) and the <a href="https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf">notes from his Distributed Systems class</a>. <a href="#learn-concurrency-return">(back)</a>
