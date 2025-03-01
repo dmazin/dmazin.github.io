@@ -11,7 +11,7 @@ One of my favorite LLM tricks is to quickly make a script take advantage of para
 
 Before we get too far, let me clarify that I use "parallelism" loosely to describe concurrent execution.
 
-Modern computers, of course, have lots of cores. While much of the serious software we use and write takes advantage of this, usually scripts (especially one-offs) do not warrant the boilerplate required to use those extra cores.
+Modern computers, of course, have lots of cores. While much of the serious software we use and write takes advantage of this, usually scripts (especially one-offs) do not warrant the implementation required to use those extra cores.
 
 That means that many embarrassingly parallelizable scripts don't get parallelized. As the name suggests<a name="as-name-suggests-return"></a><sup>[[1]](#as-name-suggests)</sup>, that's embarrassing.
 
@@ -21,7 +21,7 @@ I mostly use Python, so my example is Python-specific, but this idea applies bro
 
 ## An example in Python
 
-Sometimes, I need to do something very quick for a bunch of files, hostnames, rows in a CSV, etc.
+Sometimes, I need to do something across a bunch of files, hostnames, rows in a CSV, etc.
 
 For example, recently I wanted to download a bunch of pages from a website. Very simple – a call to `requests.get` in a for loop.
 
@@ -53,11 +53,11 @@ $ time python download_posts.py
 python download_posts.py  0.44s user 0.12s system 2% cpu 25.780 total
 ```
 
-That's slow. Almost 26 seconds of my precious wall time, and I'm only downloading 32 pages because it's a toy example. Usually I'm looping over at least thousands of items to process.
+That's slow. Almost 26 seconds of my precious wall time, and I'm only downloading 32 pages because it's a toy example. Usually I'm looping over thousands of items.
 
 ## This is an embarrassingly parallelizable script
 
-Downloading 
+Downloading each page is completely independent. There is no need for any concurrency control or coordination. To parallelize it we only need boilerplate.
 
 This is I/O bound, so multithreading is appropriate.<a name="gil-footnote-return"></a><sup>[[2]](#gil-footnote)</sup> Download the pages in parallel – we've got CPUs and network bandwidth to spare.
 
@@ -210,7 +210,7 @@ Say what you will about LLMs, but they are killer at boilerplate. That often sav
 Just remember that you should actually try to understand concurrency <a name="learn-concurrency-return"></a><sup>[[4]](#learn-concurrency)</sup>, because applying this without understanding what's going on can cause the loss of toes.
 
 # Notes
-<a name="as-name-suggests"></a>**1.** I know that's not what "embarrassingly parallelizable _really_ means." <a href="#as-name-suggests-return">(back)</a>
+<a name="as-name-suggests"></a>**1.** I know that's not what "embarrassingly parallelizable"` _really_ means. <a href="#as-name-suggests-return">(back)</a>
 
 <a name="gil-footnote"></a>**2.** Can't blame the GIL for failing to parallelize in this case - that IO code runs outside Python. <a href="#gil-footnote-return">(back)</a>
 
