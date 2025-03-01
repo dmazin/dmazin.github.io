@@ -4,7 +4,6 @@ title: "LLMs make embarrassingly parallelizable scripts even more embarrassingly
 byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2025-02-28
 tags:
-    - featured
     - technical
 description: You can speed up your one-off scripts with an LLM's help.
 ---
