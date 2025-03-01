@@ -61,13 +61,13 @@ Downloading each page is completely independent. There is no need for any concur
 
 This is I/O bound, so multithreading is appropriate.<a name="gil-footnote-return"></a><sup>[[2]](#gil-footnote)</sup> Download the pages in parallel – we've got CPUs and network bandwidth to spare.
 
-I'll be first to admit, though, that I wouldn't be able to implement multithreading for this script without consulting the docs.  I'm just not going to do this for a one-off.
+I'll be first to admit, though, that I wouldn't be able to implement multithreading for this script without consulting the docs.  I'm just not going to do that for a one-off.
 
 So, I say to the LLM, "Use Multithreading to parallelize this.".
 
 The LLM (Claude 3.7 Thinking) uses `concurrent.futures`. It applies a boilerplate pattern I'm now used to seeing, so I know it looks right. <a name="error-handling-return"></a><sup>[[3]](#error-handling)</sup>
 
-I set the `max_workers` to 32. This is a parameter you want to tune yourself. For example, in this case, if there were enough pages to matter, I'd tune this until I saturated my network interface.
+I set the `max_workers` to 32 to show you where the parallelism can be set, though I think if you leave it out, it will use some multiple of the number of cores, which is a good starting point. This is a parameter you want to tune yourself. For example, in this case, if there were enough pages to matter, I'd tune this until I saturated my network interface.
 
 ```python
 import concurrent.futures
