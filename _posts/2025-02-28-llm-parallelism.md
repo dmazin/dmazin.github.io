@@ -8,11 +8,11 @@ tags:
     - technical
 description: You can speed up your one-off scripts with an LLM's help.
 ---
-One of my favorite LLM tricks is to quickly make a script take advantage of parallelism.
+One of my favorite LLM tricks is to quickly make a script take advantage of parallelism.<a name="parallelism-footnote-return"></a><sup>[[1]](#parallelism-footnote)</sup>
 
 Modern computers, of course, have lots of cores. While much of the serious software we use and write takes advantage of this, usually scripts (especially one-offs) do not warrant the boilerplate required to use those extra cores.
 
-That means that many embarrassingly parallelizable scripts doesn't get parallelized. As the name suggests, that's embarrassing.
+That means that many embarrassingly parallelizable scripts don't get parallelized. As the name suggests<a name="as-name-suggests-return"></a><sup>[[2]](#as-name-suggests)</sup>, that's embarrassing.
 
 For me, LLMs have made such low-hanging parallelism even more embarrassing, because they make it super easy to add that boilerplate to a script.
 
@@ -58,13 +58,13 @@ That's slow. Almost 26 seconds of my precious wall time, and I'm only downloadin
 
 Downloading 
 
-This is I/O bound, so multithreading is appropriate.<a name="gil-footnote-return"></a><sup>[[1]](#gil-footnote)</sup> Download the pages in parallel – we've got CPUs and network bandwidth to spare.
+This is I/O bound, so multithreading is appropriate.<a name="gil-footnote-return"></a><sup>[[3]](#gil-footnote)</sup> Download the pages in parallel – we've got CPUs and network bandwidth to spare.
 
 I'll be first to admit, though, that I wouldn't be able to implement multithreading for this script without consulting the docs.  I'm just not going to do this for a one-off.
 
 So, I say to the LLM, "Use Multithreading to parallelize this.".
 
-The LLM (Claude 3.7 Thinking) uses `concurrent.futures`. It applies a boilerplate pattern I'm now used to seeing, so I know it looks right. <a name="error-handling-return"></a><sup>[[2]](#error-handling)</sup>
+The LLM (Claude 3.7 Thinking) uses `concurrent.futures`. It applies a boilerplate pattern I'm now used to seeing, so I know it looks right. <a name="error-handling-return"></a><sup>[[4]](#error-handling)</sup>
 
 I set the `max_workers` to 32. This is a parameter you want to tune yourself. For example, in this case, if there were enough pages to matter, I'd tune this until I saturated my network interface.
 
@@ -107,13 +107,11 @@ $ time python download_posts.py
 python download_posts.py  0.22s user 0.07s system 27% cpu 1.021 total
 ```
 
-## Be careful about thread safety
+## If you know what you're doing, it's easy to parallelize non-embarrassing scripts too
 
 Often, your scripts store some data in some sort of in-memory data structure (e.g. the list of paths you've already visited) or write to a file (e.g. update a CSV).
 
-
-
-You will need to make your script thread-safe. You can tell the LLM to implement it for you, of course, but importantly you need to know that you need to do it in the first place, and you need to understand concurrency well enough to make sure it's implemented right.
+That is not embarrassingly parallelizable: it requires a little bit of work. You will need to make your script thread-safe.
 
 Let's say that I wanted to log to a CSV for every page I visited. Maybe I want to keep track of the response codes or something.
 
@@ -132,7 +130,7 @@ def download_single_page(page, csv_writer):
     with open(filename, "w", encoding="utf-8") as file:
         file.write(response.text)
 
-	# Write to csv
+    # Write to csv
     csv_writer.writerow([page, url, response.status_code])
 
 def download_posts(csv_writer):
@@ -153,11 +151,13 @@ if __name__ == "__main__":
     csv_file.close()
 ```
 
-The above is not thread safe. The download_single_page threads might try to write to that file concurrently.
+The above is not thread-safe. The download_single_page threads might try to write to that file concurrently, and `csv.writer` itself is not thread-safe.
 
-One easy way to prevent this is to make each thread take a lock before writing. So I say to the LLM, "Use a Lock when writing the CSV file".
+One easy way to prevent this is to make each thread take a lock before writing.
 
-So, it uses `threading.Lock`, which is a context manager we can wrap around blocks.
+You can tell the LLM to implement it for you, of course, but importantly you need to know that you need to do it in the first place, and you need to understand concurrency well enough to make sure it's implemented right.
+
+So I say to the LLM, "Use a Lock when writing the CSV file". The LLM uses `threading.Lock`, which is a context manager we wrap around blocks to make sure they execute one at a time.
 
 ```python
 import requests
@@ -175,7 +175,7 @@ def download_single_page(page, csv_writer, csv_lock):
     with open(filename, "w", encoding="utf-8") as file:
         file.write(response.text)
     
-	# Use a mutually exclusive lock
+    # Use a mutually exclusive lock
     with csv_lock:
         csv_writer.writerow([page, url, response.status_code])
 
@@ -192,7 +192,7 @@ if __name__ == "__main__":
     csv_file = open('download_results.csv', 'w', newline='')
     csv_writer = csv.writer(csv_file)
 
-	# Use a mutually exclusive lock
+    # Use a mutually exclusive lock
     csv_lock = threading.Lock()
     
     download_posts(csv_writer, csv_lock)
@@ -200,13 +200,21 @@ if __name__ == "__main__":
     csv_file.close()
 ```
 
-Say what you will about LLMs, but they are killer at boilerplate. That often saves you the time you'd spend on monotonous implementation.
+This is far from a perfect implementation. For example, using a single writer thread with a queue would prevent contention for the lock and the file. But, this is safe and fast enough.
 
-In the above case, they can also literally speed up your scripts. Just remember that you should actually try to understand concurrency <a name="learn-concurrency-return"></a><sup>[[3]](#learn-concurrency)</sup>, because applying this without understanding what's going on can cause the loss of toes.
+## Conclusion
+
+Say what you will about LLMs, but they are killer at boilerplate. That often saves you the time you'd spend on monotonous implementation. They can also literally speed up your scripts.
+
+Just remember that you should actually try to understand concurrency <a name="learn-concurrency-return"></a><sup>[[5]](#learn-concurrency)</sup>, because applying this without understanding what's going on can cause the loss of toes.
 
 # Notes
-<a name="gil-footnote"></a>**1.** Can't blame the GIL for failing to parallelize in this case - that IO code runs outside Python. <a href="#gil-footnote-return">(back)</a>
+<a name="parallelism-footnote"></a>**1.** In this post, I use parallelism interchangeably with concurrency. You'll just have to wince through it. <a href="#parallelism-footnote-return">(back)</a>
 
-<a name="error-handling"></a>**2.** In real life I'd add more error handling and logging, even to a one-off script (yes, LLMs make that easy too). <a href="#error-handling-return">(back)</a>
+<a name="as-name-suggests"></a>**2.** I know that's not what "embarrassingly parallelizable _really_ means." <a href="#as-name-suggests-return">(back)</a>
 
-<a name="learn-concurrency"></a>**3.** What made concurrency click for me was Martin Kleppmann's DDIA (which, like, this is probably the 100th time you've seen this book recommended – I could't recommend it higher) (edition 2 is coming sometime soon!) and the <a href="https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf">notes from his Distributed Systems class</a>. <a href="#learn-concurrency-return">(back)</a>
+<a name="gil-footnote"></a>**3.** Can't blame the GIL for failing to parallelize in this case - that IO code runs outside Python. <a href="#gil-footnote-return">(back)</a>
+
+<a name="error-handling"></a>**4.** In real life I'd add more error handling and logging, even to a one-off script (yes, LLMs make that easy too). <a href="#error-handling-return">(back)</a>
+
+<a name="learn-concurrency"></a>**5.** What made concurrency click for me was Martin Kleppmann's DDIA (which, like, this is probably the 100th time you've seen this book recommended) (edition 2 is coming sometime soon!) and the <a href="https://www.cl.cam.ac.uk/teaching/2122/ConcDisSys/dist-sys-notes.pdf">notes from his Distributed Systems class</a>. <a href="#learn-concurrency-return">(back)</a>
