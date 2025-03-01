@@ -60,49 +60,49 @@
     --color-link-hover: #8a8ad1;
     --color-blockquote: #e8e8e8;
     --color-blockquote-border: #828282;
-    --color-code-bg: #36363d;
+    --color-code-bg: #181819;
     --color-header: #e8e8e8;
     --color-header-visited: #e8e8e8;
     --color-page-link: #f0eff7;
     --color-menu-icon: #e8e8e8;
     --color-site-footer: #f0eff7;
-    --color-highlight-c: #e8e8e8;
-    --color-highlight-err: #f0eff7;
-    --color-highlight-err-bg: #131316;
-    --color-highlight-k: #f0eff7;
-    --color-highlight-o: #f0eff7;
-    --color-highlight-cm: #e8e8e8;
-    --color-highlight-cp: #f0eff7;
-    --color-highlight-c1: #e8e8e8;
-    --color-highlight-cs: #f0eff7;
-    --color-highlight-gd: #f0eff7;
-    --color-highlight-gd-bg: #131316;
-    --color-highlight-ge: #f0eff7;
-    --color-highlight-gr: #f0eff7;
-    --color-highlight-gh: #f0eff7;
-    --color-highlight-gi: #f0eff7;
-    --color-highlight-gi-bg: #131316;
-    --color-highlight-go: #f0eff7;
-    --color-highlight-gp: #f0eff7;
-    --color-highlight-gs: #f0eff7;
-    --color-highlight-gu: #f0eff7;
-    --color-highlight-gt: #f0eff7;
-    --color-highlight-kc: #f0eff7;
-    --color-highlight-kd: #f0eff7;
-    --color-highlight-kp: #f0eff7;
-    --color-highlight-kr: #f0eff7;
-    --color-highlight-kt: #f0eff7;
-    --color-highlight-m: #f0eff7;
-    --color-highlight-s: #f0eff7;
-    --color-highlight-na: #f0eff7;
-    --color-highlight-nb: #f0eff7;
-    --color-highlight-nc: #f0eff7;
-    --color-highlight-no: #f0eff7;
-    --color-highlight-ni: #f0eff7;
-    --color-highlight-ne: #f0eff7;
-    --color-highlight-nf: #f0eff7;
-    --color-highlight-nn: #f0eff7;
-    --color-highlight-nt: #f0eff7;
+    --color-highlight-c: #8e8e8e;        /* Comments */
+    --color-highlight-err: #ff5555;      /* Errors */
+    --color-highlight-err-bg: #2a1f1f;
+    --color-highlight-k: #7aa2f7;        /* Keywords */
+    --color-highlight-o: #bb9af7;        /* Operators */
+    --color-highlight-cm: #8e8e8e;       /* Comment multiline */
+    --color-highlight-cp: #8e8e8e;       /* Comment preproc */
+    --color-highlight-c1: #8e8e8e;       /* Comment single */
+    --color-highlight-cs: #8e8e8e;       /* Comment special */
+    --color-highlight-gd: #ff7f7f;       /* Generic deleted */
+    --color-highlight-gd-bg: #3d2a2a;
+    --color-highlight-ge: #7aa2f7;       /* Generic emph */
+    --color-highlight-gr: #ff5555;       /* Generic error */
+    --color-highlight-gh: #7aa2f7;       /* Generic heading */
+    --color-highlight-gi: #9ece6a;       /* Generic inserted */
+    --color-highlight-gi-bg: #2d3a2d;
+    --color-highlight-go: #565f89;       /* Generic output */
+    --color-highlight-gp: #7aa2f7;       /* Generic prompt */
+    --color-highlight-gs: #7aa2f7;       /* Generic strong */
+    --color-highlight-gu: #7aa2f7;       /* Generic subheading */
+    --color-highlight-gt: #ff5555;       /* Generic traceback */
+    --color-highlight-kc: #7aa2f7;       /* Keyword constant */
+    --color-highlight-kd: #7aa2f7;       /* Keyword declaration */
+    --color-highlight-kp: #7aa2f7;       /* Keyword pseudo */
+    --color-highlight-kr: #7aa2f7;       /* Keyword reserved */
+    --color-highlight-kt: #7aa2f7;       /* Keyword type */
+    --color-highlight-m: #ff9e64;        /* Numbers */
+    --color-highlight-s: #ff7b7b;        /* Strings */
+    --color-highlight-na: #9ece6a;       /* Name attribute */
+    --color-highlight-nb: #7aa2f7;       /* Name builtin */
+    --color-highlight-nc: #7dcfff;       /* Name class */
+    --color-highlight-no: #ff9e64;       /* Name constant */
+    --color-highlight-ni: #bb9af7;       /* Name entity */
+    --color-highlight-ne: #ff5555;       /* Name exception */
+    --color-highlight-nf: #7aa2f7;       /* Name function */
+    --color-highlight-nn: #7dcfff;       /* Name namespace */
+    --color-highlight-nt: #7aa2f7;       /* Name tag */
   }
 }
 
