@@ -5,7 +5,6 @@ byline: By <a href="http://cyberdemon.org/">Dmitry Mazin</a>.
 date: 2025-02-28
 tags:
     - featured
-    - filesystems
     - technical
 description: You can speed up your one-off scripts with an LLM's help.
 ---
@@ -13,7 +12,7 @@ One of my favorite LLM tricks is to quickly make a script take advantage of para
 
 Modern computers, of course, have lots of cores. While much of the serious software we use and write takes advantage of this, usually scripts (especially one-offs) do not warrant the boilerplate required to use those extra cores.
 
-That means that many embarrassingly parallelizable scripts doesn't get paralellized. As the name suggests, that's embarrassing.
+That means that many embarrassingly parallelizable scripts doesn't get parallelized. As the name suggests, that's embarrassing.
 
 For me, LLMs have made such low-hanging parallelism even more embarrassing, because they make it super easy to add that boilerplate to a script.
 
@@ -55,9 +54,9 @@ python download_posts.py  0.44s user 0.12s system 2% cpu 25.780 total
 
 That's slow. Almost 26 seconds of my precious wall time, and I'm only downloading 32 pages because it's a toy example. Usually I'm looping over at least thousands of items to process.
 
-## This is an embarrassingly paralellizable script
+## This is an embarrassingly parallelizable script
 
-Each page download is independent. Downloading many pages in parallel doesn't require any sort of thread safety mechanism, concurrency control. There are basically no dragons to be wary of (other than hitting rate limits). This is embarrassingly easy to parallelize.
+Downloading 
 
 This is I/O bound, so multithreading is appropriate.<a name="gil-footnote-return"></a><sup>[[1]](#gil-footnote)</sup> Download the pages in parallel – we've got CPUs and network bandwidth to spare.
 
@@ -108,13 +107,13 @@ $ time python download_posts.py
 python download_posts.py  0.22s user 0.07s system 27% cpu 1.021 total
 ```
 
-## Parallelizing scripts with data structures isn't that hard either
+## Be careful about thread safety
 
 Often, your scripts store some data in some sort of in-memory data structure (e.g. the list of paths you've already visited) or write to a file (e.g. update a CSV).
 
-This is less embarrassingly paralellizable. You actually have to be careful.
 
-You will need to make your script thread-safe. You can tell the LLM to implement the concurrency control for you, but importantly you need to know that you need to do it in the first place, and you need to understand concurrency well enough to make sure it's implemented right.
+
+You will need to make your script thread-safe. You can tell the LLM to implement it for you, of course, but importantly you need to know that you need to do it in the first place, and you need to understand concurrency well enough to make sure it's implemented right.
 
 Let's say that I wanted to log to a CSV for every page I visited. Maybe I want to keep track of the response codes or something.
 
