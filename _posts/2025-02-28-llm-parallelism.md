@@ -11,7 +11,7 @@ One of my favorite LLM tricks is to quickly make a script take advantage of para
 
 Before we get too far, let me clarify that I use "parallelism" loosely to describe concurrent execution.
 
-Modern computers, of course, have lots of cores. While much of the serious software we use and write takes advantage of this, usually scripts (especially one-offs) do not warrant the implementation required to use those extra cores.
+Modern computers, of course, have lots of cores. While much of the serious software we use and write takes advantage of this, usually scripts (especially one-offs) do not warrant the implementation work required to use those extra cores.
 
 That means that many embarrassingly parallelizable scripts don't get parallelized. As the name suggests<a name="as-name-suggests-return"></a><sup>[[1]](#as-name-suggests)</sup>, that's embarrassing.
 
