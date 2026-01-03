@@ -202,7 +202,7 @@ That weirdness, right there, is precisely how git knows `library` points to `lib
 
 In other words, the way git implements submodules is by doing a weird trick where a tree points to a _commit_.
 
-<img src="/assets/submodules3.png" alt="Hand-drawn diagram showing the text 'webapp_new_commit_sha' connected, via arrow, to 'tree a425' which is itself connected, via arrow, to 'library_new_commit_sha'">
+<img src="/assets/submodules3.png" alt="Hand-drawn diagram showing the text 'webapp_new_commit_sha' connected, via arrow, to 'tree 92018' which is itself connected, via arrow, to 'library_new_commit_sha'">
 
 Let's use this knowledge to understand the `git diff` from earlier.
 
