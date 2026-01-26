@@ -360,3 +360,5 @@ If you want to, you can make `library` track whatever branch you want. Otherwise
 ```
 
 Thanks for reading!
+
+*Thanks to [Matthias](https://github.com/MatthiasBart) for reviewing this article.*
