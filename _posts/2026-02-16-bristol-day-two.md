@@ -162,13 +162,13 @@ After Oxfam, I found myself wringing my hands about next actions. I was thinking
   </div>
 </div>
 
-Between Berkeley Square (where I'm staying) and the bridge is, I think, a charming neighborhood called Clifton. I have a trained eye for plaques, and am proud that I did not miss a small plaque on top of a litter bin: "This box is dedicated to Craig of Royal York Crescent, who spends many a restful moment hither." I immediately got excited, thinking this was the best kind of memorial -- one that commemorates a beloved local animal (the best, probably, on earth is in Kentish Town: "Boris the cat lived here 1985-1995"). I looked it up, though, and it appears that some local guy made it up because he thinks it's funny or something. I don't know. The story turns out to be a tad boring (that a made up man leans against a litter bin -- less charming than a cat who basks on it).
+Between Berkeley Square (where I'm staying) and the bridge is, I think, a charming neighborhood called Clifton. I have a trained eye for plaques, and am proud that I did not miss a small plaque on top of a litter bin: "This box is dedicated to Craig of Royal York Crescent, who spends many a restful moment hither." I immediately got excited, thinking this was the best kind of memorial -- one that commemorates a beloved local animal (the best (probably) on Earth is in Kentish Town: "Boris the cat lived here 1986-1996"). I looked it up, though, and it appears that some local guy made it up because he thinks it's funny or something. I don't know. The story turns out to be a tad boring (that a made up man leans against a litter bin -- less charming than a cat who basks on it).
 
 <figure>
   <img src="/assets/images/bristol/litterbox_plaque.jpg" alt="The Craig plaque">
 </figure>
 
-Eventually, I made it to the park that surrounds the suspension bridge, the Clifton Downs. Entering, a large sign explains that the Downs is a large park, and, importantly, promises goats. I incorrectly read that this is the only place in the UK with such goats, which in hindsight obviously cannot be true. Instead, the goats eat invasive scrub to help defend the many rare plants of the Avon Gorge (which the suspension bridge spans), which indeed only grow here.
+Eventually, I made it to the park that surrounds the suspension bridge, the Clifton Downs. Entering, a large sign promises goats – very intriguing. I incorrectly read that this is the only place in the UK with such goats, which in hindsight obviously cannot be true. Instead, the goats eat invasive scrub to help defend the many rare plants of the Avon Gorge (which the suspension bridge spans), which indeed only grow here.
 
 <figure>
   <img src="/assets/images/bristol/picture_of_bench_--_use_it_in_the_bristol_downs.jpg" alt="What is this Rodin-ass bench?">
@@ -190,7 +190,7 @@ Right -- the goats. I had to walk through a municipal park for a while to get to
   <img src="/assets/images/bristol/public_notice_about_goats.jpg" alt="The goat-and-dog sign">
 </figure>
 
-Past the gate, I continued precariously going downhill, using my hands for balance. I suddenly understood why some people's asses were muddy. But I did not slip. I started looking for the goats -- it was very windy -- and -- in the distance, there they were!
+Past the gate, I continued precariously going downhill, using my hands for balance. I suddenly understood why earlier I had seen people with muddy asses. But I did not slip. I started looking for the goats -- it was very windy -- and -- in the distance, there they were!
 
 <figure>
   <img src="/assets/images/bristol/goats.jpg" alt="The goats of the Avon Gorge">
